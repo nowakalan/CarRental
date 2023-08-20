@@ -18,10 +18,11 @@ public class CarRent {
     private Long id;
 
     @OneToOne
+    @JoinColumn(name = "booking_id")
     private Booking booking;
 
     @Column(name = "employee_id")
     private Long employeeId;
 
-    private String notes;
+    private String note;
 }

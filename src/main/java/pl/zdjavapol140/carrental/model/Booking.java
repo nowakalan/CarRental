@@ -33,11 +33,12 @@ public class Booking {
     private LocalDate rentStartDate;
     private LocalDate rentEndDate;
 
-//    @Column(name = "division_id")
+
+    @Column(name = "rent_division_id")
     private Long rentDivisionId;
 
-//    @Column(name = "division_id")
-//    private Long returnDivisionId;
+    @Column(name = "return_division_id")
+    private Long returnDivisionId;
 
     private BigDecimal totalPrice;
 }
