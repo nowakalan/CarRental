@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,4 +21,14 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String brand;
+    private String model;
+    private String bodyType;
+    private int productionYear;
+    private String color;
+    private Double mileage;
+    private CarStatus status;
+    private BigDecimal price;
+
+
 }
