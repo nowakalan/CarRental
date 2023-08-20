@@ -14,14 +14,14 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Return {
+public class CarReturn {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @OneToOne
-//    private Booking booking;
+    @OneToOne
+    private Booking booking;
 
     private LocalDate returnDate;
 
