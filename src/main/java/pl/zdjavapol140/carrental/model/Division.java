@@ -26,7 +26,7 @@ public class Division {
     @OneToMany
     private Set<Employee> employees;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Car> availableCars;
 
 

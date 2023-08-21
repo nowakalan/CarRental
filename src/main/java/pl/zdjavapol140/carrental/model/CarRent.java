@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,11 +19,13 @@ public class CarRent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    private Booking booking;
+    @JoinColumn(name = "reservation_id")
+    private Long reservationId;
 
-    @Column(name = "employee_id")
+    private LocalDateTime rentDateTime;
+
+    @Column(name = "employee")
     private Long employeeId;
 
-    private String notes;
+    private String note;
 }
