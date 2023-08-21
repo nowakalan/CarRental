@@ -20,8 +20,8 @@ public class CarReturn {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    private Booking booking;
+    @JoinColumn(name = "reservation_id")
+    private Long reservationId;
 
     private LocalDate returnDate;
 
