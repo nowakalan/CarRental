@@ -4,5 +4,4 @@ public enum ReservationStatus {
     SET,
     CANCELED,
     COMPLETED;
-
 }

@@ -20,9 +20,9 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    String country;
     String city;
     String postalCode;
-    String streetName;
-    String streetNumber;
+    String details;
 
 }

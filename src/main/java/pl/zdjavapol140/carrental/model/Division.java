@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -24,10 +26,21 @@ public class Division {
     private Address address;
 
     @OneToMany
-    private Set<Employee> employees;
+    private Set<Employee> employees = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    private Set<Car> availableCars;
+    private Set<Car> availableCars = new HashSet<>();
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Division division = (Division) o;
+        return Objects.equals(id, division.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

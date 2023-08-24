@@ -1,10 +1,8 @@
 package pl.zdjavapol140.carrental.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import java.util.Set;
 
@@ -18,7 +16,9 @@ public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     private String url;
 
     @OneToOne
@@ -26,6 +26,8 @@ public class Rental {
 
     private String owner;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Division> divisions;
+
+
 }

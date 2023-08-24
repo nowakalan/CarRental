@@ -23,4 +23,5 @@ public class Revenues {
     private Long id;
 
     private BigDecimal incomeAmount;
+
 }
