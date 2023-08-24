@@ -5,11 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -19,13 +19,27 @@ public class CarRent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "reservation_id")
+//    @JoinColumn(name = "reservation_id")
     private Long reservationId;
 
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDateTime rentDateTime;
 
     @Column(name = "employee")
     private Long employeeId;
 
     private String note;
+
+    public CarRent(Long reservationId, LocalDateTime rentDateTime, Long employeeId) {
+        this.reservationId = reservationId;
+        this.rentDateTime = rentDateTime;
+        this.employeeId = employeeId;
+    }
+
+    public CarRent(Long reservationId, LocalDateTime rentDateTime, Long employeeId, String note) {
+        this.reservationId = reservationId;
+        this.rentDateTime = rentDateTime;
+        this.employeeId = employeeId;
+        this.note = note;
+    }
 }

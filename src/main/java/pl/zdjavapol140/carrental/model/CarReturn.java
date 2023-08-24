@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,12 +21,15 @@ public class CarReturn {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "reservation_id")
+//    @JoinColumn(name = "reservation_id")
     private Long reservationId;
 
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate returnDate;
 
     private BigDecimal surcharge;
 
     private String notes;
 }
+
+

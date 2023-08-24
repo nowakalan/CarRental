@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -20,25 +21,31 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(value = EnumType.STRING)
     private ReservationStatus status;
 
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDateTime bookingDateTime;
 
-    @Column(name = "customer_id")
     private Long customerId;
 
-    @Column(name = "car_id")
-    private Long carId;
+    @OneToOne
+    private Car car;
 
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDateTime startDateTime;
+
+    private Long startDivisionId;
+
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDateTime endDateTime;
 
-    @Column(name = "rent_division_id")
-    private Long rentDivisionId;
-
-    @Column(name = "return_division_id")
-    private Long returnDivisionId;
+    private Long endDivisionId;
 
     private BigDecimal totalPrice;
+
+    private BigDecimal calculateTotalPrice() {
+        return totalPrice;
+    }
 
 }

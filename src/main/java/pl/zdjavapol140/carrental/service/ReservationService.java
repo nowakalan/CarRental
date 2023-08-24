@@ -16,4 +16,7 @@ public class ReservationService {
         reservation.setStatus(ReservationStatus.SET);
         reservationRepository.save(reservation);
     }
+    public void updateReservation(Reservation reservation) {
+
+    }
 }
