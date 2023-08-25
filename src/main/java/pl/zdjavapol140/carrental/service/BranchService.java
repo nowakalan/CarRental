@@ -5,5 +5,5 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CarReturnService {
+public class BranchService {
 }

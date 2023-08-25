@@ -21,11 +21,11 @@ public class Employee {
     private String lastName;
 
     @Enumerated(EnumType.STRING)
-    private Position position;
+    private Job job;
 
     @ManyToOne
-    @JoinColumn(name = "division_id")
-    private Division division;
+    @JoinColumn(name = "branch_id")
+    private Branch branch;
 
 
 
