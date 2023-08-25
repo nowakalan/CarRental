@@ -22,11 +22,12 @@ public class Rental {
     private String url;
 
     @OneToOne
+    @JoinColumn(name = "address_id")
     private Address address;
 
     private String owner;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "rental", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Division> divisions;
 
 

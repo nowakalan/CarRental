@@ -10,7 +10,6 @@ import lombok.Setter;
 import java.util.UUID;
 
 @Entity
-@Table(name = "customers")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -33,6 +32,7 @@ public class Customer {
     private String phone;
 
     @OneToOne
+    @JoinColumn(name = "address_id")
     private Address address;
 
     public Customer(String firstName, String lastName, String email, String phone, Address address) {

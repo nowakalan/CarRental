@@ -29,8 +29,8 @@ public class Reservation {
 
     private Long customerId;
 
-    @OneToOne
-    private Car car;
+
+    private Long carId;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDateTime startDateTime;
