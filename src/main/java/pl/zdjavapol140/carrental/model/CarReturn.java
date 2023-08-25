@@ -21,9 +21,6 @@ public class CarReturn {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @JoinColumn(name = "reservation_id")
-//    private Long reservationId;
-
     @OneToOne
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;

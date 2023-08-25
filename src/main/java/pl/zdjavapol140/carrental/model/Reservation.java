@@ -35,12 +35,12 @@ public class Reservation {
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDateTime startDateTime;
 
-    private Long startDivisionId;
+    private Long rentBranchId;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDateTime endDateTime;
 
-    private Long endDivisionId;
+    private Long returnBranchId;
 
     private BigDecimal totalPrice;
 

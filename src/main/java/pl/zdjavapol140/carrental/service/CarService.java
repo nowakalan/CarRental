@@ -1,5 +1,6 @@
 package pl.zdjavapol140.carrental.service;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.zdjavapol140.carrental.model.Car;
@@ -15,10 +16,12 @@ public class CarService {
 
     CarRepository carRepository;
 
+    @Transactional
     public void addCar(Car car) {
         carRepository.save(car);
     }
 
+    @Transactional
     public void deleteCar(Long carId) {
         carRepository.deleteById(carId);
     }
