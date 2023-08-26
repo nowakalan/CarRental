@@ -23,27 +23,25 @@ public class CarRent {
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
 
-//    @JoinColumn(name = "reservation_id")
-//    private Long reservationId;
-
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDateTime rentDateTime;
 
-    @Column(name = "employee")
-    private Long employeeId;
+    @OneToOne
+    @JoinColumn(name = "employee_id")
+    Employee employee;
 
     private String note;
 
-    public CarRent(Reservation reservation, LocalDateTime rentDateTime, Long employeeId) {
+    public CarRent(Reservation reservation, LocalDateTime rentDateTime, Employee employee) {
         this.reservation = reservation;
         this.rentDateTime = rentDateTime;
-        this.employeeId = employeeId;
+        this.employee = employee;
     }
 
-    public CarRent(Reservation reservation, LocalDateTime rentDateTime, Long employeeId, String note) {
+    public CarRent(Reservation reservation, LocalDateTime rentDateTime, Employee employee, String note) {
         this.reservation = reservation;
         this.rentDateTime = rentDateTime;
-        this.employeeId = employeeId;
+        this.employee = employee;
         this.note = note;
     }
 }

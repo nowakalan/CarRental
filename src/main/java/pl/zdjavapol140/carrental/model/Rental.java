@@ -28,7 +28,6 @@ public class Rental {
     private String owner;
 
     @OneToMany(mappedBy = "rental", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Division> divisions;
-
+    private Set<Branch> branches;
 
 }
