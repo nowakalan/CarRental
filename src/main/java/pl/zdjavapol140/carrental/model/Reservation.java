@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,20 +26,25 @@ public class Reservation {
     private ReservationStatus status;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDateTime bookingDateTime;
+    private LocalDate bookingDate;
 
-    private Long customerId;
+    //    private Long customerId;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
-
-    private Long carId;
+//    private Long carId;
+    @ManyToOne
+    @JoinColumn(name = "car_id")
+    private Car car;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDateTime startDateTime;
+    private LocalDateTime startDate;
 
     private Long rentBranchId;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDateTime endDateTime;
+    private LocalDateTime endDate;
 
     private Long returnBranchId;
 

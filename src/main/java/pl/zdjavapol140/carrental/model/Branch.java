@@ -28,10 +28,10 @@ public class Branch {
     @JoinColumn(name = "rental_id")
     private Rental rental;
 
-    @OneToMany(mappedBy = "division", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "branch", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Employee> employees = new HashSet<>();
 
-    @OneToMany(mappedBy = "division", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "branch", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Car> availableCars = new HashSet<>();
 
 }

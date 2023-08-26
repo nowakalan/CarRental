@@ -1,17 +1,20 @@
 package pl.zdjavapol140.carrental.service;
 
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.zdjavapol140.carrental.model.CarRent;
+
 import pl.zdjavapol140.carrental.model.Reservation;
-import pl.zdjavapol140.carrental.model.ReservationStatus;
 import pl.zdjavapol140.carrental.repository.ReservationRepository;
 
+import java.util.List;
+
 @Service
-@AllArgsConstructor
 public class ReservationService {
 
-    private final ReservationRepository reservationRepository;
+    ReservationRepository reservationRepository;
+
+    public List<Reservation> findAllReservationByCarId(Long carId) {
+        return reservationRepository.findReservationsByCarId(carId);
+    }
 
 //    public void addReservation(Reservation reservation) {
 //        reservation.setStatus(ReservationStatus.SET);

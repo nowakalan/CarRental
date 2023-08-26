@@ -10,7 +10,6 @@ import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
-    public List<Long> getCarIdsByStartDateTimeBefore(LocalDateTime changeStatusDateTime);
-    public List<Long> findCarIdByStatus(ReservationStatus status);
+List<Reservation> findReservationsByCarId(Long carId);
 
 }
