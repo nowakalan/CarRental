@@ -19,8 +19,12 @@ public class CarRent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToOne
+    @JoinColumn(name = "reservation_id")
+    private Reservation reservation;
+
 //    @JoinColumn(name = "reservation_id")
-    private Long reservationId;
+//    private Long reservationId;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDateTime rentDateTime;
@@ -30,14 +34,14 @@ public class CarRent {
 
     private String note;
 
-    public CarRent(Long reservationId, LocalDateTime rentDateTime, Long employeeId) {
-        this.reservationId = reservationId;
+    public CarRent(Reservation reservation, LocalDateTime rentDateTime, Long employeeId) {
+        this.reservation = reservation;
         this.rentDateTime = rentDateTime;
         this.employeeId = employeeId;
     }
 
-    public CarRent(Long reservationId, LocalDateTime rentDateTime, Long employeeId, String note) {
-        this.reservationId = reservationId;
+    public CarRent(Reservation reservation, LocalDateTime rentDateTime, Long employeeId, String note) {
+        this.reservation = reservation;
         this.rentDateTime = rentDateTime;
         this.employeeId = employeeId;
         this.note = note;

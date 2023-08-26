@@ -22,7 +22,11 @@ public class CarReturn {
     private Long id;
 
 //    @JoinColumn(name = "reservation_id")
-    private Long reservationId;
+//    private Long reservationId;
+
+    @OneToOne
+    @JoinColumn(name = "reservation_id")
+    private Reservation reservation;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate returnDate;

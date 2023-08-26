@@ -24,6 +24,7 @@ public class Employee {
     private Position position;
 
     @ManyToOne
+    @JoinColumn(name = "division_id")
     private Division division;
 
 

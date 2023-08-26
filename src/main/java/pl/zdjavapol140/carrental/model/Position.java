@@ -3,16 +3,16 @@ package pl.zdjavapol140.carrental.model;
 
 public enum Position {
 
-    MANAGER("manager"),
-    EMPLOYEE("employee");
+    MANAGER,
+    EMPLOYEE;
 
-    private String displayPosition;
-
-    Position(String displayPosition) {
-        this.displayPosition = displayPosition;
-    }
-
-    public String getDisplayPosition() {
-        return displayPosition;
-    }
+//    private String displayPosition;
+//
+//    Position(String displayPosition) {
+//        this.displayPosition = displayPosition;
+//    }
+//
+//    public String getDisplayPosition() {
+//        return displayPosition;
+//    }
 }

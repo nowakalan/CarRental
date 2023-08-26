@@ -11,7 +11,6 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "divisions")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -23,24 +22,29 @@ public class Division {
     private Long id;
 
     @OneToOne
+    @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToMany
+    @ManyToOne
+    @JoinColumn(name = "rental_id")
+    private Rental rental;
+
+    @OneToMany(mappedBy = "division", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Employee> employees = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "division", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Car> availableCars = new HashSet<>();
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Division division = (Division) o;
-        return Objects.equals(id, division.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Division division = (Division) o;
+//        return Objects.equals(id, division.id);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(id);
+//    }
 }
