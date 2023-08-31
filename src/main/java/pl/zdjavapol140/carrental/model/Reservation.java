@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
+
 //@Table(name = "reservations")
 public class Reservation {
 
@@ -25,7 +26,7 @@ public class Reservation {
     @Enumerated(value = EnumType.STRING)
     private ReservationStatus status;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH-mm-SS")
     private LocalDateTime bookingDate;
 
     @ManyToOne
@@ -36,20 +37,20 @@ public class Reservation {
     @JoinColumn(name = "car_id")
     private Car car;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDateTime startDateTime;
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH-mm-SS")
+    private LocalDateTime pickUpDateTime;
 
-    private Long rentBranchId;
+    private Long pickUpBranchId;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDateTime endDateTime;
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH-mm-SS")
+    private LocalDateTime dropOffDateTime;
 
-    private Long returnBranchId;
+    private Long dropOffBranchId;
 
     private BigDecimal totalPrice;
 
-    private BigDecimal calculateTotalPrice() {
-        return totalPrice;
-    }
+//    private BigDecimal calculateTotalPrice() {
+//        return totalPrice;
+//    }
 
 }

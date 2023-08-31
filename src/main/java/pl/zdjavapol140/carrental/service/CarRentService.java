@@ -10,6 +10,7 @@ import pl.zdjavapol140.carrental.repository.BranchRepository;
 import pl.zdjavapol140.carrental.repository.ReservationRepository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 public class CarRentService {
@@ -23,7 +24,7 @@ public class CarRentService {
     //Czy dodać ew. pusty String?
 
     public void createCarRent(Reservation reservation, Employee employee) {
-       CarRent carRent = new CarRent(reservation, LocalDate.now(),employee,null);
+       CarRent carRent = new CarRent(reservation, LocalDateTime.now(),employee,null);
        carRentRepository.save(carRent);
     }
 

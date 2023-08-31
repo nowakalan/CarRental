@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @NoArgsConstructor
@@ -24,21 +21,25 @@ public class Car {
 
     private String brand;
     private String model;
-    private String bodyType;
+
+    @Enumerated(value = EnumType.STRING)
+    private CarBodyType bodyType;
+
+    @Enumerated(value = EnumType.STRING)
+    private CarTransmissionType transmissionType;
+
     private Integer productionYear;
     private String color;
     private Double mileage;
 
-    @Enumerated(value = EnumType.STRING)
-    private CarStatus status;
-
     private BigDecimal price;
 
     @ManyToOne
-    @JoinColumn(name = "branch_id")
-    private Branch branch;
+    @JoinColumn(name = "rental_id")
+    private Rental rental;
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Reservation> reservations = new HashSet<>();
+    private List<Reservation> reservations = new ArrayList<>();
+
 
 }
