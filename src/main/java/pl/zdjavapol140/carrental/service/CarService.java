@@ -11,7 +11,9 @@ import pl.zdjavapol140.carrental.repository.CarRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -31,58 +33,65 @@ public class CarService {
         carRepository.deleteById(carId);
     }
 
-    public List<Car> findAvailableCarsByConflictingReservations(List<Reservation> conflictingReservations) {
+    /* Metoda wyszukuje samochody dostępne w poszukiwanym terminie we wszystkich lokalizacjach.
 
-        List<Car> nonAvailableCars = conflictingReservations
-                .stream()
-                .map(Reservation::getCar)
-                .distinct()
-                .toList();
+     */
 
-        return carRepository
-                .findAll()
-                .stream()
-                .filter(car -> !nonAvailableCars.contains(car))
-                .collect(Collectors.toList());
-    }
+//public List<Car> findAllAvailableCars(List<Car> carsUnavailableOnCurrentDateTime)
 
-    public List<Car> findCarsByColor(List<Car> cars, String color) {
-        return cars
-                .stream()
-                .filter(car -> car.getColor().equalsIgnoreCase(color))
-                .collect(Collectors.toList());
-    }
+//    public List<Car> findAvailableCarsByConflictingReservations(List<Reservation> conflictingReservations) {
+//
+//        List<Car> nonAvailableCars = conflictingReservations
+//                .stream()
+//                .map(Reservation::getCar)
+//                .distinct()
+//                .toList();
+//
+//        return carRepository
+//                .findAll()
+//                .stream()
+//                .filter(car -> !nonAvailableCars.contains(car))
+//                .toList();
+//    }
 
-    public List<Car> findCarsByColor(String color) {
-        return carRepository.findCarsByColor(color);
-    }
+    /* Metoda wyszukuje id lokalizacji, w której będzie dostępny samochód w poszukiwanym terminie.
 
-    public List<Car> findCarsByBrand(List<Car> cars, String brand) {
-        return cars
-                .stream()
-                .filter(car -> car.getBrand().equalsIgnoreCase(brand))
-                .collect(Collectors.toList());
-    }
-    public List<Car> findCarsByBrand(String brand) {
-        return carRepository.findCarsByBrand(brand);
-    }
+     */
+//    public Long findBranchIdByCarDropOffDateTimeBefore(LocalDateTime currentPickUpDateTime, Car car) {
+//
+//        return car.getReservations()
+//                .stream()
+//                .filter(reservation -> reservation.getDropOffDateTime().isBefore(currentPickUpDateTime))
+//                .max(Comparator.comparing(Reservation::getDropOffDateTime))
+//                .map(Reservation::getDropOffBranchId)
+//                .orElseGet(() -> car.getBranch().getId());
+//    }
 
-    public List<Car> findCarsByModel(List<Car> cars, String model) {
-        return cars
-                .stream()
-                .filter(car -> car.getModel().equalsIgnoreCase(model))
-                .collect(Collectors.toList());
-    }
+    /* Metoda wyszukuje samochody dostępne w wybranej lokalizacji w wybranym terminie.
 
-    public List<Car> findCarsByModel(String model) {
-        return carRepository.findCarsByModel(model);
-    }
-    public List<Car> findCarsByBodyType(List<Car> cars, String bodyType) {
-        return cars
-                .stream()
-                .filter(car -> car.getBodyType().equalsIgnoreCase(bodyType))
-                .collect(Collectors.toList());
-    }
+     */
+
+//    public List<Car> findAvailableCarsByCarDropOffBranchId(List<Car> cars, Long currentPickUpBranchId, LocalDateTime currentPickUpDateTime) {
+//        return cars
+//                .stream()
+//                .filter(car -> findBranchIdByCarDropOffDateTimeBefore(currentPickUpDateTime, car).equals(currentPickUpBranchId))
+//                .collect(Collectors.toList());
+//    }
+
+
+
+    //TODO
+    //Zapewnić, żeby auto wracało na miejsce - tam, gdzie jest następna rezerwacja.
+    //Poprzenosić metody z serwisów do fasady
+
+
+
+
+
+
+
+
+
 
     public List<Car> findCarsByBodyType(String bodyType) {
         return carRepository.findCarsByBodyType(bodyType);
@@ -98,6 +107,37 @@ public class CarService {
     public List<Car> findCarsByPriceLessThanEqual(BigDecimal priceLimit) {
         return carRepository.findCarsByPriceIsLessThanEqual(priceLimit);
     }
+
+//    public List<Car> findCarsByBrand(List<Car> cars, String brand) {
+//        return cars
+//                .stream()
+//                .filter(car -> car.getBrand().equalsIgnoreCase(brand))
+//                .collect(Collectors.toList());
+//    }
+//    public List<Car> findCarsByBrand(String brand) {
+//        return carRepository.findCarsByBrand(brand);
+//    }
+//
+//    public List<Car> findCarsByModel(List<Car> cars, String model) {
+//        return cars
+//                .stream()
+//                .filter(car -> car.getModel().equalsIgnoreCase(model))
+//                .collect(Collectors.toList());
+//    }
+//
+//    public List<Car> findCarsByModel(String model) {
+//        return carRepository.findCarsByModel(model);
+//    }
+//    public List<Car> findCarsByColor(List<Car> cars, String color) {
+//        return cars
+//                .stream()
+//                .filter(car -> car.getColor().equalsIgnoreCase(color))
+//                .collect(Collectors.toList());
+//    }
+//
+//    public List<Car> findCarsByColor(String color) {
+//        return carRepository.findCarsByColor(color);
+//    }
 
 //    //TODO
 //    public void updateCarStatusToRented(Long carId) {

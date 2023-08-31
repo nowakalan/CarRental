@@ -27,6 +27,4 @@ public class Employee {
     @JoinColumn(name = "branch_id")
     private Branch branch;
 
-
-
 }

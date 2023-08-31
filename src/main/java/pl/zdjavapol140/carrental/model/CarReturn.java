@@ -8,7 +8,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
@@ -25,8 +25,8 @@ public class CarReturn {
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate returnDate;
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH-mm")
+    private LocalDateTime dropOffDate;
 
     private BigDecimal surcharge;
 

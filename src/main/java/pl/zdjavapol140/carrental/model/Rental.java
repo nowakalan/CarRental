@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,7 +28,10 @@ public class Rental {
 
     private String owner;
 
-    @OneToMany(mappedBy = "rental", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Branch> branches;
+    @OneToMany(mappedBy = "rental", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private List<Branch> branches;
+
+    @OneToMany(mappedBy = "rental", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private List<Car> cars;
 
 }
