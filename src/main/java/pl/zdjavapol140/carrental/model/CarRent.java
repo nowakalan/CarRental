@@ -1,13 +1,11 @@
 package pl.zdjavapol140.carrental.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,8 +22,8 @@ public class CarRent {
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate rentDate;
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH-mm")
+    private LocalDateTime pickUpDate;
 
     @OneToOne
     @JoinColumn(name = "employee_id")
@@ -33,16 +31,13 @@ public class CarRent {
 
     private String note;
 
-    public CarRent(Reservation reservation, LocalDate rentDate, Employee employee) {
+    public CarRent(Reservation reservation, LocalDateTime pickUpDate, Employee employee, String note) {
+        reservation.setStatus(ReservationStatus.IN_PROGRESS);
         this.reservation = reservation;
-        this.rentDate = rentDate;
-        this.employee = employee;
-    }
-
-    public CarRent(Reservation reservation, LocalDate rentDate, Employee employee, String note) {
-        this.reservation = reservation;
-        this.rentDate = rentDate;
+        this.pickUpDate = pickUpDate;
         this.employee = employee;
         this.note = note;
     }
+
+
 }

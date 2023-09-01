@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -28,10 +30,11 @@ public class Branch {
     @JoinColumn(name = "rental_id")
     private Rental rental;
 
-    @OneToMany(mappedBy = "branch", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Employee> employees = new HashSet<>();
+    @OneToMany(mappedBy = "branch", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    private List<Employee> employees;
 
-    @OneToMany(mappedBy = "branch", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Car> availableCars = new HashSet<>();
+    private String name;
+    private String owner;
+
 
 }
