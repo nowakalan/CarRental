@@ -1,5 +1,7 @@
 package pl.zdjavapol140.carrental.service;
 
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,8 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
+@Slf4j
 @Service
 public class ReservationService {
 
@@ -31,85 +35,90 @@ public class ReservationService {
         this.branchRepository = branchRepository;
     }
 
+    public Reservation findReservationById(Long id) throws RuntimeException {
+
+        return reservationRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Reservation id not found"));
+    }
+
+
     /**
-     *
-     * @param carId
-     * @param customerId
-     * @param pickUpDateTime
-     * @param dropOffDateTime
-     * @param pickUpBranchId
-     * @param dropOffBranchId
+     * creates new reservation (by allArgsConstructor)
      */
 
-    public void createReservation(Long carId, Long customerId, LocalDateTime pickUpDateTime, LocalDateTime dropOffDateTime, Long pickUpBranchId, Long dropOffBranchId) {
-        Reservation reservation = new Reservation();
-        reservation.setStatus(ReservationStatus.SET);
-        reservation.setBookingDate(LocalDateTime.now());
-        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new RuntimeException("Customer not found"));
-        reservation.setCustomer(customer);
-        Car car = carRepository.findCarById(carId);
-        reservation.setCar(car);
-        reservation.setPickUpDateTime(pickUpDateTime);
-        reservation.setPickUpBranchId(pickUpBranchId);
-        reservation.setDropOffDateTime(dropOffDateTime);
-        reservation.setDropOffBranchId(dropOffBranchId);
+    public Reservation createReservation(Long carId,
+                                         Long customerId,
+                                         LocalDateTime pickUpDateTime,
+                                         LocalDateTime dropOffDateTime,
+                                         Long pickUpBranchId,
+                                         Long dropOffBranchId) {
+
+        return new Reservation(
+                null,
+                ReservationStatus.SET,
+                LocalDateTime.now(),
+                customerRepository.findById(customerId)
+                        .orElseThrow(() -> new RuntimeException("Customer id not found")),
+                carRepository.findById(carId)
+                        .orElseThrow(() -> new RuntimeException("Car id not found")),
+                pickUpDateTime,
+                branchRepository.findById(pickUpBranchId)
+                        .orElseThrow(() -> new RuntimeException("Branch id not found")).getId(),
+                dropOffDateTime,
+                branchRepository.findById(dropOffBranchId)
+                        .orElseThrow(() -> new RuntimeException("Branch id not found")).getId(),
+                null);
     }
 
     /**
-     * @return availableCars (by pickUp/dropOff dateTime, pickUp/dropOff branchId)
-     * The method searches for cars without reservations for conflicting term
-     *      and available in current place
+     * saves reservation in db
      */
+    @Transactional
+    public boolean addReservation(Reservation reservation) throws RuntimeException {
 
-    public List<Car> findAvailableCars(@Param("currentPickUpDateTime")LocalDateTime currentPickUpDateTime,
-                                       @Param("currentDropOffDateTime")LocalDateTime currentDropOffDateTime,
-                                       @Param("currentPickUpBranchId")Long currentPickUpBranchId,
-                                       @Param("currentDropOffBranchId")Long currentDropOffBranchId) {
-
-        List<Car> cars = carRepository.findAll();
-        cars.removeAll(reservationRepository.findUnavailableCars(currentPickUpDateTime, currentDropOffDateTime));
-
-        for (Car car : cars) {
-            Optional<Reservation> previousReservation = findPreviousReservationBefore(car.getId(), currentPickUpDateTime);
-            Optional<Reservation> nextReservation = findNextReservationAfter(car.getId(), currentDropOffDateTime);
-
-            if ((previousReservation.isPresent() && !previousReservation.get().getDropOffBranchId().equals(currentPickUpBranchId))
-                    || (nextReservation.isPresent() && !nextReservation.get().getPickUpBranchId().equals(currentDropOffBranchId))) {
-                cars.remove(car);
-            }
+        if (!findAvailableCars(reservation.getPickUpDateTime(),
+                reservation.getDropOffDateTime(),
+                reservation.getPickUpBranchId(),
+                reservation.getDropOffBranchId())
+                .contains(reservation.getCar())) {
+            throw new RuntimeException("Car is unavailable");
         }
-        return cars;
-    }
-
-
-    /**
-     * @return optional previous reservation (by carId, currentPickUpDateTime)
-     */
-
-    public Optional<Reservation> findPreviousReservationBefore(@Param("carId")Long carId, @Param("currentPickUpDateTime")LocalDateTime currentPickUpDateTime) {
-        Car car = carRepository.findCarById(carId);
-        return car.getReservations()
-                .stream()
-                .filter(reservation -> reservation.getDropOffDateTime().isBefore(currentPickUpDateTime))
-                .max(Comparator.comparing(Reservation::getDropOffDateTime));
+        reservationRepository.save(reservation);
+        return true;
     }
 
     /**
-     * @return optional next reservation (by carId, currentPickUpDateTime)
+     * deletes reservation from db
      */
-    public Optional<Reservation> findNextReservationAfter(@Param("carId")Long carId, @Param("currentDropOffUpDateTime")LocalDateTime currentDropOffDateTime) {
-        Car car = carRepository.findCarById(carId);
-        return car.getReservations()
-                .stream()
-                .filter(reservation -> reservation.getPickUpDateTime().isAfter(currentDropOffDateTime))
-                .min(Comparator.comparing(Reservation::getPickUpDateTime));
+    @Transactional
+    public boolean deleteReservationById(Long reservationId) throws RuntimeException {
+
+        reservationRepository.delete(findReservationById(reservationId));
+        return true;
     }
+
+    @Transactional
+    public boolean updateReservationStatus(Long reservationId, ReservationStatus status) throws RuntimeException {
+
+        Reservation reservation = findReservationById(reservationId);
+        reservation.setStatus(status);
+        reservationRepository.save(reservation);
+        return true;
+    }
+
+    public List<Reservation> findAllReservations() {
+
+        return reservationRepository.findAll();
+    }
+
 
     /**
      * @return reservations (by rentalId)
      */
 
-    public List<Reservation> findReservationsByRentalId(@Param("rentalId")Long rentalId) {
+    public List<Reservation> findReservationsByRentalId(Long rentalId) {
+
         return carRepository
                 .findCarsByRentalId(rentalId)
                 .stream()
@@ -120,14 +129,16 @@ public class ReservationService {
     /**
      * @return reservations (by customerId)
      */
-    public List<Reservation> findReservationsByCustomerId(@Param("customerId") Long customerId) {
+    public List<Reservation> findReservationsByCustomerId(Long customerId) {
+
         return reservationRepository.findReservationsByCustomerId(customerId);
     }
 
     /**
      * @return reservations (by carId)
      */
-    public List<Reservation> findReservationsByCarId(@Param("carId")Long carId) {
+    public List<Reservation> findReservationsByCarId(Long carId) {
+
         return reservationRepository.findReservationsByCarId(carId);
     }
 
@@ -135,103 +146,88 @@ public class ReservationService {
     /**
      * @return reservations (by status)
      */
-    public List<Reservation> findReservationsByStatus(@Param("status") ReservationStatus status) {
-        return reservationRepository.findReservationsByStatusIs(status);
+    public List<Reservation> findReservationsByStatus(ReservationStatus status) {
+
+        return reservationRepository.findReservationsByStatus(status);
     }
 
-        /*
-    Metoda zmienia branch w obiekcie car, jeśli status rezerwacji jest in_progress, a branch zwrotu jest inny niż odbioru
+    /**
+     * @return availableCars (by pickUp/dropOff dateTime, pickUp/dropOff branchId)
+     * The method searches for cars without reservations for conflicting term
+     * and available in current place
      */
-//    public void setCarBranchByReservations(Long carId, LocalDateTime currentDateTime) {
-//        reservationRepository.findReservationsByCarIdAndDropOffDateTimeBefore(carId, currentDateTime)
-//                .stream()
-//                .max(Comparator.comparing(Reservation::getDropOffDateTime))
-//                .
 
+    public List<Car> findAvailableCars(LocalDateTime currentPickUpDateTime,
+                                       LocalDateTime currentDropOffDateTime,
+                                       Long currentPickUpBranchId,
+                                       Long currentDropOffBranchId) {
 
-//        Car car = carRepository.findById(carId).orElseThrow(() -> new RuntimeException("Id not found"));
-//        Reservation reservation = car.getReservations().stream().filter(r -> r.getStatus().equals(ReservationStatus.IN_PROGRESS)).findFirst().orElseThrow(() -> new RuntimeException("No reservation in progress"));
-//        if (!reservation.getDropOffBranchId().equals(reservation.getPickUpBranchId())) {
-//            car.setBranch(branchRepository.getReferenceById(reservation.getDropOffBranchId()));
-//            carRepository.save(car);
-//        }
+        List<Car> cars = carRepository.findAll();
 
+        cars.removeAll(reservationRepository
+                .findUnavailableCars(currentPickUpDateTime, currentDropOffDateTime));
 
-//
-//    public List<Reservation> findReservationsByStatusIsCompleted() {
-//        return reservationRepository.findReservationsByStatusIs(ReservationStatus.COMPLETED);
-//    }
-//
-//    public List<Reservation> findReservationsByStatusIsCanceled() {
-//        return reservationRepository.findReservationsByStatusIs(ReservationStatus.CANCELED);
-//    }
+        List<Car> carsToRemove = new ArrayList<>();
 
-    /* The method searches for reservations colliding with the time period sought
-     * (beginning or ending between the search dates
-     * and beginning before and ending after the search term).
-     */
-//    public List<Reservation> findConflictingReservations(LocalDateTime currentPickUpDateTime, LocalDateTime currentDropOffDateTime) {
-//        List<Reservation> reservationsConflictingByDateTime = new ArrayList<>();
-//
-//        List<Reservation> reservationsConflictingByPickUpDateTime = reservationRepository
-//                .findReservationsByPickUpDateTimeBetween(currentPickUpDateTime, currentDropOffDateTime);
-//
-//        List<Reservation> reservationsConflictingByDropOffDateTime = reservationRepository
-//                .findReservationsByDropOffDateTimeBetween(currentPickUpDateTime, currentDropOffDateTime);
-//
-//        List<Reservation> reservationsConflictingByPickUpAndDropOffDateTime = reservationRepository
-//                .findReservationsByPickUpDateTimeBefore(currentPickUpDateTime)
-//                .stream()
-//                .filter(reservation -> reservationRepository.findReservationsByDropOffDateTimeAfter(currentDropOffDateTime).contains(reservation))
-//                .toList();
-//
-//        reservationsConflictingByDateTime.addAll(reservationsConflictingByPickUpDateTime);
-//        reservationsConflictingByDateTime.addAll(reservationsConflictingByDropOffDateTime);
-//        reservationsConflictingByDateTime.addAll(reservationsConflictingByPickUpAndDropOffDateTime);
-//
-//        return reservationsConflictingByDateTime.stream().distinct().collect(Collectors.toList());
-//
-//    }
+        for (Car car : cars) {
+            if (car.getReservations().isEmpty()) {
+                continue;
+            }
 
-    public List<Car> findConflictingReservations(LocalDateTime currentPickUpDateTime, LocalDateTime currentDropOffDateTime) {
-        return reservationRepository.findUnavailableCars(currentPickUpDateTime, currentDropOffDateTime);
+            Optional<Reservation> previousReservation =
+                    findPreviousReservationBefore(car.getId(), currentPickUpDateTime);
+
+            Optional<Reservation> nextReservation =
+                    findNextReservationAfter(car.getId(), currentDropOffDateTime);
+
+            if (previousReservation.isPresent()
+                && !previousReservation.get().getDropOffBranchId().equals(currentPickUpBranchId)) {
+
+                carsToRemove.add(car);
+                continue;
+            }
+
+            if (nextReservation.isPresent()
+                && !nextReservation.get().getPickUpBranchId().equals(currentDropOffBranchId)) {
+
+                carsToRemove.add(car);
+            }
+        }
+        cars.removeAll(carsToRemove);
+        return cars;
     }
 
+    /**
+     * @return optional previous reservation (by carId, currentPickUpDateTime)
+     */
 
+    public Optional<Reservation> findPreviousReservationBefore(Long carId, LocalDateTime currentPickUpDateTime) {
 
+        Car car = carRepository.findById(carId).orElseThrow(() -> new RuntimeException("Car id not found"));
 
-//    public boolean updateCustomer(Long reservationId, Long customerId) {
-//        Optional<Reservation> optionalReservation = reservationRepository.findById(reservationId);
-//        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
-//        if (optionalReservation.isEmpty() || optionalCustomer.isEmpty()) {
-//            return false;
-//        }
-//        Reservation reservationToUpdate = optionalReservation.get();
-//        Customer customer = optionalCustomer.get();
-//        reservationToUpdate.setCustomer(customer);
-//        reservationRepository.save(reservationToUpdate);
-//        return true;
-//    }
+        return car.getReservations()
+                .stream()
+                .filter(reservation -> reservation != null
+                                       && !reservation.getStatus().equals(ReservationStatus.CANCELED)
+                                       && reservation.getDropOffDateTime().isBefore(currentPickUpDateTime))
+                .max(Comparator.comparing(Reservation::getDropOffDateTime));
+    }
 
-//         reservationToUpdate.setCar(updatedReservation.getCar());
-//         reservationToUpdate.setStartDateTime(updatedReservation.getStartDateTime());
-//         reservationToUpdate.setEndDateTime(updatedReservation.getEndDateTime());
+    /**
+     * @return optional next reservation (by carId, currentPickUpDateTime)
+     */
 
-//    public List<Reservation> findReservationsByStartDateTimeAndEndDateTimeAreNotBetween(LocalDateTime start, LocalDateTime end) {
-//        List<Car> carsAvailableBefore = reservationRepository.findReservationsByEndDateTimeIsBefore(start).stream().map(Reservation::getCar).distinct().toList();
-//        List<Car> carsAvailableAfter = reservationRepository.findReservationsByStartDateTimeIsAfter(end);
-//        return null;
-//    }
-//    public void addReservation(Reservation reservation) {
-//        reservation.setStatus(ReservationStatus.SET);
-//        reservationRepository.save(reservation);
-//    }
-//
-//    //TODO
-//    public Long updateReservationStatusToInProgress(Long reservationId) {
-//        Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(() -> new RuntimeException("Reservation Id not foung"));
-//        reservation.setStatus(ReservationStatus.IN_PROGRESS);
-//        reservationRepository.save(reservation);
-//        return reservation.getCarId();
-//}
+    public Optional<Reservation> findNextReservationAfter(Long carId, LocalDateTime currentDropOffDateTime) {
+
+        Car car = carRepository.findById(carId).orElseThrow(() -> new RuntimeException("Car id not found"));
+
+        return car.getReservations()
+                .stream()
+                .filter(reservation -> reservation != null
+                                       && !reservation.getStatus().equals(ReservationStatus.CANCELED)
+                                       && reservation.getPickUpDateTime().isAfter(currentDropOffDateTime))
+                .min(Comparator.comparing(Reservation::getPickUpDateTime));
+    }
+
+    //TODO kiedyś: Optymalizacja wykorzystania floty: samochód jak najkrócej stoi bezczynnie; ograniczony czasowo status samochodu UNAVAILABLE w związku z przeglądem/naprawą
 }

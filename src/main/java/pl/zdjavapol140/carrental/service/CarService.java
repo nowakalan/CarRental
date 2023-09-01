@@ -2,99 +2,60 @@ package pl.zdjavapol140.carrental.service;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.zdjavapol140.carrental.model.Car;
-import pl.zdjavapol140.carrental.model.CarStatus;
+import pl.zdjavapol140.carrental.model.CarSize;
 import pl.zdjavapol140.carrental.model.Reservation;
 import pl.zdjavapol140.carrental.repository.CarRepository;
+import pl.zdjavapol140.carrental.repository.ReservationRepository;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+
+@Slf4j
 @Service
 public class CarService {
 
     CarRepository carRepository;
+    ReservationRepository reservationRepository;
+
+    public CarService(CarRepository carRepository, ReservationRepository reservationRepository) {
+        this.carRepository = carRepository;
+        this.reservationRepository = reservationRepository;
+    }
 
     @Transactional
-    public void addCar(Car car) {
+    public boolean addCar(Car car) {
         carRepository.save(car);
+        return true;
     }
 
     @Transactional
-    public void deleteCar(Long carId) {
-        carRepository.deleteById(carId);
+    public boolean removeCar(Long carId) {
+        Optional<Car> optionalCarToRemove = carRepository.findById(carId);
+        if (optionalCarToRemove.isEmpty()) {
+            throw new RuntimeException("Car id not found");
+        }
+        carRepository.delete(optionalCarToRemove.get());
+        return true;
     }
 
-    /* Metoda wyszukuje samochody dostępne w poszukiwanym terminie we wszystkich lokalizacjach.
 
-     */
-
-//public List<Car> findAllAvailableCars(List<Car> carsUnavailableOnCurrentDateTime)
-
-//    public List<Car> findAvailableCarsByConflictingReservations(List<Reservation> conflictingReservations) {
-//
-//        List<Car> nonAvailableCars = conflictingReservations
-//                .stream()
-//                .map(Reservation::getCar)
-//                .distinct()
-//                .toList();
-//
-//        return carRepository
-//                .findAll()
-//                .stream()
-//                .filter(car -> !nonAvailableCars.contains(car))
-//                .toList();
-//    }
-
-    /* Metoda wyszukuje id lokalizacji, w której będzie dostępny samochód w poszukiwanym terminie.
-
-     */
-//    public Long findBranchIdByCarDropOffDateTimeBefore(LocalDateTime currentPickUpDateTime, Car car) {
-//
-//        return car.getReservations()
-//                .stream()
-//                .filter(reservation -> reservation.getDropOffDateTime().isBefore(currentPickUpDateTime))
-//                .max(Comparator.comparing(Reservation::getDropOffDateTime))
-//                .map(Reservation::getDropOffBranchId)
-//                .orElseGet(() -> car.getBranch().getId());
-//    }
-
-    /* Metoda wyszukuje samochody dostępne w wybranej lokalizacji w wybranym terminie.
-
-     */
-
-//    public List<Car> findAvailableCarsByCarDropOffBranchId(List<Car> cars, Long currentPickUpBranchId, LocalDateTime currentPickUpDateTime) {
-//        return cars
-//                .stream()
-//                .filter(car -> findBranchIdByCarDropOffDateTimeBefore(currentPickUpDateTime, car).equals(currentPickUpBranchId))
-//                .collect(Collectors.toList());
-//    }
-
-
-
-    //TODO
-    //Zapewnić, żeby auto wracało na miejsce - tam, gdzie jest następna rezerwacja.
-    //Poprzenosić metody z serwisów do fasady
-
-
-
-
-
-
-
-
-
-
-    public List<Car> findCarsByBodyType(String bodyType) {
-        return carRepository.findCarsByBodyType(bodyType);
+    public Car findCarById(Long carId) {
+        return carRepository.findById(carId).orElseThrow(() -> new RuntimeException("Car id not found"));
+    }
+    public List<Car> findCarsBySize(CarSize size) {
+        return carRepository.findCarsBySize(size);
     }
 
     public List<Car> findCarsByPriceLessThanEqual(List<Car> cars, BigDecimal priceLimit) {
@@ -108,41 +69,5 @@ public class CarService {
         return carRepository.findCarsByPriceIsLessThanEqual(priceLimit);
     }
 
-//    public List<Car> findCarsByBrand(List<Car> cars, String brand) {
-//        return cars
-//                .stream()
-//                .filter(car -> car.getBrand().equalsIgnoreCase(brand))
-//                .collect(Collectors.toList());
-//    }
-//    public List<Car> findCarsByBrand(String brand) {
-//        return carRepository.findCarsByBrand(brand);
-//    }
-//
-//    public List<Car> findCarsByModel(List<Car> cars, String model) {
-//        return cars
-//                .stream()
-//                .filter(car -> car.getModel().equalsIgnoreCase(model))
-//                .collect(Collectors.toList());
-//    }
-//
-//    public List<Car> findCarsByModel(String model) {
-//        return carRepository.findCarsByModel(model);
-//    }
-//    public List<Car> findCarsByColor(List<Car> cars, String color) {
-//        return cars
-//                .stream()
-//                .filter(car -> car.getColor().equalsIgnoreCase(color))
-//                .collect(Collectors.toList());
-//    }
-//
-//    public List<Car> findCarsByColor(String color) {
-//        return carRepository.findCarsByColor(color);
-//    }
 
-//    //TODO
-//    public void updateCarStatusToRented(Long carId) {
-//        Car car = carRepository.findById(carId).orElseThrow(() -> new RuntimeException("Car id not found"));
-//        car.setStatus(CarStatus.RENTED);
-//        carRepository.save(car);
-//    }
 }

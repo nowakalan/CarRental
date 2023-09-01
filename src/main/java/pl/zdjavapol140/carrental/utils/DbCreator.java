@@ -1,18 +1,21 @@
 package pl.zdjavapol140.carrental.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import pl.zdjavapol140.carrental.model.*;
 import pl.zdjavapol140.carrental.repository.*;
+import pl.zdjavapol140.carrental.service.CarService;
+import pl.zdjavapol140.carrental.service.ReservationService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 public class DbCreator {
 
@@ -25,8 +28,10 @@ public class DbCreator {
     private final EmployeeRepository employeeRepository;
     private final RentalRepository rentalRepository;
     private final ReservationRepository reservationRepository;
+    private final ReservationService reservationService;
+    private final CarService carService;
 
-    public DbCreator(AddressRepository addressRepository, BranchRepository branchRepository, CarRepository carRepository, CarRentRepository carRentRepository, CarReturnRepository carReturnRepository, CustomerRepository customerRepository, EmployeeRepository employeeRepository, RentalRepository rentalRepository, ReservationRepository reservationRepository) {
+    public DbCreator(AddressRepository addressRepository, BranchRepository branchRepository, CarRepository carRepository, CarRentRepository carRentRepository, CarReturnRepository carReturnRepository, CustomerRepository customerRepository, EmployeeRepository employeeRepository, RentalRepository rentalRepository, ReservationRepository reservationRepository, ReservationService reservationService, CarService carService) {
         this.addressRepository = addressRepository;
         this.branchRepository = branchRepository;
         this.carRepository = carRepository;
@@ -36,10 +41,14 @@ public class DbCreator {
         this.employeeRepository = employeeRepository;
         this.rentalRepository = rentalRepository;
         this.reservationRepository = reservationRepository;
+        this.reservationService = reservationService;
+        this.carService = carService;
     }
 
     @EventListener(ApplicationReadyEvent.class)
     public void insertDataToDb() {
+
+//        log.info(String.valueOf(carService.removeCar(4L)));
 
         List<Address> addresses = new ArrayList<>();
         List<Branch> branches = new ArrayList<>();
@@ -159,6 +168,7 @@ public class DbCreator {
             rental.setBranches(branchRepository.findBranchesByRental(rental));
         }
         rentalRepository.saveAll(rentals);
+        carRepository.saveAll(cars);
 
 
         /**Fill reservationRepository
@@ -168,61 +178,43 @@ public class DbCreator {
             Random random = new Random();
             int randomForCustomer = random.nextInt(customers.size());
             int randomForCar = random.nextInt(cars.size());
-            int randomForStatus = random.nextInt(2);
 
-
-            List<ReservationStatus> pastReservationStatus = new ArrayList<>();
-            pastReservationStatus.add(ReservationStatus.COMPLETED);
-            pastReservationStatus.add(ReservationStatus.CANCELED);
-
-            List<ReservationStatus> futureReservationStatus = new ArrayList<>();
-            futureReservationStatus.add(ReservationStatus.SET);
-            futureReservationStatus.add(ReservationStatus.CANCELED);
-
-            Reservation reservation = ReservationGenerator.generateRandomReservation(customers.get(randomForCustomer), cars.get(randomForCar));
-
-            int randomForBranch = random.nextInt(reservation.getCar().getRental().getBranches().size());
-
-
-            Car car = cars.get(randomForCar);
-            reservation.setCar(car);
-
-            List<Reservation> futureReservations = reservations
-                    .stream()
-                    .filter(r -> r.getCar().equals(car) && futureReservationStatus.contains(r.getStatus()))
-                    .toList();
-
-            List<Reservation> pastReservations = reservations
-                    .stream()
-                    .filter(r -> r.getCar().equals(car) && r.getStatus().equals(ReservationStatus.COMPLETED))
-                    .toList();
-
-            if (!pastReservations.isEmpty()) {
-                Reservation previousReservation = pastReservations.stream().max(Comparator.comparing(Reservation::getDropOffDateTime)).get();
-                if (!futureReservations.isEmpty()) {
-                    Reservation nextReservation = futureReservations.stream().min(Comparator.comparing(Reservation::getPickUpDateTime)).get();
-                    if (!previousReservation.getPickUpDateTime().plusDays(3L).isBefore(nextReservation.getPickUpDateTime())) {
-                        reservation.setStatus(ReservationStatus.CANCELED);
-                        reservation.setPickUpBranchId(reservation.getCar().getRental().getBranches().get(randomForBranch).getId());
-                        reservation.setDropOffBranchId(reservation.getCar().getRental().getBranches().get(randomForBranch).getId());
-                    } else {
-                        reservation.setPickUpDateTime(previousReservation.getDropOffDateTime().plusDays(1L));
-                        reservation.setDropOffDateTime(nextReservation.getPickUpDateTime().minusDays(1L));
-                        reservation.setPickUpBranchId(previousReservation.getDropOffBranchId());
-                        reservation.setDropOffBranchId(nextReservation.getPickUpBranchId());
-
-                        if (reservation.getDropOffDateTime().isBefore(LocalDateTime.of(2023, 8, 30, 8, 0, 0))) {
-                            reservation.setStatus(pastReservationStatus.get(randomForStatus));
-                        } else if (reservation.getPickUpDateTime().isBefore(LocalDateTime.of(2023, 8, 30, 8, 0, 0))) {
-                            reservation.setStatus(ReservationStatus.IN_PROGRESS);
-                        } else {
-                            reservation.setStatus(ReservationStatus.SET);
-                        }
-                    }
-                }
-            }
+            Car car = carRepository.findAll().get(randomForCar);
+            Reservation reservation = ReservationGenerator.generateRandomReservation(customers.get(randomForCustomer), car);
 
             reservations.add(reservation);
+
+            reservation.setCar(car);
+
+            Reservation lastReservation = reservations.stream().filter(r -> r.getCar().equals(car)).max(Comparator.comparing(Reservation::getDropOffDateTime)).get();
+            Reservation firstReservation = reservations.stream().filter(r -> r.getCar().equals(car)).min(Comparator.comparing(Reservation::getPickUpDateTime)).get();
+
+            if (car.getReservations().stream().toList().indexOf(reservation) % 2 != 0) {
+                reservation.setPickUpDateTime(lastReservation.getDropOffDateTime().plusDays(3));
+                reservation.setDropOffDateTime(lastReservation.getDropOffDateTime().plusDays(random.nextInt(14)));
+                reservation.setBookingDate(lastReservation.getDropOffDateTime().minusDays(random.nextInt(10)));
+                reservation.setPickUpBranchId(lastReservation.getDropOffBranchId());
+                reservation.setDropOffBranchId(car.getRental().getBranches().get(random.nextInt(car.getRental().getBranches().size())).getId());
+            }
+
+            if (car.getReservations().stream().toList().indexOf(reservation) % 2 == 0) {
+                reservation.setDropOffDateTime(firstReservation.getPickUpDateTime().minusDays(1));
+                reservation.setPickUpDateTime(firstReservation.getPickUpDateTime().minusDays(random.nextInt(14)));
+                reservation.setBookingDate(reservation.getPickUpDateTime().minusDays(random.nextInt(10)));
+                reservation.setDropOffBranchId(firstReservation.getPickUpBranchId());
+                reservation.setPickUpBranchId(car.getRental().getBranches().get(random.nextInt(car.getRental().getBranches().size())).getId());
+            }
+
+            if (reservation.getDropOffDateTime().isBefore(LocalDateTime.now())) {
+                reservation.setStatus(ReservationStatus.COMPLETED);
+            }
+            if (reservation.getDropOffDateTime().isAfter(LocalDateTime.now()) && reservation.getPickUpDateTime().isBefore(LocalDateTime.now())) {
+                reservation.setStatus(ReservationStatus.IN_PROGRESS);
+            }
+            if (reservation.getPickUpDateTime().isAfter(LocalDateTime.now())) {
+                reservation.setStatus(ReservationStatus.SET);
+            }
+
         }
         reservationRepository.saveAll(reservations);
 
@@ -246,3 +238,4 @@ public class DbCreator {
 
     }
 }
+
