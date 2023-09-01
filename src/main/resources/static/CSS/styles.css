@@ -1,0 +1,154 @@
+:root {
+	--primary-color: #d41e2a;
+	--secondary-color: #ffb488;
+	--accent-color: #88ffb4;
+	--background-color: D41E2A;
+	--text-color: #333;
+}
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+	font-size: 18px;
+	font-weight: 500;
+	color: white;
+}
+
+body {
+	padding: 0;
+	margin: 0;
+	background: #d41e2a;
+}
+.menu {
+	width: 80%;
+	height: 60px;
+
+	top: 0;
+	left: 0;
+	padding: 0 3rem;
+	background: #88ffb4;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+.footer {
+	background-color: var(--primary-color);
+	color: white;
+	text-align: center;
+	padding: 20px 0;
+}
+
+.menu a {
+	margin: 0 1rem;
+	text-decoration: none;
+	padding: 0.5rem 0.5rem;
+}
+
+.dropdown {
+	position: relative;
+}
+
+.dropdown ul {
+	width: 200px;
+	text-align: left;
+	position: absolute;
+	background: #d41e2a;
+	padding: 0;
+	list-style-type: none;
+	box-shadow: 0px 0px 23px 0px rgba(0, 0, 0, 0.25);
+	margin-top: 10px;
+	border-radius: 7px;
+	display: none;
+}
+
+.dropdown a:hover {
+	color: lightblue;
+}
+
+.dropdown ul li a {
+	width: 100%;
+	height: 100%;
+	display: inline-block;
+	padding: o;
+	margin-left: 15 px;
+}
+
+.dropdown ul li:hover {
+	background: #d41e2a;
+	border-radius: 7px;
+}
+.dropdown a:focus + ul,
+.dropdown a:hover + ul,
+.dropdown ul:hover {
+	display: block;
+}
+
+.car-rental-logo {
+	float: left;
+	width: 20%;
+	height: 60px;
+	padding-left: 10px;
+	text-align: center;
+	background: #ffb488;
+}
+.logo-text {
+	margin-top: 20px;
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.advertisement {
+	width: 40%;
+	height: 600px;
+	background: rgb(118, 214, 118);
+	float: left;
+	padding-top: 150px;
+    padding-left: 30px;
+	font-size: 40px;
+}
+
+.search {
+	width: 60%;
+	height: 600px;
+	background: bisque;
+	float: left;
+}
+
+.search-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+	color: #333;
+}
+
+.search-container label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+	color: #333;
+}
+
+.location-select, form input[type="datetime-local"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 5px;
+    color: #333;
+}
+
+form button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: lightcoral;
+    color: #333;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
