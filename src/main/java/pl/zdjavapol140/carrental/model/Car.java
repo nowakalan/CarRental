@@ -1,7 +1,6 @@
 package pl.zdjavapol140.carrental.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +12,7 @@ import java.util.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@Table(name = "cars")
 public class Car {
 
     @Id
@@ -23,7 +23,7 @@ public class Car {
     private String model;
 
     @Enumerated(value = EnumType.STRING)
-    private CarBodyType bodyType;
+    private CarSize size;
 
     @Enumerated(value = EnumType.STRING)
     private CarTransmissionType transmissionType;
@@ -38,8 +38,19 @@ public class Car {
     @JoinColumn(name = "rental_id")
     private Rental rental;
 
-    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "car", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<Reservation> reservations = new ArrayList<>();
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return Objects.equals(getId(), car.getId());
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }

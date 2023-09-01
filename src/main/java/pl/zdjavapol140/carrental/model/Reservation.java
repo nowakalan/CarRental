@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @AllArgsConstructor
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 
-//@Table(name = "reservations")
+@Table(name = "reservations")
 public class Reservation {
 
     @Id
@@ -48,6 +49,19 @@ public class Reservation {
     private Long dropOffBranchId;
 
     private BigDecimal totalPrice;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Reservation that = (Reservation) o;
+        return Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
 //    private BigDecimal calculateTotalPrice() {
 //        return totalPrice;
