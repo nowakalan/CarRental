@@ -25,4 +25,8 @@ public class Address {
     String postalCode;
     String details;
 
+    @Override
+    public String toString() {
+        return city + ", " + details;
+    }
 }

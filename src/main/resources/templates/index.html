@@ -73,9 +73,9 @@
             <div class="dropdown">
             <a href="#">Rent Companies</a>
                 <ul>
-                    <li><a href="#">List of branches</a></li>
-                    <li><a href="#">Add branch</a></li>
-                    <li><a href="#">Remove branch</a></li>
+                    <li><a href="#">List of companies</a></li>
+                    <li><a href="#">Add company</a></li>
+                    <li><a href="#">Remove company</a></li>
                 </ul>
             </div>
 
@@ -83,7 +83,7 @@
             <a href="#">My Account</a>
                 <ul>
                     <li><a href="#">Login</a></li>
-                    <li><a href="#">Logout</a></li>
+                    <li><a href="/logout">Logout</a></li>
                 </ul>
             </div>
 
@@ -96,41 +96,58 @@
         <div class="advertisement">
 
     
-            Rental Car.  
+            Rental Car.<br>
             Go wherever the road may lead.
 
-            <img src="../images/car.png" alt="car-rental-logo" width="400"  height="200">
+            <img src="../images/car-logo.png" alt="car-rental-logo" width="600"  height="300">
         </div>
         <div class="search">
             <div class="search-container">
-                <h1>Car Search</h1>
                 <form th:action="@{/search}" method="get">
-                    <label for="pickup-location">Pickup Location:</label>
-                    <select id="pickup-location" name="pickupLocation" class="location-select">
-                        <option th:each="branch : ${pickupBranches}" th:value="${branch.id}" th:text="${branch.address}"></option>
+                    <label for="pickUpLocation">pickup LOCATION:</label>
+                    <select id="pickUpLocation" name="pickUpLocation" class="location-select">
+                        <option th:each="pickUpLocation : ${allBranches}" th:text="${pickUpLocation.address}"></option>
                     </select>
     
-                    <label for="return-location">Return Location:</label>
-                    <select id="return-location" name="returnLocation" class="location-select">
-                        <option th:each="branch : ${returnBranches}" th:value="${branch.id}" th:text="${branch.address}"></option>
+                    <label for="dropOffLocation">drop-off LOCATION:</label>
+                    <select id="dropOffLocation" name="dropOffLocation" class="location-select">
+                        <option th:each="dropOffLocation : ${allBranches}" th:text="${dropOffLocation.address}"></option>
                     </select>
     
-                    <label for="pickup-date">Pickup Date and Time:</label>
-                    <input type="datetime-local" id="pickup-date" name="pickupDateTime">
+                    <label for="pickUpDate">pickup DATE:</label>
+                    <input type="datetime-local" id="pickUpDate" name="pickUpDateTime">
     
-                    <label for="return-date">Return Date and Time:</label>
-                    <input type="datetime-local" id="return-date" name="returnDateTime">
+                    <label for="dropOffDate">drop-off DATE:</label>
+                    <input type="datetime-local" id="dropOffDate" name="dropOffDateTime">
     
                     <button type="submit">Search</button>
                 </form>
             </div>
         </div>
-    
-    
-</div>
+
+<!--        <form action="#" th:action="@{/pet}" th:object="${pet}" method="POST">-->
+<!--            <input type="hidden" th:field="*{petId}">-->
+<!--            <input type="text" th:field="*{name}"-->
+<!--                   class="form-control mb-4 w-25" placeholder="First name">-->
+
+<!--            <input type="date" th:field="*{date}"-->
+<!--                   class="form-control mb-4 w-25" placeholder="Last name">-->
+
+<!--            &lt;!&ndash;    <input type="text" th:field="*{petType}"&ndash;&gt;-->
+<!--            <select name="Pet Type" th:field="*{petType}">-->
+<!--                <option th:each="typeOption : ${T(pl.sda.petclinic.model.PetType).values()}"-->
+<!--                        th:value="${typeOption}" th:text="${typeOption}"/>-->
+<!--            </select>-->
+
+<!--            <button type="submit" class="btn btn-info col-2">Save</button>-->
+
+<!--        </form>-->
+
+
+    </div>
 
 <div class="footer">
-    <p>&copy; Wszelkie prawa zastrzeżone.</p>
+    <p>&copy; All rights reserved.</p>
 </div>
 </body>
 </html>

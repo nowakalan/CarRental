@@ -1,22 +1,13 @@
 package pl.zdjavapol140.carrental.service;
 
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.zdjavapol140.carrental.model.Car;
-import pl.zdjavapol140.carrental.model.CarStatus;
-import pl.zdjavapol140.carrental.model.Reservation;
 import pl.zdjavapol140.carrental.repository.CarRepository;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class CarService {
@@ -106,6 +97,11 @@ public class CarService {
 
     public List<Car> findCarsByPriceLessThanEqual(BigDecimal priceLimit) {
         return carRepository.findCarsByPriceIsLessThanEqual(priceLimit);
+    }
+
+    public List<Car> searchCars(String pickUpLocation, String dropOffLocation, String pickUpDateTime, String dropOffDateTime) {
+      //TODO
+        return new ArrayList<>(Arrays.asList(new Car("BMW", "test implemetacji")));
     }
 
 //    public List<Car> findCarsByBrand(List<Car> cars, String brand) {

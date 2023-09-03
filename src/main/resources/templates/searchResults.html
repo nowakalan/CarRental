@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wyniki wyszukiwania</title>
+    <link rel="stylesheet" href="../CSS/styles.css">
+</head>
+<body>
+<div class="car-rental-logo">
+    <p class="logo-text">CAR - RENT</p>
+</div>
+<div class="main">
+    <h1>Wyniki wyszukiwania</h1>
+    <!-- Wyświetl wyniki wyszukiwania tutaj -->
+    <div th:if="${carList}">
+        <table>
+            <thead>
+            <tr>
+                <th>Model samochodu</th>
+                <th>Numer rejestracyjny</th>
+                <th>Dostępny</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="car : ${carList}">
+                <td th:text="${car.model}"></td>
+                <td th:text="${car.brand}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Komunikat, jeśli nie znaleziono wyników -->
+    <p th:if="${carList.isEmpty()}">Brak dostępnych samochodów spełniających podane kryteria.</p>
+</div>
+<div class="footer">
+    <p>&copy; Jarek INC :P.</p>
+</div>
+</body>
+</html>

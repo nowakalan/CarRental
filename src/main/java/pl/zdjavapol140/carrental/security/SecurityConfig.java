@@ -1,5 +1,6 @@
 package pl.zdjavapol140.carrental.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -41,7 +42,9 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/login").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/home").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/index").hasAnyRole("OWNER", "PROPERTY_MANAGER", "ADMIN")
+                               // .requestMatchers(HttpMethod.GET, "/index").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/index").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/search").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
                                 //      .requestMatchers(HttpMethod.GET, "/home2").hasRole("OWNER")
                                 .requestMatchers(HttpMethod.GET, "/owner").permitAll()
 
@@ -50,7 +53,9 @@ public class SecurityConfig {
 //                        .requestMatchers(HttpMethod.POST, "/api/owner").hasRole("USER")
 //                        .requestMatchers(HttpMethod.POST, "/api/createVet").hasRole("VET")
 //                        .requestMatchers(HttpMethod.POST, "/api/createSpeciality").hasRole("ADMIN")
+        //).logout( logout -> logout.permitAll());
         ).logout( logout -> logout.logoutUrl("/logout"));
+
 
         http.formLogin(Customizer.withDefaults());
 /*                http.formLogin(form -> form
