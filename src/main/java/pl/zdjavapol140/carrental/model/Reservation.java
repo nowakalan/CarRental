@@ -51,6 +51,7 @@ public class Reservation {
 
     private BigDecimal totalPrice;
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,8 +65,20 @@ public class Reservation {
         return Objects.hash(id);
     }
 
-//    private BigDecimal calculateTotalPrice() {
-//        return totalPrice;
-//    }
 
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "id=" + id +
+                ", status=" + status +
+                ", bookingDate=" + bookingDate +
+                ", customer=" + customer.getId() +
+                ", car=" + car.getId() +
+                ", pickUpDateTime=" + pickUpDateTime.toString() +
+                ", pickUpBranchId=" + pickUpBranchId +
+                ", dropOffDateTime=" + dropOffDateTime.toString() +
+                ", dropOffBranchId=" + dropOffBranchId +
+                ", totalPrice=" + totalPrice.toString() +
+                '}';
+    }
 }

@@ -2,6 +2,7 @@ package pl.zdjavapol140.carrental.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,7 @@ public class Customer {
     private Long id;
 
 //    @Id
-//    private String idd = UUID.randomUUID().toString();
+//    private String id = UUID.randomUUID().toString();
 
     private String firstName;
     private String lastName;
@@ -30,6 +31,7 @@ public class Customer {
     @Email
     private String email;
 
+//    @Pattern(regexp = "^+\\d{2} \\d{3} \\d{3} \\d{3}$")
     private String phone;
 
     @ManyToOne
@@ -50,5 +52,18 @@ public class Customer {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address=" + address +
+                ", reservations=" + reservations +
+                '}';
     }
 }

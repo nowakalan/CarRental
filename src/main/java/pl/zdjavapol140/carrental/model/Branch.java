@@ -34,7 +34,6 @@ public class Branch {
     private String name;
     private String owner;
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -46,5 +45,17 @@ public class Branch {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Branch{" +
+                "id=" + id +
+                ", address=" + address +
+                ", rental=" + rental +
+                ", employees=" + employees +
+                ", name='" + name + '\'' +
+                ", owner='" + owner + '\'' +
+                '}';
     }
 }
