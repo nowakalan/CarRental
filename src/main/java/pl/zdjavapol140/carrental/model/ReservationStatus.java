@@ -2,7 +2,9 @@ package pl.zdjavapol140.carrental.model;
 
 public enum ReservationStatus {
     SET,
-    CANCELED,
+    CANCELLED,
     IN_PROGRESS,
-    COMPLETED;
+    COMPLETED,
+    TRANSFER,
+    SERVICE;
 }

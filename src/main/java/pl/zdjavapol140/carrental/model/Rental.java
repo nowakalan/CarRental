@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @AllArgsConstructor
@@ -47,5 +49,18 @@ public class Rental {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Rental{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", url='" + url + '\'' +
+                ", address=" + address +
+                ", owner='" + owner + '\'' +
+                ", branches=" + Arrays.toString(branches.stream().mapToLong(Branch::getId).toArray()) +
+                ", cars=" + Arrays.toString(cars.stream().mapToLong(Car::getId).toArray()) +
+                '}';
     }
 }

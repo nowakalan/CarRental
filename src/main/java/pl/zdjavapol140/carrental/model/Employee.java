@@ -42,4 +42,15 @@ public class Employee {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", job=" + job +
+                ", branch=" + branch.getId() +
+                '}';
+    }
 }

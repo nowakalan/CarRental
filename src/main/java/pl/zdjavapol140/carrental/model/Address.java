@@ -25,6 +25,7 @@ public class Address {
     String postalCode;
     String details;
 
+    //TODO Czy poprawna jest implementacja equals & hashcode na id?
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -36,5 +37,16 @@ public class Address {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", details='" + details + '\'' +
+                '}';
     }
 }

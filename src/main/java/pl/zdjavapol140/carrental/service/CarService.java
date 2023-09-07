@@ -26,8 +26,8 @@ import java.util.stream.Collectors;
 @Service
 public class CarService {
 
-    CarRepository carRepository;
-    ReservationRepository reservationRepository;
+    private final CarRepository carRepository;
+    private final ReservationRepository reservationRepository;
 
     public CarService(CarRepository carRepository, ReservationRepository reservationRepository) {
         this.carRepository = carRepository;
@@ -58,15 +58,25 @@ public class CarService {
         return carRepository.findCarsBySize(size);
     }
 
-    public List<Car> findCarsByPriceLessThanEqual(List<Car> cars, BigDecimal priceLimit) {
+    public List<Car> findCarsBySize(List<Car> cars, CarSize size) {
+
         return cars
                 .stream()
-                .filter(car -> car.getPrice().compareTo(priceLimit) <= 0)
+                .filter(car -> car.getSize().equals(size))
                 .collect(Collectors.toList());
     }
 
     public List<Car> findCarsByPriceLessThanEqual(BigDecimal priceLimit) {
+
         return carRepository.findCarsByPriceIsLessThanEqual(priceLimit);
+    }
+
+    public List<Car> findCarsByPriceLessThanEqual(List<Car> cars, BigDecimal priceLimit) {
+
+        return cars
+                .stream()
+                .filter(car -> car.getPrice().compareTo(priceLimit) <= 0)
+                .collect(Collectors.toList());
     }
 
 

@@ -27,6 +27,8 @@ public class CarGenerator {
         car.setColor(CAR_COLORS[random.nextInt(CAR_COLORS.length)]);
         car.setMileage(CAR_MILEAGES[random.nextInt(CAR_MILEAGES.length)]);
         car.setPrice(CAR_PRICES[random.nextInt(CAR_PRICES.length)]);
+        car.setSize(CarSize.M);
+        car.setTransmissionType(CarTransmissionType.AUTOMATIC);
         car.setRental(null);
         car.setReservations(null);
 
