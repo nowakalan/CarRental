@@ -7,11 +7,13 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
+@Table(name = "car_rents")
 public class CarRent {
 
     @Id
@@ -40,4 +42,16 @@ public class CarRent {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CarRent carRent = (CarRent) o;
+        return Objects.equals(getId(), carRent.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }

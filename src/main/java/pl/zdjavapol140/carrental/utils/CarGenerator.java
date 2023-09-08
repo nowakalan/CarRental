@@ -1,7 +1,7 @@
 package pl.zdjavapol140.carrental.utils;
 
 import pl.zdjavapol140.carrental.model.Car;
-import pl.zdjavapol140.carrental.model.CarBodyType;
+import pl.zdjavapol140.carrental.model.CarSize;
 import pl.zdjavapol140.carrental.model.CarTransmissionType;
 
 import java.math.BigDecimal;
@@ -21,12 +21,14 @@ public class CarGenerator {
 
         car.setBrand(CAR_BRANDS[random.nextInt(CAR_BRANDS.length)]);
         car.setModel(CAR_MODELS[random.nextInt(CAR_MODELS.length)]);
-        car.setBodyType(CarBodyType.values()[random.nextInt(CarBodyType.values().length)]);
+        car.setSize(CarSize.values()[random.nextInt(CarSize.values().length)]);
         car.setTransmissionType(CarTransmissionType.values()[random.nextInt(CarTransmissionType.values().length)]);
         car.setProductionYear(random.nextInt(10) + 2010); // Losowe lata produkcji od 2010 do 2019
         car.setColor(CAR_COLORS[random.nextInt(CAR_COLORS.length)]);
         car.setMileage(CAR_MILEAGES[random.nextInt(CAR_MILEAGES.length)]);
         car.setPrice(CAR_PRICES[random.nextInt(CAR_PRICES.length)]);
+        car.setSize(CarSize.M);
+        car.setTransmissionType(CarTransmissionType.AUTOMATIC);
         car.setRental(null);
         car.setReservations(null);
 

@@ -1,7 +1,7 @@
 package pl.zdjavapol140.carrental.model;
 
 
-public enum CarBodyType {
+public enum CarSize {
 
     S(2L, 3L),
     M(4L, 5L),
@@ -11,7 +11,7 @@ public enum CarBodyType {
     private final Long minNumberOfPersons;
     private final Long maxNumberOfPersons;
 
-    CarBodyType(Long minNumberOfPersons, Long maxNumberOfPersons) {
+    CarSize(Long minNumberOfPersons, Long maxNumberOfPersons) {
         this.minNumberOfPersons = minNumberOfPersons;
         this.maxNumberOfPersons = maxNumberOfPersons;
     }
