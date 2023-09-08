@@ -27,6 +27,11 @@ public class Employee {
     @Email
     private String email;
 
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @Enumerated(EnumType.STRING)
     private Job job;
 

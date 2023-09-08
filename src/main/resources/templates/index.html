@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,130 +7,194 @@
     <link rel="stylesheet" href="../CSS/styles.css">
 </head>
 <body>
-    <div class="car-rental-logo">
-        <p class="logo-text">CAR - RENT</p>
-    </div>
+
+    <section class="carrental">
+
+        <div class="container">
+
+
+                <div class="car-rental-logo">
+                    <a href="/index" class="logo-text">CAR - RENT</a>
+                </div>
+                
+                 <nav class="menu">
+
+                    <div class="dropdown" sec:authorize="hasRole('ROLE_CUSTOMER')">
+                        <a href="#">Reservation</a>
+                        <ul>
+                            <li><a href="/index">New reservation</a></li>
+                            <li><a href="#">Your reservations</a></li>
+                            <li><a href="#">Delete reservation</a></li>
+                            <li><a href="#">Rent a Car/employee</a></li>
+                            <li><a href="#">Return Car/employee</a></li>
+                        </ul>
+                        </div>
+
+                        <div class="dropdown"  sec:authorize="hasRole('ROLE_EMPLOYEE')">
+                        <a href="#/display cars for clients">Cars</a>
+                            <ul>
+                                <li><a href="/cars">Display car list</a></li>
+                                <li><a href="#">Add vehicle</a></li>
+                                <li><a href="#">Remove vehicle</a></li>
+                                <li><a href="#">Find a car (by model/reg num/km...)</a></li>
+                                <li><a href="#">Change cars data</a></li>
+                                <li><a href="#">//set status</a></li>
+                                <li><a href="#">//set km</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
+                        <a href="#">Clients</a>
+                            <ul>
+                                <li><a href="#">Display clients list</a></li>
+                                <li><a href="#">Add client</a></li>
+                                <li><a href="#">Remove client</a></li>
+                                <li><a href="#">Show reservations</a></li>
+                                <li><a href="#">Find client(by name/client ID)</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
+                        <a href="#">Branch</a>
+                            <ul>
+                                <li><a href="#">List of employees</a></li>
+                                <li><a href="#">Add employee</a></li>
+                                <li><a href="#">//set employee status</a></li>
+                                <li><a href="#">Remove employee</a></li>
+                                <li><a href="#">List of available cars</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="dropdown">
+                        <a href="#">???Statistics</a>
+                            <ul>
+                                <li><a href="#">Display Incomes/branch</a></li>
+                                <li><a href="#">Most rented car</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a href="#">Rent Companies</a>
+                            <ul>
+                                <li><a href="#">List of companies</a></li>
+                                <li><a href="#">Add company</a></li>
+                                <li><a href="#">Remove company</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="dropdown">
+                        <a href="#">My Account</a>
+                            <ul>
+                                <li><a href="#">Login</a></li>
+                                <li><a href="/logout">Logout</a></li>
+                            </ul>
+                        </div>
+
+                    
+                
+                </nav>
+            </div>
+        
+
+            <div class="main">
+                <div class="advertisement">
+
+            
+                    Rental Car.<br>
+                    Go wherever the road may lead.
+
+                    <img src="../images/car-logo.png" alt="car-rental-logo" width="600"  height="300">
+                </div>
+                <div class="search">
+                    <div class="search-container">
+                        <form th:action="@{/search}" method="get">
+                            <label for="pickUpLocation">pickup LOCATION:</label>
+                            <select id="pickUpLocation" name="pickUpLocation" class="location-select">
+                                <option th:each="pickUpLocation : ${allBranches}" th:text="${pickUpLocation.address}"></option>
+                            </select>
+            
+                            <label for="dropOffLocation">drop-off LOCATION:</label>
+                            <select id="dropOffLocation" name="dropOffLocation" class="location-select">
+                                <option th:each="dropOffLocation : ${allBranches}" th:text="${dropOffLocation.address}"></option>
+                            </select>
+            
+                            <label for="pickUpDate">pickup DATE:</label>
+                            <input type="datetime-local" id="pickUpDate" name="currentPickUpDateTime">
+            
+                            <label for="dropOffDate">drop-off DATE:</label>
+                            <input type="datetime-local" id="dropOffDate" name="CurrentDropOffDateTime">
+            
+                            <button type="submit">Search</button>
+                        </form>
+                    </div>
     
-    <nav class="menu">
 
-        <div class="dropdown">
-            <a href="#">Reservation</a>
-            <ul>
-                <li><a href="#">New reservation</a></li>
-                <li><a href="#">Your reservations</a></li>
-                <li><a href="#">? Change reservation</a></li>
-                <li><a href="#">Delete reservation</a></li>
-                <li><a href="#">Rent a Car/employee</a></li>
-                <li><a href="#">Return Car/employee</a></li>
-                <li><a href="#">Policies</a></li>
-                <li><a href="#">//calculate the price</a></li>
-              </ul>
+        <!--        <form action="#" th:action="@{/pet}" th:object="${pet}" method="POST">-->
+        <!--            <input type="hidden" th:field="*{petId}">-->
+        <!--            <input type="text" th:field="*{name}"-->
+        <!--                   class="form-control mb-4 w-25" placeholder="First name">-->
+
+        <!--            <input type="date" th:field="*{date}"-->
+        <!--                   class="form-control mb-4 w-25" placeholder="Last name">-->
+
+        <!--            &lt;!&ndash;    <input type="text" th:field="*{petType}"&ndash;&gt;-->
+        <!--            <select name="Pet Type" th:field="*{petType}">-->
+        <!--                <option th:each="typeOption : ${T(pl.sda.petclinic.model.PetType).values()}"-->
+        <!--                        th:value="${typeOption}" th:text="${typeOption}"/>-->
+        <!--            </select>-->
+
+        <!--            <button type="submit" class="btn btn-info col-2">Save</button>-->
+
+        <!--        </form>-->
+
+
             </div>
 
-            <div class="dropdown">
-            <a href="#/display cars for clients">Cars</a>
-                <ul>
-                    <li><a href="#">Display car list</a></li>
-                    <li><a href="#">Add vehicle</a></li>
-                    <li><a href="#">Remove vehicle</a></li>
-                    <li><a href="#">Find a car (by model/reg num/km...)</a></li>
-                    <li><a href="#">Change cars data</a></li>
-                    <li><a href="#">//set status</a></li>
-                    <li><a href="#">//set km</a></li>
-                 </ul>
-            </div>
-
-            <div class="dropdown">
-            <a href="#">Clients</a>
-                <ul>
-                    <li><a href="#">Display clients list</a></li>
-                    <li><a href="#">Add client</a></li>
-                    <li><a href="#">Remove client</a></li>
-                    <li><a href="#">Show reservations</a></li>
-                    <li><a href="#">Find client(by name/client ID)</a></li>
-                </ul>
-            </div>
-
-            <div class="dropdown">
-            <a href="#">Branch</a>
-                <ul>
-                    <li><a href="#">List of employees</a></li>
-                    <li><a href="#">Add employee</a></li>
-                    <li><a href="#">//set employee status</a></li>
-                    <li><a href="#">Remove employee</a></li>
-                    <li><a href="#">List of available cars</a></li>
-                </ul>
-            </div>
-
-            <div class="dropdown">
-            <a href="#">???Statistics</a>
-                <ul>
-                    <li><a href="#">Display Incomes/branch</a></li>
-                    <li><a href="#">Most rented car</a></li>
-                </ul>
-            </div>
-
-            <div class="dropdown">
-            <a href="#">Rent Companies</a>
-                <ul>
-                    <li><a href="#">List of branches</a></li>
-                    <li><a href="#">Add branch</a></li>
-                    <li><a href="#">Remove branch</a></li>
-                </ul>
-            </div>
-
-            <div class="dropdown">
-            <a href="#">My Account</a>
-                <ul>
-                    <li><a href="#">Login</a></li>
-                    <li><a href="#">Logout</a></li>
-                </ul>
-            </div>
-
-          
-       
-      </nav>
-   
-
-    <div class="main">
-        <div class="advertisement">
-
-    
-            Rental Car.  
-            Go wherever the road may lead.
-
-            <img src="../images/car.png" alt="car-rental-logo" width="400"  height="200">
+        <div class="footer">
+            <p>&copy; All rights reserved.</p>
         </div>
-        <div class="search">
-            <div class="search-container">
-                <h1>Car Search</h1>
-                <form th:action="@{/search}" method="get">
-                    <label for="pickup-location">Pickup Location:</label>
-                    <select id="pickup-location" name="pickupLocation" class="location-select">
-                        <option th:each="branch : ${pickupBranches}" th:value="${branch.id}" th:text="${branch.address}"></option>
-                    </select>
-    
-                    <label for="return-location">Return Location:</label>
-                    <select id="return-location" name="returnLocation" class="location-select">
-                        <option th:each="branch : ${returnBranches}" th:value="${branch.id}" th:text="${branch.address}"></option>
-                    </select>
-    
-                    <label for="pickup-date">Pickup Date and Time:</label>
-                    <input type="datetime-local" id="pickup-date" name="pickupDateTime">
-    
-                    <label for="return-date">Return Date and Time:</label>
-                    <input type="datetime-local" id="return-date" name="returnDateTime">
-    
-                    <button type="submit">Search</button>
-                </form>
-            </div>
-        </div>
-    
-    
-</div>
-
-<div class="footer">
-    <p>&copy; Wszelkie prawa zastrzeżone.</p>
-</div>
+    </div>    
+</section>
 </body>
 </html>
+
+<!-- 
+<nav class="navbar navbar-expand-lg bg-third-color">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">RENT - CAR</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Dropdown link
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Features</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Pricing</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Dropdown link
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav> -->

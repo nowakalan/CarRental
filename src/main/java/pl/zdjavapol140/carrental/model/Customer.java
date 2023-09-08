@@ -31,6 +31,15 @@ public class Customer {
     @Email
     private String email;
 
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+
+
+    //@ManyToOne
+
 //    @Pattern(regexp = "^+\\d{2} \\d{3} \\d{3} \\d{3}$")
     private String phone;
 

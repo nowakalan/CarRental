@@ -11,7 +11,11 @@ import java.util.List;
 @Service
 public class BranchService {
 
-    BranchRepository branchRepository;
+    private final BranchRepository branchRepository;
+
+    public BranchService(BranchRepository branchRepository) {
+        this.branchRepository = branchRepository;
+    }
 
     public List<Branch> getAllBranches() {
         return branchRepository.findAll();

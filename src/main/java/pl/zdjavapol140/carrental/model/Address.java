@@ -25,6 +25,7 @@ public class Address {
     String postalCode;
     String details;
 
+
     //TODO Czy poprawna jest implementacja equals & hashcode na id?
     @Override
     public boolean equals(Object o) {

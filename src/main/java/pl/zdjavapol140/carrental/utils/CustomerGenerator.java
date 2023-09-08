@@ -2,6 +2,7 @@ package pl.zdjavapol140.carrental.utils;
 
 import pl.zdjavapol140.carrental.model.Address;
 import pl.zdjavapol140.carrental.model.Customer;
+import pl.zdjavapol140.carrental.model.Role;
 import pl.zdjavapol140.carrental.model.User;
 
 import java.util.*;
@@ -21,11 +22,12 @@ public class CustomerGenerator {
 
 
         customer.setEmail(customer.getFirstName().toLowerCase() + "." + customer.getLastName().toLowerCase() + "@" + EMAIL_DOMAINS[random.nextInt(EMAIL_DOMAINS.length)]);
+        customer.setPassword(customer.getFirstName().toLowerCase());
+        customer.setRole(Role.ROLE_CUSTOMER);
         customer.setPhone("+12 345-678-903");
         customer.setReservations(null);
 
 
         return customer;
     }
-
 }

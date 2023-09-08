@@ -22,6 +22,14 @@ public class Car {
     private String brand;
     private String model;
 
+    public Car(String brand, String model, CarBodyType bodyType, Integer productionYear, String color) {
+        this.brand = brand;
+        this.model = model;
+        this.bodyType = bodyType;
+        this.productionYear = productionYear;
+        this.color = color;
+    }
+
     @Enumerated(value = EnumType.STRING)
     private CarSize size;
 
