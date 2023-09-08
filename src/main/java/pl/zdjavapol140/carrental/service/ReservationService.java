@@ -31,53 +31,7 @@ public class ReservationService {
         this.branchRepository = branchRepository;
     }
 
-//    //TODO cancelled
-//    public List<Car> findCarsAvailableForCurrentPickUpBranchAndDateTime(LocalDateTime currentPickUpDateTime, LocalDateTime currentDropOffDateTime, Long currentPickUpBranchId, Long currentDropOffBranchId) {
-//
-//        List<Car> carsAvailableForCurrentPickUpBranchAndDateTime = new ArrayList<>();
-//
-//        List<Car> cars = carRepository.findAll();
-//        cars.removeAll(reservationRepository.findUnavailableCars(currentPickUpDateTime, currentDropOffDateTime));
-//
-//        for (Car car : cars) {
-//            Optional<Reservation> previousReservation = this.findActivePreviousReservationBefore(car.getId(), currentPickUpDateTime);
-//
-//            if (previousReservation.isPresent() && previousReservation.get().getDropOffBranchId().equals(currentPickUpBranchId)) {
-//                carsAvailableForCurrentPickUpBranchAndDateTime.add(car);
-//            }
-//        }
-//        return carsAvailableForCurrentPickUpBranchAndDateTime;
-//    }
 
-//    public List<Car> findArrivalsByBranchIdAndDateTime(Long branchId, LocalDateTime currentDateTime) {
-//
-//        return reservationRepository.findReservationsByStatusNot(ReservationStatus.CANCELLED)
-//                .stream()
-//                .filter(
-//                        reservation -> reservation.getDropOffBranchId().equals(branchId) &&
-//                                       reservation.getDropOffDateTime().equals(currentDateTime)
-//                )
-//                .map(Reservation::getCar)
-//                .collect(Collectors.toList());
-//    }
-//
-//
-//    public List<Car> findDeparturesByBranchIdAndDateTime(Long branchId, LocalDateTime currentDateTime) {
-//
-//        return reservationRepository.findReservationsByStatusNot(ReservationStatus.CANCELLED)
-//                .stream()
-//                .filter(
-//                        reservation -> reservation.getPickUpBranchId().equals(branchId) &&
-//                                       reservation.getPickUpDateTime().equals(currentDateTime)
-//                )
-//                .map(Reservation::getCar)
-//                .collect(Collectors.toList());
-//    }
-
-    //    public List<Car> findCarsNeededForCurrentPickUpBranchAndDateTime(LocalDateTime pickUpDateTime) {
-//    }
-//
-//
     public Reservation findReservationById(Long id) throws RuntimeException {
 
         return reservationRepository
@@ -736,4 +690,52 @@ public class ReservationService {
     }
 
     //TODO może kiedyś: Optymalizacja wykorzystania floty; Samochód jak najkrócej stoi bezczynnie; Ograniczony czasowo status samochodu UNAVAILABLE w związku z przeglądem/naprawą
+
+//    //TODO cancelled
+//    public List<Car> findCarsAvailableForCurrentPickUpBranchAndDateTime(LocalDateTime currentPickUpDateTime, LocalDateTime currentDropOffDateTime, Long currentPickUpBranchId, Long currentDropOffBranchId) {
+//
+//        List<Car> carsAvailableForCurrentPickUpBranchAndDateTime = new ArrayList<>();
+//
+//        List<Car> cars = carRepository.findAll();
+//        cars.removeAll(reservationRepository.findUnavailableCars(currentPickUpDateTime, currentDropOffDateTime));
+//
+//        for (Car car : cars) {
+//            Optional<Reservation> previousReservation = this.findActivePreviousReservationBefore(car.getId(), currentPickUpDateTime);
+//
+//            if (previousReservation.isPresent() && previousReservation.get().getDropOffBranchId().equals(currentPickUpBranchId)) {
+//                carsAvailableForCurrentPickUpBranchAndDateTime.add(car);
+//            }
+//        }
+//        return carsAvailableForCurrentPickUpBranchAndDateTime;
+//    }
+
+//    public List<Car> findArrivalsByBranchIdAndDateTime(Long branchId, LocalDateTime currentDateTime) {
+//
+//        return reservationRepository.findReservationsByStatusNot(ReservationStatus.CANCELLED)
+//                .stream()
+//                .filter(
+//                        reservation -> reservation.getDropOffBranchId().equals(branchId) &&
+//                                       reservation.getDropOffDateTime().equals(currentDateTime)
+//                )
+//                .map(Reservation::getCar)
+//                .collect(Collectors.toList());
+//    }
+//
+//
+//    public List<Car> findDeparturesByBranchIdAndDateTime(Long branchId, LocalDateTime currentDateTime) {
+//
+//        return reservationRepository.findReservationsByStatusNot(ReservationStatus.CANCELLED)
+//                .stream()
+//                .filter(
+//                        reservation -> reservation.getPickUpBranchId().equals(branchId) &&
+//                                       reservation.getPickUpDateTime().equals(currentDateTime)
+//                )
+//                .map(Reservation::getCar)
+//                .collect(Collectors.toList());
+//    }
+
+    //    public List<Car> findCarsNeededForCurrentPickUpBranchAndDateTime(LocalDateTime pickUpDateTime) {
+//    }
+//
+//
 }

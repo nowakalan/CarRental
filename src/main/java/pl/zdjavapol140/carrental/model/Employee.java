@@ -1,6 +1,7 @@
 package pl.zdjavapol140.carrental.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,12 +24,19 @@ public class Employee {
     private String firstName;
     private String lastName;
 
+    @Email
+    private String email;
+
     @Enumerated(EnumType.STRING)
     private Job job;
 
     @ManyToOne
     @JoinColumn(name = "branch_id")
     private Branch branch;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     @Override
     public boolean equals(Object o) {
@@ -51,6 +59,7 @@ public class Employee {
                 ", lastName='" + lastName + '\'' +
                 ", job=" + job +
                 ", branch=" + branch.getId() +
+                ", user=" + user.getId() +
                 '}';
     }
 }

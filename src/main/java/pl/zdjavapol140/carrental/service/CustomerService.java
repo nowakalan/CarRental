@@ -4,9 +4,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import pl.zdjavapol140.carrental.model.Address;
 import pl.zdjavapol140.carrental.model.Customer;
-import pl.zdjavapol140.carrental.model.Reservation;
+import pl.zdjavapol140.carrental.model.User;
 import pl.zdjavapol140.carrental.repository.AddressRepository;
 import pl.zdjavapol140.carrental.repository.CustomerRepository;
+import pl.zdjavapol140.carrental.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,31 +15,52 @@ import java.util.Optional;
 
 @Service
 public class CustomerService {
-    CustomerRepository customerRepository;
-    AddressService addressService;
+    private final CustomerRepository customerRepository;
+    private final UserRepository userRepository;
+    private final AddressRepository addressRepository;
 
-    public CustomerService(CustomerRepository customerRepository, AddressService addressService) {
+    public CustomerService(CustomerRepository customerRepository, UserRepository userRepository, AddressRepository addressRepository) {
         this.customerRepository = customerRepository;
-        this.addressService = addressService;
+        this.userRepository = userRepository;
+        this.addressRepository = addressRepository;
+
     }
 
-
-    public Customer createNewCustomer(String firstName,
-                                      String lastName,
-                                      String email,
-                                      String phone) {
+    @Transactional
+    public Customer addNewCustomer(String firstName,
+                                   String lastName,
+                                   String email,
+                                   String phone) {
 
         if (customerRepository.findCustomerByEmail(email).isPresent()) {
-            throw new RuntimeException("Customer with this email address already exists");
+
+            throw new RuntimeException("User with this email address already exists");
         }
-        return new Customer(
+        Customer customer = new Customer(
                 null,
                 firstName,
                 lastName,
                 email,
                 phone,
                 null,
-                new ArrayList<>());
+                new ArrayList<>(),
+                null);
+
+        User user = new User(null, customer.getEmail(), customer.getFirstName().toLowerCase());
+        userRepository.save(user);
+
+        Address address = new Address(null, "Poland", "Warszawa", "09-001", null);
+        addressRepository.save(address);
+
+        customer.setUser(user);
+        customer.setAddress(address);
+
+
+        customerRepository.save(customer);
+
+
+        return customer;
+
     }
 
     @Transactional
@@ -70,15 +92,18 @@ public class CustomerService {
         return true;
     }
 
-    @Transactional
-    public boolean setCustomerAddress(Long customerId, Long addressId) {
-
-        Customer customer = this.findCustomerById(customerId);
-        customer.setAddress(addressService.findAddressById(addressId));
-        customerRepository.save(customer);
-
-        return true;
-    }
+//    @Transactional
+//    public boolean setCustomerAddress(Long customerId, Long addressId) {
+//
+//        Customer customer = this.findCustomerById(customerId);
+//
+//        Address address = addressRepository.
+//
+//        customer.setAddress(addressRepository.findById(addressId));
+//        customerRepository.save(customer);
+//
+//        return true;
+//    }
 
     public Customer findCustomerById(Long id) {
 
@@ -104,14 +129,17 @@ public class CustomerService {
 
         return customerRepository.findCustomersByAddress_PostalCode(postalCode);
     }
+
     public List<Customer> findCustomersByLastName(String lastName) {
 
         return customerRepository.findCustomersByLastName(lastName);
     }
+
     public List<Customer> findCustomersByLastNameAndFirstName(String lastName, String firstName) {
 
         return customerRepository.findCustomersByLastNameAndFirstName(lastName, firstName);
     }
+
     public List<Customer> findCustomersByPhoneNumber(String phone) {
 
         return customerRepository.findCustomersByPhone(phone);
