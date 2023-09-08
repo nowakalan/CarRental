@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<html lang="pl" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,22 +10,95 @@
 <div class="car-rental-logo">
     <p class="logo-text">CAR - RENT</p>
 </div>
+
+<nav class="menu">
+
+    <div class="dropdown" sec:authorize="hasRole('ROLE_CUSTOMER')">
+        <a href="#">Reservation</a>
+        <ul>
+            <li><a href="../index.html">New reservation</a></li>
+            <li><a href="#">Your reservations</a></li>
+            <li><a href="#">Delete reservation</a></li>
+            <li><a href="#">Rent a Car/employee</a></li>
+            <li><a href="#">Return Car/employee</a></li>
+        </ul>
+    </div>
+
+    <div class="dropdown"  sec:authorize="hasRole('ROLE_EMPLOYEE')">
+        <a href="#/display cars for clients">Cars</a>
+        <ul>
+            <li><a href="../cars-list.html">Display car list</a></li>
+            <li><a href="#">Add vehicle</a></li>
+            <li><a href="#">Remove vehicle</a></li>
+            <li><a href="#">Find a car (by model/reg num/km...)</a></li>
+            <li><a href="#">Change cars data</a></li>
+            <li><a href="#">//set status</a></li>
+            <li><a href="#">//set km</a></li>
+        </ul>
+    </div>
+
+    <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
+        <a href="#">Clients</a>
+        <ul>
+            <li><a href="#">Display clients list</a></li>
+            <li><a href="#">Add client</a></li>
+            <li><a href="#">Remove client</a></li>
+            <li><a href="#">Show reservations</a></li>
+            <li><a href="#">Find client(by name/client ID)</a></li>
+        </ul>
+    </div>
+
+    <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
+        <a href="#">Branch</a>
+        <ul>
+            <li><a href="#">List of employees</a></li>
+            <li><a href="#">Add employee</a></li>
+            <li><a href="#">//set employee status</a></li>
+            <li><a href="#">Remove employee</a></li>
+            <li><a href="#">List of available cars</a></li>
+        </ul>
+    </div>
+
+    <!--            <div class="dropdown">
+                <a href="#">???Statistics</a>
+                    <ul>
+                        <li><a href="#">Display Incomes/branch</a></li>
+                        <li><a href="#">Most rented car</a></li>
+                    </ul>
+                </div>-->
+
+    <div class="dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+        <a href="#">Rent Companies</a>
+        <ul>
+            <li><a href="#">List of companies</a></li>
+            <li><a href="#">Add company</a></li>
+            <li><a href="#">Remove company</a></li>
+        </ul>
+    </div>
+
+    <div class="dropdown">
+        <a href="#">My Account</a>
+        <ul>
+            <li><a href="#">Login</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+
+
+
+</nav>
 <div class="main">
     <h1>Wyniki wyszukiwania</h1>
     <!-- Wyświetl wyniki wyszukiwania tutaj -->
     <div th:if="${carList}">
         <table>
-            <thead>
-            <tr>
-                <th>Model samochodu</th>
-                <th>Numer rejestracyjny</th>
-                <th>Dostępny</th>
-            </tr>
-            </thead>
             <tbody>
             <tr th:each="car : ${carList}">
-                <td th:text="${car.model}"></td>
                 <td th:text="${car.brand}"></td>
+                <td th:text="${car.model}"></td>
+                <td th:text="${car.bodyType}"></td>
+                <td th:text="${car.color}"></td>
+                <td th:text="${car.productionYear}"></td>
             </tr>
             </tbody>
         </table>
@@ -34,7 +107,7 @@
     <p th:if="${carList.isEmpty()}">Brak dostępnych samochodów spełniających podane kryteria.</p>
 </div>
 <div class="footer">
-    <p>&copy; Jarek INC :P.</p>
+    <p>&copy; All rights reserved</p>
 </div>
 </body>
 </html>

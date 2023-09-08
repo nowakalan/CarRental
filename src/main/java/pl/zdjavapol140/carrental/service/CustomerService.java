@@ -1,14 +1,13 @@
 package pl.zdjavapol140.carrental.service;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.zdjavapol140.carrental.model.Customer;
 import pl.zdjavapol140.carrental.repository.CustomerRepository;
 
 @Service
 public class CustomerService {
-    CustomerRepository customerRepository;
+    private CustomerRepository customerRepository;
+
 
     public void addCustomer(Customer customer) {
         customerRepository.save(customer);

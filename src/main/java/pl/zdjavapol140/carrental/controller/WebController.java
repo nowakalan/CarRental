@@ -9,18 +9,22 @@ import pl.zdjavapol140.carrental.model.Branch;
 import pl.zdjavapol140.carrental.model.Car;
 import pl.zdjavapol140.carrental.service.BranchService;
 import pl.zdjavapol140.carrental.service.CarService;
+import pl.zdjavapol140.carrental.service.ReservationService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
 public class WebController {
 
     private final BranchService branchService;
+    private final ReservationService reservationService;
     private final CarService carService;
 
-    public WebController(BranchService branchService, CarService carservice) {
+    public WebController(BranchService branchService, ReservationService reservationService, CarService carService) {
         this.branchService = branchService;
-        this.carService = carservice;
+        this.reservationService = reservationService;
+        this.carService = carService;
     }
 
 
@@ -33,13 +37,26 @@ public class WebController {
         return "index";
     }
 
-    @GetMapping("/search")
-        public String search(@RequestParam String pickUpLocation, @RequestParam String dropOffLocation,
-                @RequestParam String pickUpDateTime, @RequestParam String dropOffDateTime, Model model)
-        {
-            List<Car> carList = carService.searchCars(pickUpLocation, dropOffLocation, pickUpDateTime, dropOffDateTime);
-            model.addAttribute("carList", carList);
-
-            return "searchResults";
-        }
+    @GetMapping("/index")
+    public String index(){
+        return "index";
     }
+
+
+    @GetMapping("/search")
+    public String search(@RequestParam LocalDateTime currentPickUpDateTime, @RequestParam LocalDateTime currentDropOffDateTime,
+                         @RequestParam Long currentPickUpBranchId, @RequestParam Long currentDropOffBranchId, Model model) {
+        List<Car> carList = reservationService.findAvailableCars(currentPickUpDateTime, currentDropOffDateTime, currentPickUpBranchId, currentDropOffBranchId);
+        model.addAttribute("carList", carList);
+
+        return "searchResults";
+    }
+
+
+    @GetMapping("/cars")
+    public String getCars(Model model){
+        model.addAttribute("cars", carService.getAll());
+        return "cars-list";
+    }
+
+}

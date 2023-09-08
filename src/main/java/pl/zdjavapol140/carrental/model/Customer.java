@@ -29,7 +29,13 @@ public class Customer {
     @Email
     private String email;
 
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     private String phone;
+
 
     @ManyToOne
     @JoinColumn(name = "address_id")

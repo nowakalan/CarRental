@@ -25,8 +25,10 @@ public class SecurityConfig {
     public UserDetailsManager userDetailsManager(DataSource dataSource) {
         JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
         jdbcUserDetailsManager.setUsersByUsernameQuery(
+                //"select email, password, true from users where username = ?");
                 "select username, password, true from users where username = ?");
         jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
+                //"select username, authority from authorities where username = ?");
                 "select username, authority from authorities where username = ?");
         return jdbcUserDetailsManager;
     }
@@ -45,6 +47,7 @@ public class SecurityConfig {
                                // .requestMatchers(HttpMethod.GET, "/index").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/index").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/search").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/cars").permitAll()
                                 //      .requestMatchers(HttpMethod.GET, "/home2").hasRole("OWNER")
                                 .requestMatchers(HttpMethod.GET, "/owner").permitAll()
 

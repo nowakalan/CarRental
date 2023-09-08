@@ -12,7 +12,16 @@ import java.util.stream.Collectors;
 @Service
 public class CarService {
 
-    CarRepository carRepository;
+    private final CarRepository carRepository;
+
+    public CarService(CarRepository carRepository) {
+        this.carRepository = carRepository;
+    }
+
+    public List<Car> getAll() {
+
+        return carRepository.findAll();
+    }
 
     @Transactional
     public void addCar(Car car) {
@@ -99,10 +108,6 @@ public class CarService {
         return carRepository.findCarsByPriceIsLessThanEqual(priceLimit);
     }
 
-    public List<Car> searchCars(String pickUpLocation, String dropOffLocation, String pickUpDateTime, String dropOffDateTime) {
-      //TODO
-        return new ArrayList<>(Arrays.asList(new Car("BMW", "test implemetacji")));
-    }
 
 //    public List<Car> findCarsByBrand(List<Car> cars, String brand) {
 //        return cars
