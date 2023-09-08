@@ -57,6 +57,7 @@ public class Employee {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
                 ", job=" + job +
                 ", branch=" + branch.getId() +
                 ", user=" + user.getId() +

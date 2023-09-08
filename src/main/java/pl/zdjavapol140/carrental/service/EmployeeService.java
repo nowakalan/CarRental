@@ -2,10 +2,9 @@ package pl.zdjavapol140.carrental.service;
 
 import org.springframework.stereotype.Service;
 import pl.zdjavapol140.carrental.model.*;
+import pl.zdjavapol140.carrental.repository.BranchRepository;
 import pl.zdjavapol140.carrental.repository.EmployeeRepository;
 import pl.zdjavapol140.carrental.repository.UserRepository;
-
-import java.util.ArrayList;
 
 @Service
 public class EmployeeService {
@@ -13,9 +12,11 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final UserRepository userRepository;
 
-    public EmployeeService(EmployeeRepository employeeRepository, UserRepository userRepository) {
+    private final BranchRepository branchRepository;
+    public EmployeeService(EmployeeRepository employeeRepository, UserRepository userRepository, BranchRepository branchRepository) {
         this.employeeRepository = employeeRepository;
         this.userRepository = userRepository;
+        this.branchRepository = branchRepository;
     }
 
     public Employee addNewEmployee(String firstName,

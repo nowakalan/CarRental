@@ -319,7 +319,7 @@ public class ReservationService {
 
     }
 
-    public List<Car> getAvailableCars(Map<Car, List<Optional<Reservation>>> carsWithOptionalAdjacentReservations) {
+    public List<Car>findAvailableCars(Map<Car, List<Optional<Reservation>>> carsWithOptionalAdjacentReservations) {
 
         return new ArrayList<>(carsWithOptionalAdjacentReservations.keySet());
     }
