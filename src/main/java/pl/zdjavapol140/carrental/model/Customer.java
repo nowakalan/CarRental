@@ -34,12 +34,16 @@ public class Customer {
 //    @Pattern(regexp = "^+\\d{2} \\d{3} \\d{3} \\d{3}$")
     private String phone;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "address_id")
     private Address address;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<Reservation> reservations = new ArrayList<>();
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Override
     public boolean equals(Object o) {
@@ -64,6 +68,7 @@ public class Customer {
                 ", phone='" + phone + '\'' +
                 ", address=" + address +
                 ", reservations=" + reservations +
+                ", user_id=" + user.getId() +
                 '}';
     }
 }

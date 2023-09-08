@@ -7,8 +7,9 @@ import java.util.Random;
 
 public class EmployeeGenerator {
 
-    private static final String[] FIRST_NAMES = {"John", "Jane", "David", "Emily", "Michael", "Sarah"};
-    private static final String[] LAST_NAMES = {"Doe", "Smith", "Johnson", "Davis", "Wilson", "Brown"};
+    private static final String[] FIRST_NAMES = {"John", "Jane", "David", "Emily", "Michael", "Sarah", "Tomasz", "Wojciech", "Robert", "Marcin"};
+    private static final String[] LAST_NAMES = {"Doe", "Smith", "Johnson", "Davis", "Wilson", "Brown", "Malik", "Sobczak", "Kusy"};
+    private static final String[] EMAIL_DOMAINS = {"gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "example.com", "onet.pl", "interia.pl", "money.pl", "bankier.pl"};
 
     public static Employee generateRandomEmployee() {
         Random random = new Random();
@@ -16,6 +17,8 @@ public class EmployeeGenerator {
 
         employee.setFirstName(FIRST_NAMES[random.nextInt(FIRST_NAMES.length)]);
         employee.setLastName(LAST_NAMES[random.nextInt(LAST_NAMES.length)]);
+        employee.setEmail(employee.getFirstName().toLowerCase() + "." + employee.getLastName().toLowerCase() + "@" + EMAIL_DOMAINS[random.nextInt(EMAIL_DOMAINS.length)]);
+
         employee.setJob(Job.values()[random.nextInt(Job.values().length)]);
         employee.setBranch(null);
         return employee;
