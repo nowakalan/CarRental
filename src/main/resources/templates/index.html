@@ -19,14 +19,14 @@
                 
                  <nav class="menu">
 
-                    <div class="dropdown" sec:authorize="hasRole('ROLE_CUSTOMER')">
+                    <div class="dropdown" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE')">
                         <a href="#">Reservation</a>
                         <ul>
+                            <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Display reservations</a></li>
+                            <li sec:authorize="hasRole('ROLE_CUSTOMER')"><a href="#">Your reservations</a></li>
                             <li><a href="/index">New reservation</a></li>
-                            <li><a href="#">Your reservations</a></li>
-                            <li><a href="#">Delete reservation</a></li>
-                            <li><a href="#">Rent a Car/employee</a></li>
-                            <li><a href="#">Return Car/employee</a></li>
+                            <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Rent a Car</a></li>
+                            <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Return Car</a></li>
                         </ul>
                         </div>
 
@@ -35,11 +35,7 @@
                             <ul>
                                 <li><a href="/cars">Display car list</a></li>
                                 <li><a href="#">Add vehicle</a></li>
-                                <li><a href="#">Remove vehicle</a></li>
-                                <li><a href="#">Find a car (by model/reg num/km...)</a></li>
-                                <li><a href="#">Change cars data</a></li>
-                                <li><a href="#">//set status</a></li>
-                                <li><a href="#">//set km</a></li>
+                                <li><a href="#">Find a car</a></li>
                             </ul>
                         </div>
 
@@ -65,6 +61,7 @@
                             </ul>
                         </div>
 
+                     <!--
                         <div class="dropdown">
                         <a href="#">???Statistics</a>
                             <ul>
@@ -72,6 +69,7 @@
                                 <li><a href="#">Most rented car</a></li>
                             </ul>
                         </div>
+                     -->
 
                         <div class="dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
                         <a href="#">Rent Companies</a>
@@ -107,23 +105,26 @@
                 </div>
                 <div class="search">
                     <div class="search-container">
-                        <form th:action="@{/search}" method="get">
-                            <label for="pickUpLocation">pickup LOCATION:</label>
-                            <select id="pickUpLocation" name="pickUpLocation" class="location-select">
-                                <option th:each="pickUpLocation : ${allBranches}" th:text="${pickUpLocation.address}"></option>
+                        <form th:action="@{/search}" method="GET">
+                            <label for="currentPickUpBranchId">pickup LOCATION:</label>
+                            <select id="currentPickUpBranchId" name="currentPickUpBranchId" class="location-select">
+                                <option th:each="pickUpLocation : ${allBranches}" th:text="${pickUpLocation.address}"
+                                        th:value="${pickUpLocation.getId()}"></option>
                             </select>
             
-                            <label for="dropOffLocation">drop-off LOCATION:</label>
-                            <select id="dropOffLocation" name="dropOffLocation" class="location-select">
-                                <option th:each="dropOffLocation : ${allBranches}" th:text="${dropOffLocation.address}"></option>
+                            <label for="currentDropOffBranchId">drop-off LOCATION:</label>
+                            <select id="currentDropOffBranchId" name="currentDropOffBranchId" class="location-select">
+                                <option th:each="dropOffLocation : ${allBranches}" th:text="${dropOffLocation.address}"
+                                th:value="${dropOffLocation.getId()}"></option>
+
                             </select>
             
                             <label for="pickUpDate">pickup DATE:</label>
                             <input type="datetime-local" id="pickUpDate" name="currentPickUpDateTime">
             
                             <label for="dropOffDate">drop-off DATE:</label>
-                            <input type="datetime-local" id="dropOffDate" name="CurrentDropOffDateTime">
-            
+                            <input type="datetime-local" id="dropOffDate" name="currentDropOffDateTime">
+
                             <button type="submit">Search</button>
                         </form>
                     </div>

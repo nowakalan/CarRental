@@ -39,7 +39,7 @@ public class EmployeeService {
                 branch,
                 null);
 
-        User user = new User(null, employee.getEmail(), employee.getFirstName().toLowerCase());
+        User user = new User(employee.getEmail(), "{noop}" + employee.getFirstName().toLowerCase(), Role.ROLE_EMPLOYEE);
         userRepository.save(user);
 
         employee.setUser(user);

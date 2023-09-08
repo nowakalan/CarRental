@@ -2,6 +2,7 @@ package pl.zdjavapol140.carrental.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import pl.zdjavapol140.carrental.model.Customer;
+import pl.zdjavapol140.carrental.model.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,4 +21,5 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     List<Customer> findCustomersByLastNameAndFirstName(String lastName, String firstName);
 
     List<Customer> findCustomersByPhone(String phone);
+    Customer findCustomerByUser(User user);
 }

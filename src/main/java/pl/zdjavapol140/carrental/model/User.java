@@ -18,31 +18,34 @@ import java.util.Objects;
 @Entity
 public class User {
 
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Email
     private String email;
 
     String password;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User user)) return false;
-        return Objects.equals(getId(), user.getId());
+        return Objects.equals(getEmail(), user.getEmail());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId());
+        return Objects.hash(getEmail());
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';

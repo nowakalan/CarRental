@@ -31,16 +31,11 @@ public class Customer {
     @Email
     private String email;
 
-    private String password;
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
 
 
     //@ManyToOne
 
-//    @Pattern(regexp = "^+\\d{2} \\d{3} \\d{3} \\d{3}$")
+    //    @Pattern(regexp = "^+\\d{2} \\d{3} \\d{3} \\d{3}$")
     private String phone;
 
     @OneToOne
@@ -51,7 +46,7 @@ public class Customer {
     private List<Reservation> reservations = new ArrayList<>();
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_email")
     private User user;
 
     @Override
@@ -77,7 +72,7 @@ public class Customer {
                 ", phone='" + phone + '\'' +
                 ", address=" + address +
                 ", reservations=" + reservations +
-                ", user_id=" + user.getId() +
+
                 '}';
     }
 }
