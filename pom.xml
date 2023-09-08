@@ -67,6 +67,11 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>ru.spb.devclub</groupId>
+			<artifactId>delegating-spring-request-context</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

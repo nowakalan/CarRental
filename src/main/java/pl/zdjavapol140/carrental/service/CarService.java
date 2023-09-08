@@ -3,22 +3,11 @@ package pl.zdjavapol140.carrental.service;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import pl.zdjavapol140.carrental.model.Car;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import pl.zdjavapol140.carrental.model.Car;
 import pl.zdjavapol140.carrental.model.CarSize;
-import pl.zdjavapol140.carrental.model.Reservation;
 import pl.zdjavapol140.carrental.repository.CarRepository;
 import pl.zdjavapol140.carrental.repository.ReservationRepository;
 import java.math.BigDecimal;
-import java.util.*;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,22 +19,13 @@ public class CarService {
 
     private final CarRepository carRepository;
 
-
-    public CarService(CarRepository carRepository) {
-        this.carRepository = carRepository;
-    }
-
-    public List<Car> getAll() {
-
-        return carRepository.findAll();
-
     private final ReservationRepository reservationRepository;
 
     public CarService(CarRepository carRepository, ReservationRepository reservationRepository) {
         this.carRepository = carRepository;
         this.reservationRepository = reservationRepository;
-
     }
+
 
     @Transactional
     public boolean addCar(Car car) {

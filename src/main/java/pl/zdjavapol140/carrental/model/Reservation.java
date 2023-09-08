@@ -28,7 +28,7 @@ public class Reservation {
     @Enumerated(value = EnumType.STRING)
     private ReservationStatus status;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy HH-mm-SS")
+    @DateTimeFormat(pattern = "dd.MM.yyyy, HH:mm")
     private LocalDateTime bookingDate;
 
     @ManyToOne
@@ -39,12 +39,12 @@ public class Reservation {
     @JoinColumn(name = "car_id")
     private Car car;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy HH-mm-SS")
+    @DateTimeFormat(pattern = "dd.MM.yyyy, HH:mm")
     private LocalDateTime pickUpDateTime;
 
     private Long pickUpBranchId;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy HH-mm-SS")
+    @DateTimeFormat(pattern = "dd.MM.yyyy, HH:mm")
     private LocalDateTime dropOffDateTime;
 
     private Long dropOffBranchId;

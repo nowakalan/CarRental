@@ -43,20 +43,20 @@ public class WebController {
     }
 
 
-    @GetMapping("/search")
-    public String search(@RequestParam LocalDateTime currentPickUpDateTime, @RequestParam LocalDateTime currentDropOffDateTime,
-                         @RequestParam Long currentPickUpBranchId, @RequestParam Long currentDropOffBranchId, Model model) {
-        List<Car> carList = reservationService.findAvailableCars(currentPickUpDateTime, currentDropOffDateTime, currentPickUpBranchId, currentDropOffBranchId);
-        model.addAttribute("carList", carList);
+//    @GetMapping("/search")
+//    public String search(@RequestParam LocalDateTime currentPickUpDateTime, @RequestParam LocalDateTime currentDropOffDateTime,
+//                         @RequestParam Long currentPickUpBranchId, @RequestParam Long currentDropOffBranchId, Model model) {
+//        List<Car> carList = reservationService.findAvailableCars(currentPickUpDateTime, currentDropOffDateTime, currentPickUpBranchId, currentDropOffBranchId);
+//        model.addAttribute("carList", carList);
+//
+//        return "searchResults";
+//    }
 
-        return "searchResults";
-    }
 
-
-    @GetMapping("/cars")
-    public String getCars(Model model){
-        model.addAttribute("cars", carService.getAll());
-        return "cars-list";
-    }
+//    @GetMapping("/cars")
+//    public String getCars(Model model){
+//        model.addAttribute("cars", carService.getAll());
+//        return "cars-list";
+//    }
 
 }

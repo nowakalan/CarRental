@@ -22,10 +22,10 @@ public class Car {
     private String brand;
     private String model;
 
-    public Car(String brand, String model, CarBodyType bodyType, Integer productionYear, String color) {
+    public Car(String brand, String model, CarSize size, Integer productionYear, String color) {
         this.brand = brand;
         this.model = model;
-        this.bodyType = bodyType;
+        this.size = size;
         this.productionYear = productionYear;
         this.color = color;
     }

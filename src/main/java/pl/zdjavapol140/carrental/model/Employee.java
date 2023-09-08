@@ -27,11 +27,6 @@ public class Employee {
     @Email
     private String email;
 
-    private String password;
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
     @Enumerated(EnumType.STRING)
     private Job job;
 
@@ -40,7 +35,7 @@ public class Employee {
     private Branch branch;
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "email")
     private User user;
 
     @Override
@@ -65,7 +60,7 @@ public class Employee {
                 ", email='" + email + '\'' +
                 ", job=" + job +
                 ", branch=" + branch.getId() +
-                ", user=" + user.getId() +
+                ", user=" + user.getEmail() +
                 '}';
     }
 }

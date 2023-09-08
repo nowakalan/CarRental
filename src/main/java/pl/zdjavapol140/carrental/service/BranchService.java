@@ -22,10 +22,6 @@ public class BranchService {
         return branchRepository.findAll();
     }
 
-    public BranchService(BranchRepository branchRepository) {
-        this.branchRepository = branchRepository;
-    }
-
     public Branch findBranchById(Long id) {
 
         if (branchRepository.findById(id).isEmpty()) {

@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import pl.zdjavapol140.carrental.model.Address;
 import pl.zdjavapol140.carrental.model.Customer;
+import pl.zdjavapol140.carrental.model.Role;
 import pl.zdjavapol140.carrental.model.User;
 import pl.zdjavapol140.carrental.repository.AddressRepository;
 import pl.zdjavapol140.carrental.repository.CustomerRepository;
@@ -47,13 +48,12 @@ public class CustomerService {
                 new ArrayList<>(),
                 null);
 
-        User user = new User(null, customer.getEmail(), customer.getFirstName().toLowerCase());
+        User user = new User(customer.getEmail(), customer.getFirstName().toLowerCase(), Role.ROLE_CUSTOMER);
         userRepository.save(user);
-
-        Address address = new Address(null, "Poland", "Warszawa", "09-001", null);
-        addressRepository.save(address);
-
         customer.setUser(user);
+
+        Address address = new Address();
+        addressRepository.save(address);
         customer.setAddress(address);
 
 

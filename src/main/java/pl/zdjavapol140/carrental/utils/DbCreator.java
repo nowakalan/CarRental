@@ -4,9 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import pl.zdjavapol140.carrental.model.Job;
+import pl.zdjavapol140.carrental.model.*;
 import pl.zdjavapol140.carrental.repository.*;
 import pl.zdjavapol140.carrental.service.*;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
 
 @Slf4j
 @Component
@@ -50,7 +56,7 @@ public class DbCreator {
     public void insertDataToDb() {
 
 //        customerService.addNewCustomer("Darek", "Zegarek", "darek.zegarek@gmail.com", "+48 222-222-222");
-        employeeService.addNewEmployee("Marta", "Zdarta", "marta.zdarta@gmail.com", Job.MANAGER, branchService.findBranchById(2L));
+//        employeeService.addNewEmployee("Marta", "Zdarta", "marta.zdarta@gmail.com", Job.MANAGER, branchService.findBranchById(2L));
 //        List<Address> addresses = new ArrayList<>();
 //        List<Branch> branches = new ArrayList<>();
 //        List<Car> cars = new ArrayList<>();
@@ -137,7 +143,7 @@ public class DbCreator {
 //
 //            Customer customer = CustomerGenerator.generateRandomCustomer();
 //            customer.setAddress(address);
-//            User user = new User(null, customer.getEmail(), customer.getFirstName().toLowerCase());
+//            User user = new User(customer.getEmail(), "{noop}" + customer.getFirstName().toLowerCase(), Role.ROLE_CUSTOMER);
 //
 //            if (!customers.stream().map(Customer::getEmail).toList().contains(customer.getEmail())) {
 //                customer.setUser(user);
@@ -157,7 +163,7 @@ public class DbCreator {
 //            int randomNumber = random.nextInt(branches.size());
 //            Employee employee = EmployeeGenerator.generateRandomEmployee();
 //            employee.setBranch(branches.get(randomNumber));
-//            User user = new User(null, employee.getEmail(), employee.getFirstName().toLowerCase());
+//            User user = new User(employee.getEmail(), "{noop}" + employee.getFirstName().toLowerCase(), Role.ROLE_EMPLOYEE);
 //            if (!employees.stream().map(Employee::getEmail).toList().contains(employee.getEmail()) &&
 //                    !customers.stream().map(Customer::getEmail).toList().contains(employee.getEmail())) {
 //                employee.setUser(user);
