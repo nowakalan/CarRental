@@ -18,6 +18,20 @@ public class BranchService {
     }
 
     public List<Branch> getAllBranches() {
+
         return branchRepository.findAll();
+    }
+
+    public BranchService(BranchRepository branchRepository) {
+        this.branchRepository = branchRepository;
+    }
+
+    public Branch findBranchById(Long id) {
+
+        if (branchRepository.findById(id).isEmpty()) {
+
+            throw new RuntimeException("Branch id not found");
+        }
+        return branchRepository.findById(id).get();
     }
 }

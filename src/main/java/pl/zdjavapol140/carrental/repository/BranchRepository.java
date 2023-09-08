@@ -12,6 +12,5 @@ import java.util.List;
 public interface BranchRepository extends JpaRepository<Branch, Long> {
 
     List<Branch> findBranchesByRental(Rental rental);
-    List<Branch> findAll();
 
 }

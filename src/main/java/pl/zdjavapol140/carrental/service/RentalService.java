@@ -12,4 +12,8 @@ public class RentalService {
     RentalRepository rentalRepository;
     BranchRepository branchRepository;
 
+    public RentalService(RentalRepository rentalRepository, BranchRepository branchRepository) {
+        this.rentalRepository = rentalRepository;
+        this.branchRepository = branchRepository;
+    }
 }
