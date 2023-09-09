@@ -1,6 +1,7 @@
 package pl.zdjavapol140.carrental.controller;
 
 
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -139,6 +140,8 @@ public class WebController {
             model.addAttribute("error", "Reservation aborted" + e.getMessage());
         }
 
+
         return "confirm-page";
+
     }
 }

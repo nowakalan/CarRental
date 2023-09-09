@@ -41,11 +41,6 @@ public class RestApiController {
         this.userService = userService;
     }
 
-    @GetMapping("/booking/criteria")
-    public ResponseEntity<List<Branch>> getAllBranches() {
-
-        return new ResponseEntity<>(branchService.getAllBranches(), HttpStatus.OK);
-    }
 
     @GetMapping("/booking/cars")
     public ResponseEntity<List<Car>> findAvailableCars(BookingCriteria bookingCriteria) {

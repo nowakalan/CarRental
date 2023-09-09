@@ -88,9 +88,11 @@
 </nav>
 <div class="main">
     <h1>Rezerwacja</h1>
+
     <!-- Wyświetl parametry rezerwacji -->
     <div>
         <form action="#" th:action="@{/confirm-page}" th:object="${preReservation}" th:method="POST">
+
 
             <input th:type="hidden" th:field="*{car.id}" th:value="${car.id}"
                    th:text="${car.id}"/>

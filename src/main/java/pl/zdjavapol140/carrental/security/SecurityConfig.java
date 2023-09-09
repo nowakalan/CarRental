@@ -47,6 +47,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/login").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/home").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/preselect-car").permitAll()
                                // .requestMatchers(HttpMethod.GET, "/index").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/index").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/search").permitAll()

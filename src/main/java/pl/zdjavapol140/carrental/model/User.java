@@ -24,6 +24,7 @@ import java.util.Set;
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "email"
 )
+
 public class User {
 
 //    @Id
