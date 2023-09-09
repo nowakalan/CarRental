@@ -8,10 +8,7 @@
 </head>
 <body>
 
-    <section class="carrental">
-
         <div class="container">
-
 
                 <div class="car-rental-logo">
                     <a href="/index" class="logo-text">CAR - RENT</a>
@@ -28,18 +25,18 @@
                             <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Rent a Car</a></li>
                             <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Return Car</a></li>
                         </ul>
-                        </div>
+                    </div>
 
-                        <div class="dropdown"  sec:authorize="hasRole('ROLE_EMPLOYEE')">
+                     <div class="dropdown"  sec:authorize="hasRole('ROLE_EMPLOYEE')">
                         <a href="#/display cars for clients">Cars</a>
                             <ul>
                                 <li><a href="/cars">Display car list</a></li>
                                 <li><a href="#">Add vehicle</a></li>
                                 <li><a href="#">Find a car</a></li>
                             </ul>
-                        </div>
+                     </div>
 
-                        <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
+                     <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
                         <a href="#">Clients</a>
                             <ul>
                                 <li><a href="#">Display clients list</a></li>
@@ -48,9 +45,9 @@
                                 <li><a href="#">Show reservations</a></li>
                                 <li><a href="#">Find client(by name/client ID)</a></li>
                             </ul>
-                        </div>
+                     </div>
 
-                        <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
+                     <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
                         <a href="#">Branch</a>
                             <ul>
                                 <li><a href="#">List of employees</a></li>
@@ -59,7 +56,7 @@
                                 <li><a href="#">Remove employee</a></li>
                                 <li><a href="#">List of available cars</a></li>
                             </ul>
-                        </div>
+                     </div>
 
                      <!--
                         <div class="dropdown">
@@ -71,25 +68,23 @@
                         </div>
                      -->
 
-                        <div class="dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+                     <div class="dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
                         <a href="#">Rent Companies</a>
                             <ul>
                                 <li><a href="#">List of companies</a></li>
                                 <li><a href="#">Add company</a></li>
                                 <li><a href="#">Remove company</a></li>
                             </ul>
-                        </div>
+                     </div>
 
-                        <div class="dropdown">
+                     <div class="dropdown">
                         <a href="#">My Account</a>
                             <ul>
                                 <li><a href="#">Login</a></li>
                                 <li><a href="/logout">Logout</a></li>
                             </ul>
-                        </div>
+                     </div>
 
-                    
-                
                 </nav>
             </div>
         
@@ -128,74 +123,11 @@
                             <button type="submit">Search</button>
                         </form>
                     </div>
-    
-
-        <!--        <form action="#" th:action="@{/pet}" th:object="${pet}" method="POST">-->
-        <!--            <input type="hidden" th:field="*{petId}">-->
-        <!--            <input type="text" th:field="*{name}"-->
-        <!--                   class="form-control mb-4 w-25" placeholder="First name">-->
-
-        <!--            <input type="date" th:field="*{date}"-->
-        <!--                   class="form-control mb-4 w-25" placeholder="Last name">-->
-
-        <!--            &lt;!&ndash;    <input type="text" th:field="*{petType}"&ndash;&gt;-->
-        <!--            <select name="Pet Type" th:field="*{petType}">-->
-        <!--                <option th:each="typeOption : ${T(pl.sda.petclinic.model.PetType).values()}"-->
-        <!--                        th:value="${typeOption}" th:text="${typeOption}"/>-->
-        <!--            </select>-->
-
-        <!--            <button type="submit" class="btn btn-info col-2">Save</button>-->
-
-        <!--        </form>-->
-
-
+                </div>
+                <div id="push"></div>
+            <div class="footer">
+                <p>&copy; All rights reserved.</p>
             </div>
-
-        <div class="footer">
-            <p>&copy; All rights reserved.</p>
         </div>
-    </div>    
-</section>
 </body>
 </html>
-
-<!-- 
-<nav class="navbar navbar-expand-lg bg-third-color">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">RENT - CAR</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
-
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Dropdown link
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-              </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Features</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Pricing</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Dropdown link
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav> -->

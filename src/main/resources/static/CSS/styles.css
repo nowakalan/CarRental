@@ -16,11 +16,19 @@
 	color: white;
 }
 
-body {
+html, body {
+	height: 100%;
 	background-color: var(--primary-color);
 	padding: 0;
 	margin: 0;
 }
+.container{
+	height:auto !important;
+	margin: 0;
+	padding: 0;
+	
+}
+
 .menu {
 	width: 80%;
 	height: 60px;
@@ -35,6 +43,8 @@ body {
 	float: left;
 }
 .main {
+	min-height: 100%;
+	height: auto;
 	float: left;
 	background-color: var(--primary-color);
 }
@@ -49,10 +59,15 @@ body {
 	float: left;
 	background-color: var(--third-color);
 	width: 100%;
-	height: 20%;
+	height: 60px;
 	color: black;
 	text-align: center;
-	padding: 5px;
+	
+	clear:both;
+}
+.push {
+	clear:both;
+	height:20px;
 }
 
 .menu a {
@@ -120,7 +135,6 @@ body {
 	height: 600px;
 	background-color: var(--primary-color);
 	float: left;
-	padding-top: 150px;
     padding-left: 30px;
 	font-size: 40px;
 }
