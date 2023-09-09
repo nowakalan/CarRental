@@ -9,10 +9,7 @@ import pl.zdjavapol140.carrental.repository.*;
 import pl.zdjavapol140.carrental.service.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -56,9 +53,6 @@ public class DbCreator {
     public void insertDataToDb() {
 
 
-        //customerService.addNewCustomer("Darek", "Zegarek", "darek.zegarek@gmail.com", "+48 222-222-222");
-        //employeeService.addNewEmployee("Marta", "Zdarta", "marta.zdarta@gmail.com", Job.MANAGER, branchService.findBranchById(2L));
-
 //        List<Address> addresses = new ArrayList<>();
 //        List<Branch> branches = new ArrayList<>();
 //        List<Car> cars = new ArrayList<>();
@@ -73,7 +67,7 @@ public class DbCreator {
 //         *
 //         */
 //        int baseNumberOfObjects = 1;
-//        for (int i = 0; i < baseNumberOfObjects * 72; i++) {
+//        for (int i = 0; i < baseNumberOfObjects * 70; i++) {
 //            addresses.add(AddressGenerator.generateRandomAddress());
 //        }
 //        addressRepository.saveAll(addresses);
@@ -82,7 +76,7 @@ public class DbCreator {
 //        /**Fill rentalRepository
 //         *
 //         */
-//        for (int i = 0; i < baseNumberOfObjects * 3; i++) {
+//        for (int i = 0; i < baseNumberOfObjects; i++) {
 //
 //            int randomNumber = random.nextInt(addresses.size());
 //            Address address = addresses.get(randomNumber);
@@ -102,7 +96,7 @@ public class DbCreator {
 //         */
 //        for (int i = 0; i < baseNumberOfObjects * 9; i++) {
 //            int randomForAddress = random.nextInt(addresses.size());
-//            int randomForRental = random.nextInt(rentals.size());
+////            int randomForRental = random.nextInt(rentals.size());
 //            Address address = addresses.get(randomForAddress);
 //
 //            if (branches.stream().map(Branch::getAddress).toList().contains(address)) {
@@ -112,7 +106,7 @@ public class DbCreator {
 //
 //            Branch branch = BranchGenerator.generateRandomBranch();
 //            branch.setAddress(address);
-//            branch.setRental(rentals.get(randomForRental));
+//            branch.setRental(rentals.get(0));
 //            branches.add(branch);
 //        }
 //        branchRepository.saveAll(branches);
