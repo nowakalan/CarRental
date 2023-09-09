@@ -45,6 +45,7 @@ public class WebController {
     }
 
 
+
     @GetMapping("/search")
     public String search(@RequestParam LocalDateTime currentPickUpDateTime,
                          @RequestParam LocalDateTime currentDropOffDateTime,
@@ -69,6 +70,7 @@ public class WebController {
         model.addAttribute("cars", carService.getAll());
         return "cars-list";
     }
+
 
     @GetMapping("/preselect-car")
 

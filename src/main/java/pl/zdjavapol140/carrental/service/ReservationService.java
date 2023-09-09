@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -79,7 +80,7 @@ public class ReservationService {
 
     //TODO co z obsługą błędów? Czy warto wyrzucać wyjątek z metody/przekazywać wyżej?
     @Transactional
-    public void addReservation(Reservation reservation) {
+    public boolean addReservation(Reservation reservation) {
 
         if (!findAvailableCarsWithOptionalAdjacentReservations(reservation.getPickUpDateTime(),
                 reservation.getDropOffDateTime(),
@@ -91,6 +92,7 @@ public class ReservationService {
         reservation.setBookingDate(LocalDateTime.now());
 
         reservationRepository.save(reservation);
+        return true;
     }
 
     /**
@@ -638,24 +640,19 @@ public class ReservationService {
      Sets current reservation if still available and updates, creates or deletes transfer reservation/reservations if needed
      */
 
-    public List<Optional<Reservation>> setCurrentReservationAndOptionalTransferReservations(Reservation currentPreReservation) {
+    public boolean setCurrentReservationAndOptionalTransferReservations(Reservation currentPreReservation) {
 
-        List<Optional<Reservation>> reservations = new LinkedList<>();
 
         Map<Car, List<Optional<Reservation>>> availableCarsWithOptionalAdjacentReservations = this.createMapWithAvailableCarsWithOptionalAdjacentReservations(currentPreReservation);
 
 
-        reservations.add(this.setOrUpdateOrDeletePreviousTransferReservation(currentPreReservation, availableCarsWithOptionalAdjacentReservations));
+        this.setOrUpdateOrDeletePreviousTransferReservation(currentPreReservation, availableCarsWithOptionalAdjacentReservations);
 
 
-        reservations.add(this.setOrUpdateOrDeleteNextTransferReservation(currentPreReservation, availableCarsWithOptionalAdjacentReservations));
+       this.setOrUpdateOrDeleteNextTransferReservation(currentPreReservation, availableCarsWithOptionalAdjacentReservations);
 
 
-        this.addReservation(currentPreReservation);
-
-        reservations.add(reservationRepository.findById(currentPreReservation.getId()));
-
-        return reservations;
+       return this.addReservation(currentPreReservation);
 
     }
 

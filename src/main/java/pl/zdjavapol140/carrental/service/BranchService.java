@@ -25,6 +25,7 @@ public class BranchService {
         this.branchRepository = branchRepository;
     }
 
+
     public Branch findBranchById(Long id) {
 
         if (branchRepository.findById(id).isEmpty()) {

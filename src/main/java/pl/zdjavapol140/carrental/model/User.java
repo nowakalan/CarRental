@@ -7,9 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.access.annotation.Secured;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +22,7 @@ public class User {
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    private Long id;
+
     @Id
     @Email
     private String email;
@@ -45,7 +47,6 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';

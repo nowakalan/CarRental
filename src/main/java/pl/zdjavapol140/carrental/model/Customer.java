@@ -32,7 +32,6 @@ public class Customer {
     private String email;
 
 
-
     //@ManyToOne
 
     //    @Pattern(regexp = "^+\\d{2} \\d{3} \\d{3} \\d{3}$")
@@ -47,6 +46,7 @@ public class Customer {
 
     @OneToOne
     @JoinColumn(name = "user_email")
+
     private User user;
 
     @Override
@@ -72,7 +72,6 @@ public class Customer {
                 ", phone='" + phone + '\'' +
                 ", address=" + address +
                 ", reservations=" + reservations +
-
                 '}';
     }
 }

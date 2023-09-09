@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -25,11 +26,13 @@ public class SecurityConfig {
     public UserDetailsManager userDetailsManager(DataSource dataSource) {
         JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
         jdbcUserDetailsManager.setUsersByUsernameQuery(
+
                 "select email, password, true from user where email = ?");
                 //"select username, password, true from users where username = ?");
         jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
                 "select email, role, true from user where email = ?");
                 //"select username, authority, true from authorities where username = ?");
+
         return jdbcUserDetailsManager;
     }
 
@@ -52,6 +55,12 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/cars").permitAll()
                                 //      .requestMatchers(HttpMethod.GET, "/home2").hasRole("OWNER")
                                 .requestMatchers(HttpMethod.GET, "/owner").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/booking/criteria").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/booking/cars").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/booking/selected_car").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/booking/pre_reservation").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/booking/reservation").permitAll()
+
 
 //
 //                        .requestMatchers(HttpMethod.GET, "/api/owners").hasRole("USER")
@@ -69,7 +78,7 @@ public class SecurityConfig {
                     .permitAll());
                 http.httpBasic(Customizer.withDefaults());*/
 
-        http.csrf(csrf -> csrf.disable());
+        http.csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 }

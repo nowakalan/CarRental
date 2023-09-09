@@ -35,7 +35,9 @@ public class Employee {
     private Branch branch;
 
     @OneToOne
+
     @JoinColumn(name = "user_email", referencedColumnName = "email")
+
     private User user;
 
     @Override
@@ -60,7 +62,6 @@ public class Employee {
                 ", email='" + email + '\'' +
                 ", job=" + job +
                 ", branch=" + branch.getId() +
-
                 '}';
     }
 }
