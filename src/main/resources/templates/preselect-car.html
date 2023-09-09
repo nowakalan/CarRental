@@ -104,10 +104,7 @@
                 <td th:text="${preReservation.dropOffDateTime}"></td>
                 <td th:text="${dropOffBranch.address}"></td>
                 <td th:text="${preReservation.totalPrice}"></td>
-                <td><a th:href="@{/submit-reservation(car.brand=${car.id}, currentDropOffBranchId=${currentDropOffBranchId},
-            currentPickUpBranchId=${currentPickUpBranchId},
-            currentPickUpDateTime=${currentPickUpDateTime},
-            currentDropOffDateTime=${currentDropOffDateTime})}">book</a></td>
+                <td><a th:href="@{/confirm-reservation(${preReservation})}">CONFIRM</a></td>
             </tr>
 
             </tbody>
