@@ -88,40 +88,31 @@
 
 </nav>
 <div class="main">
-    <h1>Available cars</h1>
+    <h1>Rezerwacja</h1>
     <!-- Wyświetl wyniki wyszukiwania tutaj -->
-    <div class="tables" th:if="${carList}">
+    <div th:if="${preReservation}" class="tables">
         <table>
-            <thead>
-            <tr>
-                <th>Brand</th>
-                <th>Model</th>
-                <th>Size</th>
-                <th>Transmission <br> Type</th>
-                <th>Price</th>
-                <th></th>
-            </tr>
-            </thead>
             <tbody>
 
-                <tr th:each="car : ${carList}">
-                    <td th:text="${car.brand}"></td>
-                    <td th:text="${car.model}"></td>
-                    <td th:text="${car.size}"></td>
-                    <td th:text="${car.transmissionType}"></td>
-                    <td th:text="${car.price}"></td>
-                    <td><a  th:href="@{/preselect-car(id=${car.id}, currentDropOffBranchId=${currentDropOffBranchId},
+            <tr >
+                <td th:text="${preReservation.car.brand}"></td>
+                <td th:text="${preReservation.car.model}"></td>
+                <td th:text="${preReservation.car.size}"></td>
+                <td th:text="${preReservation.car.transmissionType}"></td>
+                <td th:text="${preReservation.pickUpDateTime}"></td>
+                <td th:text="${pickUpBranch.address}"></td>
+                <td th:text="${preReservation.dropOffDateTime}"></td>
+                <td th:text="${dropOffBranch.address}"></td>
+                <td th:text="${preReservation.totalPrice}"></td>
+                <td><a th:href="@{/submit-reservation(car.brand=${car.id}, currentDropOffBranchId=${currentDropOffBranchId},
             currentPickUpBranchId=${currentPickUpBranchId},
             currentPickUpDateTime=${currentPickUpDateTime},
             currentDropOffDateTime=${currentDropOffDateTime})}">book</a></td>
-                </tr>
+            </tr>
 
             </tbody>
         </table>
-    </div>
-    <!-- Komunikat, jeśli nie znaleziono wyników -->
-    <p th:if="${carList.isEmpty()}">Brak dostępnych samochodów spełniających podane kryteria.</p>
-</div>
+
 <div class="footer">
     <p>&copy; All rights reserved</p>
 </div>

@@ -9,19 +9,19 @@
 <body>
 
   <div class="car-rental-logo">
-    <a href="/index" class="logo-text">CAR - RENT</a>
+    <a href="/" class="logo-text">CAR - RENT</a>
   </div>
 
 <nav class="menu">
 
-  <div class="dropdown" sec:authorize="hasRole('ROLE_CUSTOMER')">
+  <div class="dropdown" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE')">
     <a href="#">Reservation</a>
     <ul>
-      <li><a href="../templates/index.html">New reservation</a></li>
-      <li><a href="#">Your reservations</a></li>
-      <li><a href="#">Delete reservation</a></li>
-      <li><a href="#">Rent a Car/employee</a></li>
-      <li><a href="#">Return Car/employee</a></li>
+      <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Display reservations</a></li>
+      <li sec:authorize="hasRole('ROLE_CUSTOMER')"><a href="#">Your reservations</a></li>
+      <li><a href="/index">New reservation</a></li>
+      <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Rent a Car</a></li>
+      <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Return Car</a></li>
     </ul>
   </div>
 
@@ -30,11 +30,7 @@
     <ul>
       <li><a href="#">Display car list</a></li>
       <li><a href="#">Add vehicle</a></li>
-      <li><a href="#">Remove vehicle</a></li>
-      <li><a href="#">Find a car (by model/reg num/km...)</a></li>
-      <li><a href="#">Change cars data</a></li>
-      <li><a href="#">//set status</a></li>
-      <li><a href="#">//set km</a></li>
+      <li><a href="#">Find a car</a></li>
     </ul>
   </div>
 
@@ -103,7 +99,7 @@
       <th>Model</th>
       <th>Size</th>
       <th>Color</th>
-      <th>Production Year</th>
+      <th>Production <br>Year</th>
       <th></th>
     </tr>
     </thead>
@@ -113,7 +109,7 @@
 
       <td th:text="${theCar.brand}" />
       <td th:text="${theCar.model}" />
-      <td th:text="${theCar.bodyType}" />
+      <td th:text="${theCar.size}" />
       <td th:text="${theCar.color}" />
       <td th:text="${theCar.productionYear}" />
       <td >

@@ -19,6 +19,13 @@ public class CarService {
 
     private final CarRepository carRepository;
 
+
+
+    public List<Car> getAll() {
+
+        return carRepository.findAll();
+    }
+
     private final ReservationRepository reservationRepository;
 
     public CarService(CarRepository carRepository, ReservationRepository reservationRepository) {

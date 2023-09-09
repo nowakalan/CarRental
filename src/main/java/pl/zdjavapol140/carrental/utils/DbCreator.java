@@ -55,8 +55,10 @@ public class DbCreator {
     @EventListener(ApplicationReadyEvent.class)
     public void insertDataToDb() {
 
-//        customerService.addNewCustomer("Darek", "Zegarek", "darek.zegarek@gmail.com", "+48 222-222-222");
-//        employeeService.addNewEmployee("Marta", "Zdarta", "marta.zdarta@gmail.com", Job.MANAGER, branchService.findBranchById(2L));
+
+        //customerService.addNewCustomer("Darek", "Zegarek", "darek.zegarek@gmail.com", "+48 222-222-222");
+        //employeeService.addNewEmployee("Marta", "Zdarta", "marta.zdarta@gmail.com", Job.MANAGER, branchService.findBranchById(2L));
+
 //        List<Address> addresses = new ArrayList<>();
 //        List<Branch> branches = new ArrayList<>();
 //        List<Car> cars = new ArrayList<>();

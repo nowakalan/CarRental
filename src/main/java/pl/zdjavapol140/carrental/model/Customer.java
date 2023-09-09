@@ -45,7 +45,8 @@ public class Customer {
     private List<Reservation> reservations = new ArrayList<>();
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "email")
+    @JoinColumn(name = "user_email")
+
     private User user;
 
     @Override
@@ -71,7 +72,6 @@ public class Customer {
                 ", phone='" + phone + '\'' +
                 ", address=" + address +
                 ", reservations=" + reservations +
-                ", user_id=" + user.getEmail() +
                 '}';
     }
 }

@@ -48,7 +48,9 @@ public class CustomerService {
                 new ArrayList<>(),
                 null);
 
-        User user = new User(customer.getEmail(), customer.getFirstName().toLowerCase(), Role.ROLE_CUSTOMER);
+
+        User user = new User(customer.getEmail(), "{noop}" + customer.getFirstName().toLowerCase(), Role.ROLE_CUSTOMER);
+
         userRepository.save(user);
         customer.setUser(user);
 
