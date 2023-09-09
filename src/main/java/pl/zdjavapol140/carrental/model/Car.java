@@ -1,5 +1,7 @@
 package pl.zdjavapol140.carrental.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,10 @@ import java.util.*;
 @Getter
 @Setter
 @Table(name = "cars")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id"
+)
 public class Car {
 
     @Id

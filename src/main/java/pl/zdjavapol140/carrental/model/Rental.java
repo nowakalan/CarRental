@@ -1,5 +1,7 @@
 package pl.zdjavapol140.carrental.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
@@ -16,6 +18,10 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Table(name = "rentals")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id"
+)
 public class Rental {
 
     @Id

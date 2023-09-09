@@ -24,7 +24,7 @@
         </ul>
     </div>
 
-    <div class="dropdown"  sec:authorize="hasRole('ROLE_EMPLOYEE')">
+    <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
         <a href="#/display cars for clients">Cars</a>
         <ul>
             <li><a href="../cars-list.html">Display car list</a></li>
@@ -85,33 +85,43 @@
     </div>
 
 
-
 </nav>
 <div class="main">
     <h1>Rezerwacja</h1>
-    <!-- Wyświetl wyniki wyszukiwania tutaj -->
-    <div th:if="${preReservation}" class="tables">
-        <table>
-            <tbody>
 
-            <tr >
-                <td th:text="${preReservation.car.brand}"></td>
-                <td th:text="${preReservation.car.model}"></td>
-                <td th:text="${preReservation.car.size}"></td>
-                <td th:text="${preReservation.car.transmissionType}"></td>
-                <td th:text="${preReservation.pickUpDateTime}"></td>
-                <td th:text="${pickUpBranch.address}"></td>
-                <td th:text="${preReservation.dropOffDateTime}"></td>
-                <td th:text="${dropOffBranch.address}"></td>
-                <td th:text="${preReservation.totalPrice}"></td>
-                <td><a th:href="@{/confirm-reservation(${preReservation})}">CONFIRM</a></td>
-            </tr>
+    <!-- Wyświetl parametry rezerwacji -->
+    <div>
+        <form action="#" th:action="@{/confirm-page}" th:object="${preReservation}" th:method="POST">
 
-            </tbody>
-        </table>
 
-<div class="footer">
-    <p>&copy; All rights reserved</p>
+            <input th:type="hidden" th:field="*{car.id}" th:value="${car.id}"
+                   th:text="${car.id}"/>
+            <input th:type="hidden" th:field="*{car.brand}" th:value="${car.brand}"
+                   th:text="${car.brand}"/>
+            <input th:type="hidden" th:field="*{car.model}" th:value="${car.model}" th:text="${car.model}"/>
+            <input th:type="hidden" th:field="*{car.size}" th:value="${car.size}" th:text="${car.size}"/>
+            <input th:type="hidden" th:field="*{car.transmissionType}" th:value="${car.transmissionType}"
+                   th:text="${car.transmissionType}"/>
+            <input th:type="hidden" th:field="*{customer}" th:value="${preReservation.customer}"
+                   th:text="${preReservation.customer.email}"/>
+            <input th:type="hidden" th:field="*{pickUpDateTime}" th:value="${preReservation.pickUpDateTime}"
+                   th:text="${preReservation.pickUpDateTime}"/>
+            <input th:type="hidden" th:field="*{pickUpBranch.id}" th:value="${preReservation.pickUpBranch.id}"
+                   th:text="${preReservation.pickUpBranch.address.city}"/>
+            <input th:type="hidden" th:field="*{dropOffDateTime}" th:value="${preReservation.dropOffDateTime}"
+                   th:text="${preReservation.dropOffDateTime}"/>
+            <input th:type="hidden" th:field="*{dropOffBranch.id}"
+                   th:value="${preReservation.dropOffBranch.address.city}"
+                   th:text="${preReservation.dropOffBranch.address.city}"/>
+            <input th:type="hidden" th:field="*{totalPrice}" th:value="${preReservation.totalPrice}"
+                   th:text="${preReservation.totalPrice}"/>
+
+            <button type="submit">confirm</button>
+        </form>
+    </div>
+    <div class="footer">
+        <p>&copy; All rights reserved</p>
+    </div>
 </div>
 </body>
 </html>

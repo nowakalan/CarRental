@@ -1,6 +1,8 @@
 package pl.zdjavapol140.carrental.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -17,7 +19,12 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name="users")
+@Table(name = "users")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "email"
+)
+
 public class User {
 
 //    @Id

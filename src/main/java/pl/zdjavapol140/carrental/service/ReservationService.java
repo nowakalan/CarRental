@@ -52,14 +52,15 @@ public class ReservationService {
                                             Long pickUpBranchId,
                                             Long dropOffBranchId) {
 
+        Car car = carRepository.findById(carId).orElseThrow(() -> new RuntimeException("Car id not found"));
+
         Reservation reservation = new Reservation(
                 null,
                 ReservationStatus.SET,
                 null,
                 customerRepository.findById(customerId)
                         .orElseThrow(() -> new RuntimeException("Customer id not found")),
-                carRepository.findById(carId)
-                        .orElseThrow(() -> new RuntimeException("Car id not found")),
+                car,
                 pickUpDateTime,
                 branchRepository.findById(pickUpBranchId)
                         .orElseThrow(() -> new RuntimeException("Branch id not found")).getId(),
@@ -68,7 +69,7 @@ public class ReservationService {
                         .orElseThrow(() -> new RuntimeException("Branch id not found")).getId(),
                 null);
 
-        reservation.setTotalPrice(this.calculateReservationPrice(reservation));
+        reservation.setTotalPrice(this.calculateReservationPrice(pickUpDateTime, dropOffDateTime, pickUpBranchId, dropOffBranchId, car));
 
         return reservation;
     }
@@ -321,7 +322,7 @@ public class ReservationService {
 
     }
 
-    public List<Car>findAvailableCars(Map<Car, List<Optional<Reservation>>> carsWithOptionalAdjacentReservations) {
+    public List<Car> findAvailableCars(Map<Car, List<Optional<Reservation>>> carsWithOptionalAdjacentReservations) {
 
         return new ArrayList<>(carsWithOptionalAdjacentReservations.keySet());
     }
@@ -370,25 +371,24 @@ public class ReservationService {
     }
 
     //TODO ustawić wartość surcharge
-    public BigDecimal calculateReservationPrice(Reservation reservation) {
+    public BigDecimal calculateReservationPrice(LocalDateTime pickUpDateTime, LocalDateTime dropOffDateTime, Long pickUpBranchId, Long dropOffBranchId, Car car) {
 
-        long durationInDaysRoundedCeil = this.calculateReservationDurationInDaysRoundedCeil(reservation);
+        long durationInDaysRoundedCeil = this.calculateReservationDurationInDaysRoundedCeil(pickUpDateTime, dropOffDateTime);
 
-        BigDecimal surcharge = reservation.getCar().getPrice().multiply(BigDecimal.valueOf(0.5));
+        BigDecimal surcharge = car.getPrice().multiply(BigDecimal.valueOf(0.5));
 
-        if (!reservation.getDropOffBranchId().equals(reservation.getPickUpBranchId())) {
+        if (!dropOffBranchId.equals(pickUpBranchId)) {
             surcharge = BigDecimal.ONE;
         }
-        return reservation.getCar().getPrice().multiply(BigDecimal.valueOf(durationInDaysRoundedCeil)).add(surcharge);
+        return car.getPrice().multiply(BigDecimal.valueOf(durationInDaysRoundedCeil)).add(surcharge);
     }
 
     /**
-     *
-    Oblicza czas trwania rezerwacji w rozpoczętych dniach
+     * Oblicza czas trwania rezerwacji w rozpoczętych dniach
      */
-    private long calculateReservationDurationInDaysRoundedCeil(Reservation reservation) {
+    private long calculateReservationDurationInDaysRoundedCeil(LocalDateTime pickUpDateTime, LocalDateTime dropOffDateTime) {
 
-        Duration duration = Duration.between(reservation.getPickUpDateTime(), reservation.getDropOffDateTime());
+        Duration duration = Duration.between(pickUpDateTime, dropOffDateTime);
 
         long days = duration.toDays();
 
@@ -404,7 +404,9 @@ public class ReservationService {
     /**
      * Kiedy status poprzedniej rezerwacji jest: completed/set/in_progress/service i nie zgadzają się lokacje
      */
-    private Reservation setTransferReservationBeforeCurrent(Reservation previousReservation, Reservation currentReservation) {
+
+    @Transactional
+    public Reservation setTransferReservationBeforeCurrent(Reservation previousReservation, Reservation currentReservation) {
 
         Reservation newTransferReservation = new Reservation(
                 null,
@@ -427,7 +429,9 @@ public class ReservationService {
     /**
      * Kiedy status następnej rezerwacji jest: set/service i nie zgadzają się lokacje
      */
-    private Reservation setTransferReservationAfterCurrent(Reservation nextReservation, Reservation currentReservation) {
+
+    @Transactional
+    public Reservation setTransferReservationAfterCurrent(Reservation nextReservation, Reservation currentReservation) {
         Reservation newTransferReservation = new Reservation(
                 null,
                 ReservationStatus.TRANSFER,
@@ -445,12 +449,12 @@ public class ReservationService {
     }
 
 
-
     /**
      * Kiedy status poprzedniej rezerwacji jest transfer i nie zgadzają się lokacje
      */
 
-    private Reservation updateTransferReservationPreviousToCurrent(Reservation previousTransferReservation, Reservation currentReservation) {
+    @Transactional
+    public Reservation updateTransferReservationPreviousToCurrent(Reservation previousTransferReservation, Reservation currentReservation) {
 
         previousTransferReservation.setDropOffBranchId(currentReservation.getPickUpBranchId());
 
@@ -467,7 +471,8 @@ public class ReservationService {
      * Kiedy status następnej rezerwacji jest transfer i nie zgadzają się lokacje
      */
 
-    private Reservation updateTransferReservationNextToCurrent(Reservation nextTransferReservation, Reservation currentReservation) {
+    @Transactional
+    public Reservation updateTransferReservationNextToCurrent(Reservation nextTransferReservation, Reservation currentReservation) {
 
         nextTransferReservation.setPickUpBranchId(currentReservation.getDropOffBranchId());
 
@@ -487,8 +492,14 @@ public class ReservationService {
             Long currentPickUpBranchId,
             Long currentDropOffBranchId) {
 
+        BigDecimal totalPrice = this.calculateReservationPrice(
+                currentPickUpDateTime,
+                currentDropOffDateTime,
+                currentPickUpBranchId,
+                currentDropOffBranchId,
+                car);
 
-        Reservation currentPreReservation = new Reservation(
+        return new Reservation(
                 null,
                 ReservationStatus.SET,
                 null,
@@ -498,20 +509,15 @@ public class ReservationService {
                 currentPickUpBranchId,
                 currentDropOffDateTime,
                 currentDropOffBranchId,
-                null);
+                totalPrice);
 
-        currentPreReservation.setTotalPrice(
-                this.calculateReservationPrice(currentPreReservation));
-
-        return currentPreReservation;
     }
 
     /**
-     *
-     Creates map with available cars as keys and list of optional reservations adjacent to current as values
+     * Creates map with available cars as keys and list of optional reservations adjacent to current as values
      */
 
-    private Map<Car, List<Optional<Reservation>>> createMapWithAvailableCarsWithOptionalAdjacentReservations(Reservation currentPreReservation) {
+    public Map<Car, List<Optional<Reservation>>> createMapWithAvailableCarsWithOptionalAdjacentReservations(Reservation currentPreReservation) {
 
         Map<Car, List<Optional<Reservation>>> availableCarsWithOptionalAdjacentReservations = this.findAvailableCarsWithOptionalAdjacentReservations(
                 currentPreReservation.getPickUpDateTime(),
@@ -525,10 +531,9 @@ public class ReservationService {
     }
 
     /**
-     *
-    Checks if pre-reserved car is still available
+     * Checks if pre-reserved car is still available
      */
-    private void checkIfPreReservedCarIsStillAvailable(Map<Car, List<Optional<Reservation>>> availableCarsWithOptionalAdjacentReservations, Reservation currentPreReservation) throws RuntimeException {
+    public void checkIfPreReservedCarIsStillAvailable(Map<Car, List<Optional<Reservation>>> availableCarsWithOptionalAdjacentReservations, Reservation currentPreReservation) throws RuntimeException {
 
         Optional<Car> optionalCar = carRepository.findById(currentPreReservation.getCar().getId());
 
@@ -549,11 +554,12 @@ public class ReservationService {
     }
 
     /**
-     *
-     Updates, creates or deletes transfer reservation before current if needed
+     * Updates, creates or deletes transfer reservation before current if needed
      */
-    private Optional<Reservation> setOrUpdateOrDeletePreviousTransferReservation(Reservation currentPreReservation,
-                                                                       Map<Car, List<Optional<Reservation>>> availableCarsWithOptionalAdjacentReservations) {
+
+    @Transactional
+    public Optional<Reservation> setOrUpdateOrDeletePreviousTransferReservation(Reservation currentPreReservation,
+                                                                                 Map<Car, List<Optional<Reservation>>> availableCarsWithOptionalAdjacentReservations) {
 
         Optional<Reservation> optionalNewTransferReservationPreviousToCurrent = Optional.empty();
 
@@ -593,11 +599,11 @@ public class ReservationService {
     }
 
     /**
-     *
-     Updates, creates or deletes transfer reservation after current if needed
+     * Updates, creates or deletes transfer reservation after current if needed
      */
-    private Optional<Reservation> setOrUpdateOrDeleteNextTransferReservation(Reservation currentPreReservation,
-                                                                   Map<Car, List<Optional<Reservation>>> availableCarsWithOptionalAdjacentReservations) {
+    @Transactional
+    public Optional<Reservation> setOrUpdateOrDeleteNextTransferReservation(Reservation currentPreReservation,
+                                                                             Map<Car, List<Optional<Reservation>>> availableCarsWithOptionalAdjacentReservations) {
 
         Optional<Reservation> optionalNextReservation = availableCarsWithOptionalAdjacentReservations.get(currentPreReservation.getCar()).get(1);
 
@@ -636,10 +642,9 @@ public class ReservationService {
     }
 
     /**
-     *
-     Sets current reservation if still available and updates, creates or deletes transfer reservation/reservations if needed
+     * Sets current reservation if still available and updates, creates or deletes transfer reservation/reservations if needed
      */
-
+@Transactional
     public boolean setCurrentReservationAndOptionalTransferReservations(Reservation currentPreReservation) {
 
 
@@ -649,20 +654,19 @@ public class ReservationService {
         this.setOrUpdateOrDeletePreviousTransferReservation(currentPreReservation, availableCarsWithOptionalAdjacentReservations);
 
 
-       this.setOrUpdateOrDeleteNextTransferReservation(currentPreReservation, availableCarsWithOptionalAdjacentReservations);
+        this.setOrUpdateOrDeleteNextTransferReservation(currentPreReservation, availableCarsWithOptionalAdjacentReservations);
 
 
-       return this.addReservation(currentPreReservation);
+        return this.addReservation(currentPreReservation);
 
     }
-
 
 
     /**
      * @return optional previous reservation (by carId, currentPickUpDateTime)
      */
 
-    private Optional<Reservation> findNotCancelledPreviousReservationBefore(Long carId, LocalDateTime currentPickUpDateTime) {
+    public Optional<Reservation> findNotCancelledPreviousReservationBefore(Long carId, LocalDateTime currentPickUpDateTime) {
 
         return reservationRepository.findReservationsByCarId(carId)
                 .stream()
@@ -676,7 +680,7 @@ public class ReservationService {
      * @return optional next reservation (by carId, currentPickUpDateTime)
      */
 
-    private Optional<Reservation> findNotCancelledNextReservationAfter(Long carId, LocalDateTime currentDropOffDateTime) {
+    public Optional<Reservation> findNotCancelledNextReservationAfter(Long carId, LocalDateTime currentDropOffDateTime) {
 
         return reservationRepository.findReservationsByCarId(carId)
                 .stream()

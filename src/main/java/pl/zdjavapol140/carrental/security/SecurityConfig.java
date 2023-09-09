@@ -49,9 +49,9 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/home").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/preselect-car").permitAll()
                                // .requestMatchers(HttpMethod.GET, "/index").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/index").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/search").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
-                                .requestMatchers(HttpMethod.POST, "/search").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/index").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/search").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/search").permitAll()
 
                                 .requestMatchers(HttpMethod.GET, "/cars").permitAll()
                                 //      .requestMatchers(HttpMethod.GET, "/home2").hasRole("OWNER")
@@ -60,6 +60,11 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/booking/cars").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/booking/selected_car").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/booking/pre_reservation").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/preselect-car").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/submit-reservation").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/submit-reservation").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/preselect-car").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/confirm-page").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/api/booking/reservation").permitAll()
 
 

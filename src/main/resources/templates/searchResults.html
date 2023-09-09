@@ -110,10 +110,12 @@
                     <td th:text="${car.size}"></td>
                     <td th:text="${car.transmissionType}"></td>
                     <td th:text="${car.price}"></td>
-                    <td><a  th:href="@{/preselect-car(id=${car.id}, currentDropOffBranchId=${currentDropOffBranchId},
+                    <td><a  th:href="@{/preselect-car(carId=${car.id}, currentDropOffBranchId=${currentDropOffBranchId},
             currentPickUpBranchId=${currentPickUpBranchId},
             currentPickUpDateTime=${currentPickUpDateTime},
+
             currentDropOffDateTime=${currentDropOffDateTime})}" th:method="GET">BOOK</a></td>
+                  
                 </tr>
 
             </tbody>
