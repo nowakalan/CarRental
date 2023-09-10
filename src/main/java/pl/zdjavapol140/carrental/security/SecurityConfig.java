@@ -28,10 +28,11 @@ public class SecurityConfig {
         jdbcUserDetailsManager.setUsersByUsernameQuery(
 
                 "select email, password, true from users where email = ?");
-                //"select username, password, true from users where username = ?");
+
         jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
+
                 "select email, role, true from users where email = ?");
-                //"select username, authority, true from authorities where username = ?");
+
 
         return jdbcUserDetailsManager;
     }
@@ -47,14 +48,10 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/login").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/home").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/preselect-car").permitAll()
-                               // .requestMatchers(HttpMethod.GET, "/index").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/index").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/search").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/search").permitAll()
-
                                 .requestMatchers(HttpMethod.GET, "/cars").permitAll()
-                                //      .requestMatchers(HttpMethod.GET, "/home2").hasRole("OWNER")
                                 .requestMatchers(HttpMethod.GET, "/owner").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/booking/criteria").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/booking/cars").permitAll()
@@ -68,21 +65,12 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/api/booking/reservation").permitAll()
 
 
-//
-//                        .requestMatchers(HttpMethod.GET, "/api/owners").hasRole("USER")
-//                        .requestMatchers(HttpMethod.POST, "/api/owner").hasRole("USER")
-//                        .requestMatchers(HttpMethod.POST, "/api/createVet").hasRole("VET")
-//                        .requestMatchers(HttpMethod.POST, "/api/createSpeciality").hasRole("ADMIN")
-        //).logout( logout -> logout.permitAll());
+
         ).logout( logout -> logout.logoutUrl("/logout"));
 
 
         http.formLogin(Customizer.withDefaults());
-/*                http.formLogin(form -> form
-                    .loginPage("/login")
-                    .loginProcessingUrl("/authenticateUser")
-                    .permitAll());
-                http.httpBasic(Customizer.withDefaults());*/
+
 
         http.csrf(AbstractHttpConfigurer::disable);
         return http.build();
