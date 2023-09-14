@@ -3,122 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wyniki wyszukiwania</title>
+    <title>Preselect-car</title>
     <link rel="stylesheet" href="../CSS/styles.css">
 </head>
 <body>
-<div class="car-rental-logo">
-    <p class="logo-text">CAR - RENT</p>
-</div>
-
-<nav class="menu">
-
-    <div class="dropdown" sec:authorize="hasRole('ROLE_CUSTOMER')">
-        <a href="#">Reservation</a>
-        <ul>
-            <li><a href="../index.html">New reservation</a></li>
-            <li><a href="#">Your reservations</a></li>
-            <li><a href="#">Delete reservation</a></li>
-            <li><a href="#">Rent a Car/employee</a></li>
-            <li><a href="#">Return Car/employee</a></li>
-        </ul>
-    </div>
-
-    <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
-        <a href="#/display cars for clients">Cars</a>
-        <ul>
-            <li><a href="../cars-list.html">Display car list</a></li>
-            <li><a href="#">Add vehicle</a></li>
-            <li><a href="#">Remove vehicle</a></li>
-            <li><a href="#">Find a car (by model/reg num/km...)</a></li>
-            <li><a href="#">Change cars data</a></li>
-            <li><a href="#">//set status</a></li>
-            <li><a href="#">//set km</a></li>
-        </ul>
-    </div>
-
-    <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
-        <a href="#">Clients</a>
-        <ul>
-            <li><a href="#">Display clients list</a></li>
-            <li><a href="#">Add client</a></li>
-            <li><a href="#">Remove client</a></li>
-            <li><a href="#">Show reservations</a></li>
-            <li><a href="#">Find client(by name/client ID)</a></li>
-        </ul>
-    </div>
-
-    <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
-        <a href="#">Branch</a>
-        <ul>
-            <li><a href="#">List of employees</a></li>
-            <li><a href="#">Add employee</a></li>
-            <li><a href="#">//set employee status</a></li>
-            <li><a href="#">Remove employee</a></li>
-            <li><a href="#">List of available cars</a></li>
-        </ul>
-    </div>
-
-    <!--            <div class="dropdown">
-                <a href="#">???Statistics</a>
-                    <ul>
-                        <li><a href="#">Display Incomes/branch</a></li>
-                        <li><a href="#">Most rented car</a></li>
-                    </ul>
-                </div>-->
-
-    <div class="dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
-        <a href="#">Rent Companies</a>
-        <ul>
-            <li><a href="#">List of companies</a></li>
-            <li><a href="#">Add company</a></li>
-            <li><a href="#">Remove company</a></li>
-        </ul>
-    </div>
-
-    <div class="dropdown">
-        <a href="#">My Account</a>
-        <ul>
-            <li><a href="#">Login</a></li>
-            <li><a href="/logout">Logout</a></li>
-        </ul>
+    <div class="car-rental-logo">
+        <a href="/" class="logo-text">CAR - RENT</a>
     </div>
 
 
-</nav>
+
+    <nav class="menu">
+
+        <div class="dropdown" sec:authorize="hasRole('ROLE_CUSTOMER')">
+            <a href="#">Reservation</a>
+            <ul>
+                <li><a href="/">New reservation</a></li>
+                <li><a href="#">Your reservations</a></li>
+                <li><a href="#">Delete reservation</a></li>
+                <li><a href="#">Rent a Car/employee</a></li>
+                <li><a href="#">Return Car/employee</a></li>
+            </ul>
+        </div>
+
+        <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
+            <a href="#/display cars for clients">Cars</a>
+            <ul>
+                <li><a href="../cars-list.html">Display car list</a></li>
+                <li><a href="#">Add vehicle</a></li>
+                <li><a href="#">Remove vehicle</a></li>
+                <li><a href="#">Find a car (by model/reg num/km...)</a></li>
+                <li><a href="#">Change cars data</a></li>
+                <li><a href="#">//set status</a></li>
+                <li><a href="#">//set km</a></li>
+            </ul>
+        </div>
+
+        <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
+            <a href="#">Clients</a>
+            <ul>
+                <li><a href="#">Display clients list</a></li>
+                <li><a href="#">Add client</a></li>
+                <li><a href="#">Remove client</a></li>
+                <li><a href="#">Show reservations</a></li>
+                <li><a href="#">Find client(by name/client ID)</a></li>
+            </ul>
+        </div>
+
+        <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
+            <a href="#">Branch</a>
+            <ul>
+                <li><a href="#">List of employees</a></li>
+                <li><a href="#">Add employee</a></li>
+                <li><a href="#">//set employee status</a></li>
+                <li><a href="#">Remove employee</a></li>
+                <li><a href="#">List of available cars</a></li>
+            </ul>
+        </div>
+
+        <!--            <div class="dropdown">
+                    <a href="#">???Statistics</a>
+                        <ul>
+                            <li><a href="#">Display Incomes/branch</a></li>
+                            <li><a href="#">Most rented car</a></li>
+                        </ul>
+                    </div>-->
+
+        <div class="dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+            <a href="#">Rent Companies</a>
+            <ul>
+                <li><a href="#">List of companies</a></li>
+                <li><a href="#">Add company</a></li>
+                <li><a href="#">Remove company</a></li>
+            </ul>
+        </div>
+
+        <div class="dropdown">
+            <a href="#">My Account</a>
+            <ul>
+                <li><a href="#">Login</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <div class="advertisement-subpage-left">
+        <img src="../images/car-logo.png" alt="car-rental-logo" width="200"  height="100">
+    </div>
+    <div class="advertisement-subpage-right">
+        <h1>RESERVATION</h1>
+    </div>
+
 <div class="main">
-    <h1>Rezerwacja</h1>
 
-    <!-- Wyświetl parametry rezerwacji -->
-    <div>
-        <form action="#" th:action="@{/confirm-page}" th:object="${preReservation}" th:method="POST">
+    <form class="preselect-car-form" action="#" th:action="@{/confirm-page}" th:object="${preReservation}" th:method="POST">
 
 
-            <input th:type="hidden" th:field="*{car.id}" th:value="${car.id}"
-                   th:text="${car.id}"/>
-            <input th:type="hidden" th:field="*{car.brand}" th:value="${car.brand}"
-                   th:text="${car.brand}"/>
-            <input th:type="hidden" th:field="*{car.model}" th:value="${car.model}" th:text="${car.model}"/>
-            <input th:type="hidden" th:field="*{car.size}" th:value="${car.size}" th:text="${car.size}"/>
-            <input th:type="hidden" th:field="*{car.transmissionType}" th:value="${car.transmissionType}"
-                   th:text="${car.transmissionType}"/>
-            <input th:type="hidden" th:field="*{customer}" th:value="${preReservation.customer}"
-                   th:text="${preReservation.customer.email}"/>
-            <input th:type="hidden" th:field="*{pickUpDateTime}" th:value="${preReservation.pickUpDateTime}"
-                   th:text="${preReservation.pickUpDateTime}"/>
-            <input th:type="hidden" th:field="*{pickUpBranch.id}" th:value="${preReservation.pickUpBranch.id}"
-                   th:text="${preReservation.pickUpBranch.address.city}"/>
-            <input th:type="hidden" th:field="*{dropOffDateTime}" th:value="${preReservation.dropOffDateTime}"
-                   th:text="${preReservation.dropOffDateTime}"/>
-            <input th:type="hidden" th:field="*{dropOffBranch.id}"
-                   th:value="${preReservation.dropOffBranch.address.city}"
-                   th:text="${preReservation.dropOffBranch.address.city}"/>
-            <input th:type="hidden" th:field="*{totalPrice}" th:value="${preReservation.totalPrice}"
-                   th:text="${preReservation.totalPrice}"/>
+        <input th:type="hidden" th:field="*{car.id}" th:value="${car.id}"/>
 
-            <button type="submit">confirm</button>
-        </form>
-    </div>
+
+        <label>BRAND: </label>
+        <input th:type="hidden" th:field="*{car.brand}" th:value="${car.brand}" th:text="${car.brand}"/>
+        <input th:type="hidden" th:field="*{car.model}" th:value="${car.model}" th:text="${car.model}"/><br>
+
+        <label>SIZE: </label>
+        <input th:type="hidden" th:field="*{car.size}" th:value="${car.size}" th:text="${car.size}"/><br>
+        <label>TRANSMISSION TYPE: </label>
+        <input th:type="hidden" th:field="*{car.transmissionType}" th:value="${car.transmissionType}" th:text="${car.transmissionType}"/><br>
+
+
+        <label>PICK UP: </label>
+        <input th:type="hidden" th:field="*{pickUpDateTime}" th:value="${preReservation.pickUpDateTime}" th:text="${preReservation.pickUpDateTime}"/>
+        <input th:type="hidden" th:field="*{pickUpBranch.id}" th:value="${preReservation.pickUpBranch.id}" th:text="${preReservation.pickUpBranch.address.city + ', ' + preReservation.pickUpBranch.address.details}"/><br>
+
+        <label>DROP OFF: </label>
+        <input th:type="hidden" th:field="*{dropOffDateTime}" th:value="${preReservation.dropOffDateTime}" th:text="${preReservation.dropOffDateTime}"/>
+        <input th:type="hidden" th:field="*{dropOffBranch.id}" th:value="${preReservation.dropOffBranch.address.city}" th:text="${preReservation.dropOffBranch.address.city + ', ' + preReservation.pickUpBranch.address.details}"/><br>
+
+        <label>EMAIL: </label>
+        <input th:type="hidden" th:field="*{customer}" th:value="${preReservation.customer}" th:text="${preReservation.customer.email}"/><br>
+
+        <label>TOTAL PRICE: </label>
+        <input th:type="hidden" th:field="*{totalPrice}" th:value="${preReservation.totalPrice}" th:text="${preReservation.totalPrice}"/><br>
+        <button class="button" type="submit">confirm</button>
+    </form>
+
     <div class="footer">
         <p>&copy; All rights reserved</p>
     </div>

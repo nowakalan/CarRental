@@ -8,10 +8,10 @@
 </head>
 <body>
 
-        <div class="container">
+
 
                 <div class="car-rental-logo">
-                    <a href="/index" class="logo-text">CAR - RENT</a>
+                    <a href="/" class="logo-text">CAR - RENT</a>
                 </div>
                 
                  <nav class="menu">
@@ -21,7 +21,7 @@
                         <ul>
                             <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Display reservations</a></li>
                             <li sec:authorize="hasRole('ROLE_CUSTOMER')"><a href="#">Your reservations</a></li>
-                            <li><a href="/index">New reservation</a></li>
+                            <li><a href="/">New reservation</a></li>
                             <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Rent a Car</a></li>
                             <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Return Car</a></li>
                         </ul>
@@ -86,7 +86,7 @@
                      </div>
 
                 </nav>
-            </div>
+
         
 
             <div class="main">
@@ -103,13 +103,13 @@
                         <form th:action="@{/search}" method="GET">
                             <label for="currentPickUpBranchId">pickup LOCATION:</label>
                             <select id="currentPickUpBranchId" name="currentPickUpBranchId" class="location-select">
-                                <option th:each="pickUpLocation : ${allBranches}" th:text="${pickUpLocation.address}"
+                                <option th:each="pickUpLocation : ${allBranches}" th:text="${pickUpLocation.address.city + ', ' + pickUpLocation.address.details}"
                                         th:value="${pickUpLocation.getId()}"></option>
                             </select>
             
                             <label for="currentDropOffBranchId">drop-off LOCATION:</label>
                             <select id="currentDropOffBranchId" name="currentDropOffBranchId" class="location-select">
-                                <option th:each="dropOffLocation : ${allBranches}" th:text="${dropOffLocation.address}"
+                                <option th:each="dropOffLocation : ${allBranches}" th:text="${dropOffLocation.address.city + ', ' + dropOffLocation.address.details}"
                                 th:value="${dropOffLocation.getId()}"></option>
 
                             </select>
@@ -120,7 +120,7 @@
                             <label for="dropOffDate">drop-off DATE:</label>
                             <input type="datetime-local" id="dropOffDate" name="currentDropOffDateTime">
 
-                            <button type="submit">Search</button>
+                            <button class="button" type="submit">Search</button>
                         </form>
                     </div>
                 </div>
