@@ -8,7 +8,7 @@
 </head>
 
     <body>
-
+        <div class="header">
             <div class="car-rental-logo">
                 <a href="/" class="logo-text">CAR - RENT</a>
             </div>
@@ -83,21 +83,22 @@
                     <ul>
                         <li><a href="#">Login</a></li>
                         <li><a href="/logout">Logout</a></li>
+                        <li><a href="/create-customer">Create Account</a></li>
                     </ul>
                 </div>
             </nav>
+        </div>
 
-
-
+        <div class="advertisement-subpage-container">
             <div class="advertisement-subpage-left">
                 <img src="../images/car-logo.png" alt="car-rental-logo" width="200"  height="100">
             </div>
             <div class="advertisement-subpage-right">
                 <h1>AVAILABLE CARS</h1>
             </div>
+        </div>
 
-            <div class="main">
-                <!-- Wyświetl wyniki wyszukiwania tutaj -->
+            <div class="main-subpage">
                 <div class="tables" th:if="${carList}">
                     <table>
                         <thead>
@@ -118,11 +119,11 @@
                             <td th:text="${car.size}"></td>
                             <td th:text="${car.transmissionType}"></td>
                             <td th:text="${car.price}"></td>
-                            <td><a class="button" th:href="@{/preselect-car(carId=${car.id}, currentDropOffBranchId=${currentDropOffBranchId},
+                            <td><button><a class="button" th:href="@{/preselect-car(carId=${car.id}, currentDropOffBranchId=${currentDropOffBranchId},
                         currentPickUpBranchId=${currentPickUpBranchId},
                         currentPickUpDateTime=${currentPickUpDateTime},
 
-                        currentDropOffDateTime=${currentDropOffDateTime})}" th:method="GET">BOOK</a></td>
+                        currentDropOffDateTime=${currentDropOffDateTime})}" th:method="GET">BOOK</a></button></td>
 
                         </tr>
 
@@ -132,6 +133,9 @@
                 <!-- Komunikat, jeśli nie znaleziono wyników -->
                 <p th:if="${carList.isEmpty()}">Brak dostępnych samochodów spełniających podane kryteria.</p>
             </div>
+
+            <div class="push"></div>
+
             <div class="footer">
                 <p>&copy; All rights reserved</p>
             </div>

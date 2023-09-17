@@ -14,19 +14,33 @@
 	font-size: 18px;
 	font-weight: 500;
 	color: white;
+
 }
 
-html, body {
-	height: 100%;
+body {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
 	background-color: var(--primary-color);
 	padding: 0;
 	margin: 0;
 }
 .container{
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
 	height:auto;
 	margin: 0;
 	padding: 0;
 	
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--third-color);
+    padding: 0 20px;
 }
 
 .menu {
@@ -43,21 +57,22 @@ html, body {
 	float: left;
 }
 .main {
-	min-height: 100%;
-	height: auto;
-	width: 100%;
-	float: left;
+	flex-grow: 1;
+	display: flex;
 	background-color: var(--primary-color);
 }
 .main-subpage {
 	width: 80%;
 	margin: 0 auto;
-	height: 100%;
 	background-color: var(--primary-color);
+	justify-content: center; /* Wyśrodkowanie w poziomie */
+	align-items: center; /* Wyśrodkowanie w pionie */
+	height: 100%;
+	text-align: center;
+	flex-grow: 1;
 }
 
 .footer {
-	float: left;
 	background-color: var(--third-color);
 	width: 100%;
 	height: 60px;
@@ -112,7 +127,6 @@ html, body {
 }
 
 .car-rental-logo {
-	float: left;
 	width: 20%;
 	height: 60px;
 	padding-left: 5px;
@@ -137,6 +151,11 @@ html, body {
 	padding-top: 100px;
     padding-left: 30px;
 	font-size: 40px;
+}
+
+.advertisement-subpage-container {
+    display: flex;
+    justify-content: space-between;
 }
 
 .advertisement-subpage-left {
@@ -165,7 +184,7 @@ html, body {
 	float: left;
 }
 
-.search-container {
+.search-form {
     max-width: 600px;
     margin: 50px auto;
     padding: 20px;
@@ -175,7 +194,7 @@ html, body {
 	color: var(--primary-color);
 }
 
-.search-container label {
+.search-form label {
     display: block;
     margin-top: 20px;
 	font-size: 15px;
@@ -193,8 +212,9 @@ html, body {
 }
 
 .button {
+	margin: 0 auto; /* Wyśrodkowanie w poziomie */
+    display: block;
     margin-top: 20px;
-	margin-left: 250px;
     padding: 10px 20px;
     background-color: var(--secondary-color);
     color: #333;
@@ -283,6 +303,83 @@ h1 {
 	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
 	color: lightblue;
 	line-height: 2;
+	text-align: left;
 }
+
+.registration-form {
+	max-width: 600px;
+	margin: 50px auto;
+	padding: 20px;
+	background-color: var(--primary-color);
+	border-radius: 8px;
+	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+	color: lightblue;
+	text-align: left;
+}
+.registration-form label {
+	display: block;
+	margin-top: 20px;
+	font-size: 15px;
+	color: lightblue;
+}
+
+.registration-form input {
+	width: 100%;
+	padding: 8px;
+	border: none;
+	border-radius: 4px;
+	margin-top: 5px;
+	background-color: #4A4E4E;
+	color: lightblue;
+}
+
+.login-form {
+	max-width: 600px;
+	margin: 50px auto;
+	padding: 20px;
+	background-color: var(--primary-color);
+	border-radius: 8px;
+	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+	color: lightblue;
+	text-align: left;
+}
+.login-form label {
+	display: block;
+	margin-top: 20px;
+	font-size: 15px;
+	color: lightblue;
+}
+
+.login-form input {
+	width: 100%;
+	padding: 8px;
+	border: none;
+	border-radius: 4px;
+	margin-top: 5px;
+	background-color: #4A4E4E;
+	color: lightblue;
+}
+
+.success-message {
+	width: 60%;
+	background-color: lightcoral;
+	color: #155724;
+	padding: 10px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	margin-bottom: 10px;
+	
+	margin: 0 auto; /* Wyśrodkowanie w poziomie */
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    clear: both; /* Dodaj clear: both, aby opłynąć inne elementy */
+}
+
+.success-message p {
+	text-align: center;
+	font-weight: bold;
+}
+
 
 /* background: linear-gradient(45deg, #49a09d, #5f2c82); */

@@ -8,6 +8,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -36,6 +37,11 @@ public class SecurityConfig {
         return jdbcUserDetailsManager;
     }
 
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -50,6 +56,10 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/index").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/search").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/search").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/create-customer").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/create-customer").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/custom-login").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/custom-login").permitAll()
 
                                 .requestMatchers(HttpMethod.GET, "/cars").permitAll()
                                 //      .requestMatchers(HttpMethod.GET, "/home2").hasRole("OWNER")
@@ -77,10 +87,10 @@ public class SecurityConfig {
 
         http.formLogin(Customizer.withDefaults());
 /*                http.formLogin(form -> form
-                    .loginPage("/login")
+                    .loginPage("/custom-login")
                     .loginProcessingUrl("/authenticateUser")
-                    .permitAll());
-                http.httpBasic(Customizer.withDefaults());*/
+                    .permitAll());*/
+//                http.httpBasic(Customizer.withDefaults());
 
         http.csrf(AbstractHttpConfigurer::disable);
         return http.build();

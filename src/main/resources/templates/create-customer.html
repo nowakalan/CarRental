@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Customer</title>
+  <link rel="stylesheet" href="../CSS/styles.css">
+</head>
+<body>
+
+  <div class="header">
+    <div class="car-rental-logo">
+      <a href="/" class="logo-text">CAR - RENT</a>
+    </div>
+
+    <nav class="menu">
+
+      <div class="dropdown" sec:authorize="hasRole('ROLE_CUSTOMER')">
+        <a href="#">Reservation</a>
+        <ul>
+          <li><a href="/">New reservation</a></li>
+          <li><a href="#">Your reservations</a></li>
+          <li><a href="#">Delete reservation</a></li>
+          <li><a href="#">Rent a Car/employee</a></li>
+          <li><a href="#">Return Car/employee</a></li>
+        </ul>
+      </div>
+
+      <div class="dropdown"  sec:authorize="hasRole('ROLE_EMPLOYEE')">
+        <a href="#/display cars for clients">Cars</a>
+        <ul>
+          <li><a href="../cars-list.html">Display car list</a></li>
+          <li><a href="#">Add vehicle</a></li>
+          <li><a href="#">Remove vehicle</a></li>
+          <li><a href="#">Find a car (by model/reg num/km...)</a></li>
+          <li><a href="#">Change cars data</a></li>
+          <li><a href="#">//set status</a></li>
+          <li><a href="#">//set km</a></li>
+        </ul>
+      </div>
+
+      <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
+        <a href="#">Clients</a>
+        <ul>
+          <li><a href="#">Display clients list</a></li>
+          <li><a href="#">Add client</a></li>
+          <li><a href="#">Remove client</a></li>
+          <li><a href="#">Show reservations</a></li>
+          <li><a href="#">Find client(by name/client ID)</a></li>
+        </ul>
+      </div>
+
+      <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
+        <a href="#">Branch</a>
+        <ul>
+          <li><a href="#">List of employees</a></li>
+          <li><a href="#">Add employee</a></li>
+          <li><a href="#">//set employee status</a></li>
+          <li><a href="#">Remove employee</a></li>
+          <li><a href="#">List of available cars</a></li>
+        </ul>
+      </div>
+
+      <!--            <div class="dropdown">
+                  <a href="#">???Statistics</a>
+                      <ul>
+                          <li><a href="#">Display Incomes/branch</a></li>
+                          <li><a href="#">Most rented car</a></li>
+                      </ul>
+                  </div>-->
+
+      <div class="dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+        <a href="#">Rent Companies</a>
+        <ul>
+          <li><a href="#">List of companies</a></li>
+          <li><a href="#">Add company</a></li>
+          <li><a href="#">Remove company</a></li>
+        </ul>
+      </div>
+
+      <div class="dropdown">
+        <a href="#">My Account</a>
+        <ul>
+          <li><a href="/login">Login</a></li>
+          <li><a href="/logout">Logout</a></li>
+          <li><a href="/create-customer">Create Account</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+
+  <div class="advertisement-subpage-container">
+    <div class="advertisement-subpage-left">
+      <img src="../images/car-logo.png" alt="car-rental-logo" width="200"  height="100">
+    </div>
+    <div class="advertisement-subpage-right">
+      <h1>Create Account</h1>
+    </div>
+  </div>  
+
+
+
+  <div class="main-subpage">
+
+    <div th:if="${customerAddedMessage}" class="success-message">
+      <p th:text="${customerAddedMessage}"></p>
+    </div>
+
+    <a href="/"><button class="button" th:if="${customerAddedMessage}">Login</button></a>
+
+    <form class="registration-form" th:unless="${customerAddedMessage}"
+          th:action="@{/create-customer}" method="post">
+
+      <label for="firstName">First Name:</label>
+      <input type="text" id="firstName" name="firstName" required><br>
+
+      <label for="lastName">Last Name:</label>
+      <input type="text" id="lastName" name="lastName" required><br>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required><br>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required><br>
+
+      <label for="phone">Phone:</label>
+      <input type="text" id="phone" name="phone" required><br>
+
+      <label for="country">Country:</label>
+      <input type="text" id="country" name="country" required><br>
+
+      <label for="city">City:</label>
+      <input type="text" id="city" name="city" required><br>
+
+      <label for="postalCode">Postal Code:</label>
+      <input type="text" id="postalCode" name="postalCode" required><br>
+
+      <label for="details">Details:</label>
+      <input type="text" id="details" name="details" required><br>
+
+      <button class="button" type="submit" th:unless="${customerAddedMessage}">Create Account</button>
+<!--      <input type="submit" value="Create Customer">-->
+    </form>
+
+  </div>
+
+  <div class="push"></div>
+
+  <div class="footer">
+    <p>&copy; All rights reserved</p>
+  </div>
+
+</body>
+</html>

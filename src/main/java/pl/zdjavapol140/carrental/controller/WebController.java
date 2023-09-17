@@ -2,10 +2,14 @@ package pl.zdjavapol140.carrental.controller;
 
 
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,11 +17,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.zdjavapol140.carrental.model.*;
-import pl.zdjavapol140.carrental.service.BranchService;
-import pl.zdjavapol140.carrental.service.CarService;
-import pl.zdjavapol140.carrental.service.CustomerService;
-import pl.zdjavapol140.carrental.service.ReservationService;
+import pl.zdjavapol140.carrental.repository.AddressRepository;
+import pl.zdjavapol140.carrental.repository.CustomerRepository;
+import pl.zdjavapol140.carrental.repository.UserRepository;
+import pl.zdjavapol140.carrental.service.*;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,14 +34,24 @@ public class WebController {
     private final BranchService branchService;
     private final ReservationService reservationService;
     private final CarService carService;
-
     private final CustomerService customerService;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final AddressRepository addressRepository;
+    private final CustomerRepository customerRepository;
+    private final EmployeeService employeeService;
 
-    public WebController(BranchService branchService, ReservationService reservationService, CarService carService, CustomerService customerService) {
+
+    public WebController(BranchService branchService, ReservationService reservationService, CarService carService, CustomerService customerService, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, BCryptPasswordEncoder passwordEncoder, AddressRepository addressRepository, CustomerRepository customerRepository, EmployeeService employeeService) {
         this.branchService = branchService;
         this.reservationService = reservationService;
         this.carService = carService;
         this.customerService = customerService;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.addressRepository = addressRepository;
+        this.customerRepository = customerRepository;
+        this.employeeService = employeeService;
     }
 
 
@@ -50,6 +65,15 @@ public class WebController {
         return "index";
     }
 
+    @PostMapping("/authenticateUser")
+    public String authenticateUser(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+
+
+        return "redirect:/index";
+    }
 
     @GetMapping("/search")
     public String search(@RequestParam LocalDateTime currentPickUpDateTime,
@@ -132,9 +156,11 @@ public class WebController {
         currentReservation.setTotalPrice(preReservation.getTotalPrice());
         log.info(currentReservation.toString());
 
+//        model.addAttribute("reservationConfirmed", "Reservation confirmed");
+
         try {
             reservationService.setCurrentReservationAndOptionalTransferReservations(currentReservation);
-            model.addAttribute("message", "Reservation confirmed");
+            model.addAttribute("reservationConfirmed", "Reservation confirmed");
 
         } catch (Exception e) {
             model.addAttribute("error", "Reservation aborted" + e.getMessage());
@@ -143,5 +169,69 @@ public class WebController {
 
         return "confirm-page";
 
+    }
+
+    @GetMapping("/create-customer")
+    public String showCreateCustomerForm(Model model) {
+        model.addAttribute("user", new User());
+        return "create-customer";
+    }
+
+    @PostMapping("/create-customer")
+    public String createCustomer(
+            @RequestParam("password") String password,
+            @RequestParam("firstName") String firstName,
+            @RequestParam("lastName") String lastName,
+            @RequestParam("email") String email,
+            @RequestParam("phone") String phone,
+            @RequestParam("country") String country,
+            @RequestParam("city") String city,
+            @RequestParam("postalCode") String postalCode,
+            @RequestParam("details") String details,
+            Model model) {
+
+        // Sprawdzenie, czy email istnieje w bazie danych
+        User existingUser = userRepository.findByEmail(email);
+        if (existingUser != null) {
+            model.addAttribute("userAlreadyExists", "An account with the provided email address already exists.");
+            return "create-customer";
+        }
+
+        // Hashowanie hasła przed zapisaniem do bazy danych
+        String encodedPassword = passwordEncoder.encode(password);
+
+        // Tworzenie i zapisanie użytkownika
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(encodedPassword);
+        user.setRole(Role.ROLE_CUSTOMER);
+        userRepository.save(user);
+
+        // Tworzenie i zapisanie adresu
+        Address address = new Address();
+        address.setCountry(country);
+        address.setCity(city);
+        address.setPostalCode(postalCode);
+        address.setDetails(details);
+        addressRepository.save(address);
+
+        // Tworzenie i zapisanie klienta z odniesieniem do użytkownika i adresu
+        Customer customer = new Customer();
+        customer.setFirstName(firstName);
+        customer.setLastName(lastName);
+        customer.setEmail(email);
+        customer.setPhone(phone);
+        customer.setUser(user);
+        customer.setAddress(address);
+        customerRepository.save(customer);
+
+        // Ustawienie atrybutu w modelu do wyświetlenia komunikatu
+        model.addAttribute("customerAddedMessage", "Your account has been created");
+
+        return "create-customer";
+    }
+    @GetMapping("/login")
+    public String loginPage() {
+        return "custom-login";
     }
 }
