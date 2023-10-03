@@ -1,5 +1,6 @@
 package pl.zdjavapol140.carrental.repository;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -9,6 +10,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
+    @Override
+    List<Reservation> findAll();
 
     List<Reservation> findReservationsByCarId(Long carId);
 
@@ -49,5 +52,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
                 OR (r.pickUpDateTime >= :currentPickUpDateTime AND r.dropOffDateTime <= :currentDropOffDateTime))
                     """)
     List<Reservation> findNotMatchingReservations(@Param("currentPickUpDateTime") LocalDateTime currentPickUpDateTime, @Param("currentDropOffDateTime") LocalDateTime currentDropOffDateTime);
+
 
 }

@@ -147,4 +147,9 @@ public class CustomerService {
 
         return customerRepository.findCustomersByPhone(phone);
     }
+
+    public Customer findCustomersByEmail(String email) {
+
+        return customerRepository.findCustomersByEmail(email);
+    }
 }

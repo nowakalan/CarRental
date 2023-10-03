@@ -11,6 +11,8 @@ import pl.zdjavapol140.carrental.service.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static pl.zdjavapol140.carrental.model.Job.EMPLOYEE;
+
 @Slf4j
 @Component
 public class DbCreator {
@@ -51,6 +53,8 @@ public class DbCreator {
 
     @EventListener(ApplicationReadyEvent.class)
     public void insertDataToDb() {
+
+       // employeeService.addNewEmployee("employee", "employee", "employee@gmail.com", EMPLOYEE, null);
 
 
 //        List<Address> addresses = new ArrayList<>();

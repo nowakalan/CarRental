@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,12 +20,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pl.zdjavapol140.carrental.model.*;
 import pl.zdjavapol140.carrental.repository.AddressRepository;
 import pl.zdjavapol140.carrental.repository.CustomerRepository;
+import pl.zdjavapol140.carrental.repository.ReservationRepository;
 import pl.zdjavapol140.carrental.repository.UserRepository;
 import pl.zdjavapol140.carrental.service.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @Slf4j
@@ -33,8 +37,10 @@ public class WebController {
 
     private final BranchService branchService;
     private final ReservationService reservationService;
+    private final ReservationRepository reservationRepository;
     private final CarService carService;
     private final CustomerService customerService;
+    private final UserService userService;
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final AddressRepository addressRepository;
@@ -42,12 +48,14 @@ public class WebController {
     private final EmployeeService employeeService;
 
 
-    public WebController(BranchService branchService, ReservationService reservationService, CarService carService, CustomerService customerService, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, BCryptPasswordEncoder passwordEncoder, AddressRepository addressRepository, CustomerRepository customerRepository, EmployeeService employeeService) {
+    public WebController(BranchService branchService, ReservationService reservationService, CarService carService, CustomerService customerService, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, ReservationRepository reservationRepository, UserService userService, BCryptPasswordEncoder passwordEncoder, AddressRepository addressRepository, CustomerRepository customerRepository, EmployeeService employeeService) {
         this.branchService = branchService;
         this.reservationService = reservationService;
         this.carService = carService;
         this.customerService = customerService;
         this.userRepository = userRepository;
+        this.reservationRepository = reservationRepository;
+        this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.addressRepository = addressRepository;
         this.customerRepository = customerRepository;
@@ -232,6 +240,40 @@ public class WebController {
     }
     @GetMapping("/login")
     public String loginPage() {
+
         return "custom-login";
     }
+
+
+    @GetMapping("/reservations")
+    public String getReservations(Model model, Authentication authentication) {
+
+        boolean isAdminOrEmployee = false;
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            if (authority.getAuthority().equals("ROLE_EMPLOYEE") || authority.getAuthority().equals("ROLE_ADMIN")) {
+                isAdminOrEmployee = true;
+                break;
+            }
+        }
+
+        if (isAdminOrEmployee) {
+            List<Reservation> allReservations = reservationService.getAll();
+            model.addAttribute("reservations", allReservations);
+
+        } else {
+            UserDetails loggedInUser = (UserDetails) authentication.getPrincipal();
+            String userEmail = loggedInUser.getUsername();
+            Customer customer = customerService.findCustomersByEmail(userEmail);
+
+            if (customer != null) {
+                Long customerId = customer.getId();
+                List<Reservation> userReservations = reservationService.findReservationsByCustomerId(customerId);
+                model.addAttribute("reservations", userReservations);
+            }
+        }
+
+        return "reservations-list";
+    }
+
+
 }

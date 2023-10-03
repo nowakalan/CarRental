@@ -12,8 +12,7 @@ import java.util.List;
 
 public interface CarRepository extends JpaRepository<Car, Long> {
 
-    @Override
-    List<Car> findAll();
+
 
     List<Car> findCarsByColor(String color);
 

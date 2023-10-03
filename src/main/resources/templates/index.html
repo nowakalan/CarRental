@@ -19,8 +19,8 @@
                     <div class="dropdown" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE')">
                         <a href="#">Reservation</a>
                         <ul>
-                            <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Display reservations</a></li>
-                            <li sec:authorize="hasRole('ROLE_CUSTOMER')"><a href="#">Your reservations</a></li>
+                            <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="/reservations">Display reservations</a></li>
+                            <li sec:authorize="hasRole('ROLE_CUSTOMER')"><a href="/reservations">Your reservations</a></li>
                             <li><a href="/">New reservation</a></li>
                             <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Rent a Car</a></li>
                             <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Return Car</a></li>

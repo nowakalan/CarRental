@@ -33,6 +33,10 @@ public class ReservationService {
     }
 
 
+    public List<Reservation> getAll() {
+        return reservationRepository.findAll();
+    }
+
     public Reservation findReservationById(Long id) throws RuntimeException {
 
         return reservationRepository

@@ -26,11 +26,9 @@ public class CarService {
         return carRepository.findAll();
     }
 
-    private final ReservationRepository reservationRepository;
 
-    public CarService(CarRepository carRepository, ReservationRepository reservationRepository) {
+    public CarService(CarRepository carRepository) {
         this.carRepository = carRepository;
-        this.reservationRepository = reservationRepository;
     }
 
 

@@ -16,27 +16,23 @@
 
         <nav class="menu">
 
-            <div class="dropdown" sec:authorize="hasRole('ROLE_CUSTOMER')">
+            <div class="dropdown" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE')">
                 <a href="#">Reservation</a>
                 <ul>
+                    <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="/reservations">Display reservations</a></li>
+                    <li sec:authorize="hasRole('ROLE_CUSTOMER')"><a href="/reservations">Your reservations</a></li>
                     <li><a href="/">New reservation</a></li>
-                    <li><a href="#">Your reservations</a></li>
-                    <li><a href="#">Delete reservation</a></li>
-                    <li><a href="#">Rent a Car/employee</a></li>
-                    <li><a href="#">Return Car/employee</a></li>
+                    <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Rent a Car</a></li>
+                    <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Return Car</a></li>
                 </ul>
             </div>
 
-            <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
+            <div class="dropdown"  sec:authorize="hasRole('ROLE_EMPLOYEE')">
                 <a href="#/display cars for clients">Cars</a>
                 <ul>
-                    <li><a href="../cars-list.html">Display car list</a></li>
+                    <li><a href="/cars">Display car list</a></li>
                     <li><a href="#">Add vehicle</a></li>
-                    <li><a href="#">Remove vehicle</a></li>
-                    <li><a href="#">Find a car (by model/reg num/km...)</a></li>
-                    <li><a href="#">Change cars data</a></li>
-                    <li><a href="#">//set status</a></li>
-                    <li><a href="#">//set km</a></li>
+                    <li><a href="#">Find a car</a></li>
                 </ul>
             </div>
 

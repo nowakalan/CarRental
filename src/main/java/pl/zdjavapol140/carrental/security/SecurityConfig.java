@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -60,6 +61,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/create-customer").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/custom-login").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/custom-login").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/reservations").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
 
                                 .requestMatchers(HttpMethod.GET, "/cars").permitAll()
                                 //      .requestMatchers(HttpMethod.GET, "/home2").hasRole("OWNER")
@@ -86,11 +88,11 @@ public class SecurityConfig {
 
 
         http.formLogin(Customizer.withDefaults());
-/*                http.formLogin(form -> form
-                    .loginPage("/custom-login")
-                    .loginProcessingUrl("/authenticateUser")
-                    .permitAll());*/
-//                http.httpBasic(Customizer.withDefaults());
+//                http.formLogin(form -> form
+//                    .loginPage("/login")
+//                    .loginProcessingUrl("/authenticateUser")
+//                    .permitAll());
+                http.httpBasic(Customizer.withDefaults());
 
         http.csrf(AbstractHttpConfigurer::disable);
         return http.build();
