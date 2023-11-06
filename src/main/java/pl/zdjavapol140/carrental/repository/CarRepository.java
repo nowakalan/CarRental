@@ -39,5 +39,6 @@ public interface CarRepository extends JpaRepository<Car, Long> {
 
     List<Car> findCarsByMileageGreaterThan(Double mileage);
 
+    Car findCarById(Long id);
 
 }

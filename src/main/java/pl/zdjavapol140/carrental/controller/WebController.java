@@ -13,22 +13,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import pl.zdjavapol140.carrental.model.*;
-import pl.zdjavapol140.carrental.repository.AddressRepository;
-import pl.zdjavapol140.carrental.repository.CustomerRepository;
-import pl.zdjavapol140.carrental.repository.ReservationRepository;
-import pl.zdjavapol140.carrental.repository.UserRepository;
+import pl.zdjavapol140.carrental.repository.*;
 import pl.zdjavapol140.carrental.service.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 
 @Slf4j
@@ -39,6 +31,7 @@ public class WebController {
     private final ReservationService reservationService;
     private final ReservationRepository reservationRepository;
     private final CarService carService;
+    private final CarRepository carRepository;
     private final CustomerService customerService;
     private final UserService userService;
     private final UserRepository userRepository;
@@ -48,13 +41,14 @@ public class WebController {
     private final EmployeeService employeeService;
 
 
-    public WebController(BranchService branchService, ReservationService reservationService, CarService carService, CustomerService customerService, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, ReservationRepository reservationRepository, UserService userService, BCryptPasswordEncoder passwordEncoder, AddressRepository addressRepository, CustomerRepository customerRepository, EmployeeService employeeService) {
+    public WebController(BranchService branchService, ReservationService reservationService, CarService carService, CustomerService customerService, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, ReservationRepository reservationRepository, CarRepository carRepository, UserService userService, BCryptPasswordEncoder passwordEncoder, AddressRepository addressRepository, CustomerRepository customerRepository, EmployeeService employeeService) {
         this.branchService = branchService;
         this.reservationService = reservationService;
         this.carService = carService;
         this.customerService = customerService;
         this.userRepository = userRepository;
         this.reservationRepository = reservationRepository;
+        this.carRepository = carRepository;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.addressRepository = addressRepository;
@@ -101,12 +95,6 @@ public class WebController {
         return "searchResults";
     }
 
-
-    @GetMapping("/cars")
-    public String getCars(Model model) {
-        model.addAttribute("cars", carService.getAll());
-        return "cars-list";
-    }
 
 
     @GetMapping("/preselect-car")
@@ -179,6 +167,45 @@ public class WebController {
 
     }
 
+    @GetMapping("/cars")
+    public String getCars(Model model) {
+        model.addAttribute("cars", carService.getAll());
+        return "cars-list";
+    }
+
+    @PostMapping("/deleteCar")
+    public String deleteCar(@RequestParam("carId") Long carId){
+        carService.deleteCar(carId);
+        return "redirect:/cars";
+    }
+
+    @GetMapping("/updateCar")
+    public String updateCar(Model model){
+        // Przekazanie pustego obiektu Car do formularza
+        model.addAttribute("car", new Car());
+
+        return "car-update";
+    }
+
+    @PatchMapping("/updateCar")
+    public String updateCar(@ModelAttribute Car car, Model model) {
+        try {
+            Car existingCar = carRepository.findCarById(car.getId());
+
+            existingCar.setMileage(car.getMileage());
+            existingCar.setPrice(car.getPrice());
+
+            carService.saveCar(existingCar);
+
+            model.addAttribute("carDataUpdatedMessage", "Data has been updated"); // Ustawienie komunikatu sukcesu
+        } catch (Exception e) {
+            // Obsługa błędu, jeśli coś pójdzie nie tak
+            model.addAttribute("carDataUpdatedMessage", "Data update failed"); // Ustawienie komunikatu błędu
+        }
+
+        return "car-update";
+    }
+
     @GetMapping("/create-customer")
     public String showCreateCustomerForm(Model model) {
         model.addAttribute("user", new User());
@@ -208,14 +235,14 @@ public class WebController {
         // Hashowanie hasła przed zapisaniem do bazy danych
         String encodedPassword = passwordEncoder.encode(password);
 
-        // Tworzenie i zapisanie użytkownika
+
         User user = new User();
         user.setEmail(email);
         user.setPassword(encodedPassword);
         user.setRole(Role.ROLE_CUSTOMER);
         userRepository.save(user);
 
-        // Tworzenie i zapisanie adresu
+
         Address address = new Address();
         address.setCountry(country);
         address.setCity(city);
@@ -223,7 +250,7 @@ public class WebController {
         address.setDetails(details);
         addressRepository.save(address);
 
-        // Tworzenie i zapisanie klienta z odniesieniem do użytkownika i adresu
+
         Customer customer = new Customer();
         customer.setFirstName(firstName);
         customer.setLastName(lastName);
@@ -238,11 +265,18 @@ public class WebController {
 
         return "create-customer";
     }
-    @GetMapping("/login")
-    public String loginPage() {
 
-        return "custom-login";
+    @GetMapping("/login")
+    public String login(Model model){
+        if(userService.isUserLoggedIn()){
+            model.addAttribute("loggedIn", true);
+        } else{
+            model.addAttribute("loggedIn", false);
+        }
+
+        return "login";
     }
+
 
 
     @GetMapping("/reservations")
@@ -274,6 +308,4 @@ public class WebController {
 
         return "reservations-list";
     }
-
-
 }

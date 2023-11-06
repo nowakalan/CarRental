@@ -97,7 +97,7 @@
     <img src="../images/car-logo.png" alt="car-rental-logo" width="200"  height="100">
   </div>
   <div class="advertisement-subpage-right">
-    <h1>Login</h1>
+    <h1>Update cars data</h1>
   </div>
 </div>
 
@@ -105,32 +105,25 @@
 
 <div class="main-subpage">
 
-<!--  <form class="login-form" th:action="@{/authenticateUser}" method="POST">-->
+  <div th:if="${carDataUpdatedMessage}" class="success-message">
+    <p th:text="${carDataUpdatedMessage}"></p>
+  </div>
 
 
-    <div th:if="${param.error}">
-      <p class="success-message">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
-    </div>
+  <form th:object="${car}" th:action="@{/updateCar}" method="patch">
+    <!-- Hidden input to send car id to the server -->
+    <input type="hidden" th:field="*{id}" />
 
-    <div th:if="${param.logout}">
-      <p class="success-message">You have been logged out.</p>
-    </div>
+    <p>Id: <span th:text="${car.id}"></span></p>
+    <p>Brand: <span th:text="${car.brand}"></span></p>
 
-  <form class="login-form" th:action="@{/authenticateUser}" method="POST">
-    <div>
-      <p>
-        <input type="text" id="email" name="email" placeholder="Email" required autofocus/>
-      </p>
-      <p>
-        <input type="password" id="password" name="password" placeholder="Password" required />
-      </p>
-      <p>
-        <button class="button" type="submit">Login</button>
-      </p>
-      <p>
-        Not a member? <a th:href="@{/create-customer}">Create account</a>
-      </p>
-    </div>
+    <label for="mileage">Mileage:</label>
+    <input type="text" id="mileage" th:field="*{mileage}" required><br>
+
+    <label for="price">Price:</label>
+    <input type="text" id="price" th:field="*{price}" required><br>
+
+    <button class="button" type="submit">Save</button>
   </form>
 
 </div>

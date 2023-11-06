@@ -64,6 +64,9 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/reservations").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
 
                                 .requestMatchers(HttpMethod.GET, "/cars").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/deleteCar").hasAnyRole("EMPLOYEE", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/updateCar").hasAnyRole("EMPLOYEE", "ADMIN")
+                                .requestMatchers(HttpMethod.PATCH, "/updateCar").hasAnyRole("EMPLOYEE", "ADMIN")
                                 //      .requestMatchers(HttpMethod.GET, "/home2").hasRole("OWNER")
                                 .requestMatchers(HttpMethod.GET, "/owner").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/booking/criteria").permitAll()
