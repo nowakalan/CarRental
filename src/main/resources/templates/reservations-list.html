@@ -31,7 +31,7 @@
       <a href="cars-list.html/display cars for clients">Cars</a>
       <ul>
         <li><a href="/cars">Display car list</a></li>
-        <li><a href="#">Add vehicle</a></li>
+        <li><a href="/createCar">Add vehicle</a></li>
         <li><a href="#">Find a car</a></li>
       </ul>
     </div>
@@ -124,13 +124,15 @@
         <td th:text="${reservation.customer.firstName + ' ' + reservation.customer.lastName}" />
         <td th:text="${reservation.status}" />
         <td >
-          <button class="button-warning" th:href="@{/updateReservationForm(reservationId=${reservation.id})}">
-            Update
-          </button>
-          <button th:href="@{/deleteReservation(reservationId=${reservation.id})}" class="button-danger"
-                  onclick="if (!(confirm('Are you sure you want to delete this reservation?'))) return false">
-            Delete
-          </button>
+          <form th:action="@{/deleteReservation}" method="post"
+            onsubmit="return confirm('Are you sure you want to delete this reservation?')">
+            <input type="hidden" name="reservationId" th:value="${reservation.id}">
+            <button class="button-danger button-common" type="submit">Delete</button>
+          </form>
+<!--          <button th:href="@{/deleteReservation(reservationId=${reservation.id})}" class="button-danger"-->
+<!--                  onclick="if (!(confirm('Are you sure you want to delete this reservation?'))) return false">-->
+<!--            Delete-->
+<!--          </button>-->
         </td>
       </tr>
       </tbody>

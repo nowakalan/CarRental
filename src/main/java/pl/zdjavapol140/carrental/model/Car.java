@@ -28,14 +28,6 @@ public class Car {
     private String brand;
     private String model;
 
-    public Car(String brand, String model, CarSize size, Integer productionYear, String color) {
-        this.brand = brand;
-        this.model = model;
-        this.size = size;
-        this.productionYear = productionYear;
-        this.color = color;
-    }
-
     @Enumerated(value = EnumType.STRING)
     private CarSize size;
 
@@ -55,6 +47,14 @@ public class Car {
     @OneToMany(mappedBy = "car", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<Reservation> reservations = new ArrayList<>();
 
+    public Car(String brand, String model, CarSize size, Integer productionYear, String color) {
+        this.brand = brand;
+        this.model = model;
+        this.size = size;
+        this.productionYear = productionYear;
+        this.color = color;
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

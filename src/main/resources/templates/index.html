@@ -4,15 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Car Rental</title>
-    <link rel="stylesheet" href="../CSS/styles.css">
+    <link rel="stylesheet" href="../static/CSS/styles.css">
 </head>
 <body>
 
         <div class="container">
             <div class="header">
-                <div class="car-rental-logo">
+                <div class="logo">
                     <a href="/" class="logo-text">CAR - RENT</a>
                 </div>
+
+                <div class="contact">
+                    <img src="../static/images/phone-icon.svg" width="30">
+                    + 47 486 27 952
+                </div>
+            </div>
                 
                  <nav class="menu">
 
@@ -31,7 +37,7 @@
                         <a href="#/display cars for clients">Cars</a>
                             <ul>
                                 <li><a href="/cars">Display car list</a></li>
-                                <li><a href="#">Add vehicle</a></li>
+                                <li><a href="/createCar">Add vehicle</a></li>
                                 <li><a href="#">Find a car</a></li>
                             </ul>
                      </div>
@@ -93,7 +99,6 @@
                      </div>
 
                 </nav>
-            </div>
 
 
 
@@ -104,7 +109,7 @@
                     Rental Car.<br>
                     Go wherever the road may lead.
 
-                    <img src="../images/car-logo.png" alt="car-rental-logo" width="600"  height="300">
+                    <img src="../static/images/car-logo.png" alt="car-rental-logo" width="600"  height="300">
                 </div>
                 <div class="search">
                         <form class="search-form" th:action="@{/search}" method="GET">
@@ -116,7 +121,7 @@
             
                             <label for="currentDropOffBranchId">drop-off LOCATION:</label>
                             <select id="currentDropOffBranchId" name="currentDropOffBranchId" class="location-select">
-                                <option th:each="dropOffLocation : ${allBranches}" th:text="${dropOffLocation.address.city + ', ' + dropOffLocation.address.details}"
+                                <option th:each="dropOffLocation : ${allBranches}" th:text="${dropOffLocation.getName() + ' / ' + dropOffLocation.address.city + ' / ' + dropOffLocation.address.details}"
                                 th:value="${dropOffLocation.getId()}"></option>
 
                             </select>

@@ -66,7 +66,10 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/cars").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/deleteCar").hasAnyRole("EMPLOYEE", "ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/updateCar").hasAnyRole("EMPLOYEE", "ADMIN")
-                                .requestMatchers(HttpMethod.PATCH, "/updateCar").hasAnyRole("EMPLOYEE", "ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/updateCar").hasAnyRole("EMPLOYEE", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/createCar").hasAnyRole("EMPLOYEE", "ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/create-car").hasAnyRole("EMPLOYEE", "ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/find-car-by-id").hasAnyRole("EMPLOYEE", "ADMIN")
                                 //      .requestMatchers(HttpMethod.GET, "/home2").hasRole("OWNER")
                                 .requestMatchers(HttpMethod.GET, "/owner").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/booking/criteria").permitAll()
@@ -79,6 +82,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/preselect-car").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/confirm-page").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/api/booking/reservation").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/deleteReservation").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
 
 
 //

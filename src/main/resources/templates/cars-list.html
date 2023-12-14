@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Car Rental</title>
-  <link rel="stylesheet" href="/CSS/styles.css">
+  <link rel="stylesheet" href="../static/CSS/styles.css">
 </head>
 <body>
-
+  <div class="container">
   <div class="header">
     <div class="car-rental-logo">
       <a href="/" class="logo-text">CAR - RENT</a>
@@ -31,7 +31,7 @@
         <a href="cars-list.html/display cars for clients">Cars</a>
         <ul>
           <li><a href="/cars">Display car list</a></li>
-          <li><a href="#">Add vehicle</a></li>
+          <li><a href="/createCar">Add vehicle</a></li>
           <li><a href="#">Find a car</a></li>
         </ul>
       </div>
@@ -103,6 +103,21 @@
   </div>
 
 
+  <div>
+    <form action="/find-car-by-id" method="post" class="form form-search-car-by-id">
+      <input type="text" id="carId" name="carId" placeholder="Enter Car ID:" required>
+      <button class="button" type="submit">Search</button>
+    </form>
+  </div>
+
+
+  <div class="filter">
+    <select id="brand" name="brand" class="select"></select>
+    <select id="size" name="size" class="select"></select>
+    <select id="price" name="price" class="select"></select>
+    <select id="gearbox" name="gearbox" class="select"></select>
+  </div>
+
 
   <div class="main-subpage">
     <div class="tables">
@@ -135,13 +150,14 @@
         <td th:text="${car.price}" />
         <td th:text="${car.mileage}" />
         <td th:text="${car.rental.address.city + ', ' + car.rental.name}" />
+
         <td style="text-align: right">
-          <form th:action="@{/updateCar}" method="patch">
-            <button class="button-warning button-common" th:href="@{/updateCarForm(carId=${car.id})}">
-              Update
-            </button>
+          <a th:href="@{/updateCar(carId=${car.id})}"><button class="button-warning button-common">Update</button></a>
+          <form th:action="@{/updateCar}" method="post">
+            <input type="hidden" th:value="${car.id}" name="carId" />
           </form>
         </td>
+
         <td >
           <form th:action="@{/deleteCar}" method="post"
                 onsubmit="return confirm('Are you sure you want to delete this car?')">
@@ -149,6 +165,7 @@
             <button class="button-danger button-common" type="submit">Delete</button>
           </form>
         </td>
+
       </tr>
       </tbody>
     </table>
@@ -156,7 +173,7 @@
   </div>
 
   <div class="push"></div>
-
+</div>
 
 <div class="footer">
   <p>&copy; All rights reserved.</p>

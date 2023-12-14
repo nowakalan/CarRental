@@ -30,7 +30,7 @@
       <a href="#/display cars for clients">Cars</a>
       <ul>
         <li><a href="/cars">Display car list</a></li>
-        <li><a href="#">Add vehicle</a></li>
+        <li><a href="/createCar">Add vehicle</a></li>
         <li><a href="#">Find a car</a></li>
       </ul>
     </div>
@@ -60,7 +60,7 @@
     <!--            <div class="dropdown">
                 <a href="#">???Statistics</a>
                     <ul>
-                        <li><a href="#">Display Incomes/branch</a></li>
+                        <li><a href="#">Display Incomes/rental</a></li>
                         <li><a href="#">Most rented car</a></li>
                     </ul>
                 </div>-->
@@ -97,7 +97,7 @@
     <img src="../images/car-logo.png" alt="car-rental-logo" width="200"  height="100">
   </div>
   <div class="advertisement-subpage-right">
-    <h1>Update cars data</h1>
+    <h1>Create Car</h1>
   </div>
 </div>
 
@@ -105,48 +105,54 @@
 
 <div class="main-subpage">
 
+  <div th:if="${carCreatedMessage}" class="success-message">
+    <p th:text="${carCreatedMessage}"></p>
+  </div>
 
-  <form th:object="${car}" th:action="@{/updateCar}" method="post" class="form">
-    <!-- Hidden input to send car id to the server -->
-    <input type="hidden" th:field="*{id}" />
-    <input type="hidden" th:field="*{brand}" />
-    <input type="hidden" th:field="*{model}" />
+  <form class="form" th:unless="${carCreatedMessage}"
+        th:action="@{/create-car}" method="post">
 
-    <div class="tables">
-    <table>
-      <thead>
-        <tr>
-          <td><span th:text="${car.brand + ' ' + car.model}"></span></td>
-          <td></td>
-          <td><span th:text="'Car Id: '+${car.id}"></span></td>
-        </tr>
-      </thead>
+    <label for="brand">Brand:</label>
+    <input type="text" id="brand" name="brand" required><br>
 
-      <tbody>
-        <tr>
-          <td></td>
-          <td></td>
-          <td><span th:unless="${carDataUpdatedMessage}">SET NEW DATA:</span></td>
-        </tr>
-        <tr>
-          <td><label for="mileage">Mileage</label></td>
-          <td><label th:text="${car.mileage}"></label></td>
-          <td><input type="text" id="mileage" th:field="*{mileage}"  th:unless="${carDataUpdatedMessage}"></td>
-        </tr>
-        <tr>
-          <td><label for="price">Price</label></td>
-          <td><label th:text="${car.price}"></label></td>
-          <td><input type="text" id="price" th:field="*{price}" th:unless="${carDataUpdatedMessage}"></td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
+    <label for="model">Model:</label>
+    <input type="text" id="model" name="model" required><br>
 
-    <div th:if="${carDataUpdatedMessage}" class="success-message">
-      <p th:text="${carDataUpdatedMessage}"></p>
-    </div>
+    <label for="productionYear">Production Year:</label>
+    <input type="number" id="productionYear" name="productionYear" required><br>
 
-    <button class="button" type="submit" th:unless="${carDataUpdatedMessage}">Save</button>
+    <label for="color">Color:</label>
+    <input type="text" id="color" name="color" required><br>
+
+    <label for="mileage">Mileage:</label>
+    <input type="number" id="mileage" name="mileage" required><br>
+
+    <label for="price">Price:</label>
+    <input type="text" id="price" name="price" required><br>
+
+    <label for="transmissionType">Transmission Type:</label>
+    <select id="transmissionType" name="transmissionType" required>
+      <option value="AUTOMATIC">Automatic</option>
+      <option value="MANUAL">Manual</option>
+    </select><br>
+
+    <label for="size">Size:</label>
+    <select id="size" name="size" required>
+      <option value="S">S (max 3 persons)</option>
+      <option value="M">M (max 5 persons)</option>
+      <option value="L">L (max 7 persons)</option>
+      <option value="XL">XL (max 12 persons)</option>
+    </select><br>
+
+    <label for="rental">Rental:</label>
+    <select id="rental" name="rental" class="location-select">
+      <option th:each="rental : ${allRentals}" th:text="${rental.getName() + ' / ' + rental.address.city + ' / ' + rental.address.details}"
+              th:value="${rental.getId()}"></option>
+
+    </select>
+
+    <button class="button" type="submit" th:unless="${carCreatedMessage}">Create Car</button>
+    <!--      <input type="submit" value="Create Customer">-->
   </form>
 
 </div>

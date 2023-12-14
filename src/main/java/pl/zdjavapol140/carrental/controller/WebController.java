@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -39,9 +40,10 @@ public class WebController {
     private final AddressRepository addressRepository;
     private final CustomerRepository customerRepository;
     private final EmployeeService employeeService;
+    private final RentalService rentalService;
 
 
-    public WebController(BranchService branchService, ReservationService reservationService, CarService carService, CustomerService customerService, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, ReservationRepository reservationRepository, CarRepository carRepository, UserService userService, BCryptPasswordEncoder passwordEncoder, AddressRepository addressRepository, CustomerRepository customerRepository, EmployeeService employeeService) {
+    public WebController(BranchService branchService, ReservationService reservationService, CarService carService, CustomerService customerService, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, ReservationRepository reservationRepository, CarRepository carRepository, UserService userService, BCryptPasswordEncoder passwordEncoder, AddressRepository addressRepository, CustomerRepository customerRepository, EmployeeService employeeService, RentalService rentalService) {
         this.branchService = branchService;
         this.reservationService = reservationService;
         this.carService = carService;
@@ -54,6 +56,7 @@ public class WebController {
         this.addressRepository = addressRepository;
         this.customerRepository = customerRepository;
         this.employeeService = employeeService;
+        this.rentalService = rentalService;
     }
 
 
@@ -180,30 +183,90 @@ public class WebController {
     }
 
     @GetMapping("/updateCar")
-    public String updateCar(Model model){
-        // Przekazanie pustego obiektu Car do formularza
-        model.addAttribute("car", new Car());
+    public String updateCar(@RequestParam("carId") Long carId, Model model){
 
+        Car car = carRepository.findCarById(carId);
+        model.addAttribute("car", car);
         return "car-update";
     }
 
-    @PatchMapping("/updateCar")
+    @PostMapping("/updateCar")
     public String updateCar(@ModelAttribute Car car, Model model) {
         try {
             Car existingCar = carRepository.findCarById(car.getId());
 
+            existingCar.setBrand(car.getBrand());
+            existingCar.setModel(car.getModel());
             existingCar.setMileage(car.getMileage());
             existingCar.setPrice(car.getPrice());
 
             carService.saveCar(existingCar);
 
-            model.addAttribute("carDataUpdatedMessage", "Data has been updated"); // Ustawienie komunikatu sukcesu
+            model.addAttribute("carDataUpdatedMessage", "Data has been updated");
+            model.addAttribute("car", existingCar);
         } catch (Exception e) {
-            // Obsługa błędu, jeśli coś pójdzie nie tak
-            model.addAttribute("carDataUpdatedMessage", "Data update failed"); // Ustawienie komunikatu błędu
+            model.addAttribute("carDataUpdatedMessage", "Data update failed");
         }
 
         return "car-update";
+    }
+
+    @GetMapping("/createCar")
+    public String showCreateCarForm(Model model){
+
+//        List<Branch> allBranches = branchService.getAllBranches();
+//        model.addAttribute("allBranches", allBranches);
+        List<Rental> allRentals = rentalService.getAllRentals();
+        model.addAttribute("allRentals", allRentals);
+        model.addAttribute("car", new Car());
+
+        return "create-car";
+    }
+
+    @PostMapping("/create-car")
+    public String createCar(
+            @RequestParam("brand") String brand,
+            @RequestParam("model") String model,
+            @RequestParam("size") CarSize size,
+            @RequestParam("productionYear") Integer productionYear,
+            @RequestParam("transmissionType") CarTransmissionType transmissionType,
+            @RequestParam("color") String color,
+            @RequestParam("mileage") Double mileage,
+            @RequestParam("price") BigDecimal price,
+            @RequestParam("rental") Long rentalId,
+            Model carModel) {
+
+        Rental rental = rentalService.findRentalById(rentalId);
+
+        Car car = new Car();
+        car.setBrand(brand);
+        car.setModel(model);
+        car.setSize(size);
+        car.setProductionYear(productionYear);
+        car.setTransmissionType(transmissionType);
+        car.setColor(color);
+        car.setMileage(mileage);
+        car.setPrice(price);
+        car.setRental(rental);
+
+        carRepository.save(car);
+
+        carModel.addAttribute("carCreatedMessage", "Car has been created");
+
+        return "create-car";
+        }
+
+    @PostMapping("/find-car-by-id")
+    public String findCarById(@RequestParam Long carId, Model model){
+        Car foundCar = carRepository.findCarById(carId);
+
+        if (foundCar !=null) {
+            model.addAttribute("cars", List.of(foundCar));
+        } else {
+            model.addAttribute("carNotFoundErrorMessage", "Car not found");
+            model.addAttribute("cars", carService.getAll());
+        }
+        return "cars-list";
     }
 
     @GetMapping("/create-customer")
@@ -308,4 +371,13 @@ public class WebController {
 
         return "reservations-list";
     }
+
+    @PostMapping("/deleteReservation")
+    public String deleteReservation(@RequestParam("reservationId") Long reservationId){
+
+        reservationService.deleteReservationById(reservationId);
+
+        return "redirect:/reservations";
+    }
 }
+
