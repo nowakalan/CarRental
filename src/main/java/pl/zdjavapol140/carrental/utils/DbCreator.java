@@ -4,10 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import pl.zdjavapol140.carrental.model.*;
 import pl.zdjavapol140.carrental.repository.*;
 import pl.zdjavapol140.carrental.service.*;
-
 import java.util.Optional;
 
 @Slf4j
@@ -15,6 +13,7 @@ import java.util.Optional;
 public class DbCreator {
 
     private final AddressRepository addressRepository;
+    private final AdminService adminService;
     private final BranchRepository branchRepository;
     private final CarRepository carRepository;
     private final CarRentRepository carRentRepository;
@@ -30,8 +29,9 @@ public class DbCreator {
     private final EmployeeService employeeService;
     private final BranchService branchService;
 
-    public DbCreator(AddressRepository addressRepository, BranchRepository branchRepository, CarRepository carRepository, CarRentRepository carRentRepository, CarReturnRepository carReturnRepository, CustomerRepository customerRepository, EmployeeRepository employeeRepository, RentalRepository rentalRepository, ReservationRepository reservationRepository, ReservationService reservationService, CarService carService, CustomerService customerService, UserRepository userRepository, EmployeeService employeeService, BranchService branchService) {
+    public DbCreator(AddressRepository addressRepository, AdminService adminService, BranchRepository branchRepository, CarRepository carRepository, CarRentRepository carRentRepository, CarReturnRepository carReturnRepository, CustomerRepository customerRepository, EmployeeRepository employeeRepository, RentalRepository rentalRepository, ReservationRepository reservationRepository, ReservationService reservationService, CarService carService, CustomerService customerService, UserRepository userRepository, EmployeeService employeeService, BranchService branchService) {
         this.addressRepository = addressRepository;
+        this.adminService = adminService;
         this.branchRepository = branchRepository;
         this.carRepository = carRepository;
         this.carRentRepository = carRentRepository;
@@ -51,6 +51,11 @@ public class DbCreator {
     @EventListener(ApplicationReadyEvent.class)
     public void insertDataToDb() {
 
+
+       // employeeService.addNewEmployee("employee", "employee", "employee@gmail.com", EMPLOYEE, null);
+       // adminService.addNewAdmin("admin", "admin", "admin@gmail.com");
+
+      
 //        Reservation reservation = reservationService.findReservationById(112L);
 //        log.info(reservation.toString());
 //        List<Reservation> reservations = reservationService.findReservationsByCarId(reservation.getCar().getId());
@@ -94,6 +99,7 @@ public class DbCreator {
 //Optional<ReservationStatus> check = Optional.ofNullable(reservationRepository.findById(300L).get().getStatus());
 //
 //log.info(check.toString());
+
 
 //        List<Address> addresses = new ArrayList<>();
 //        List<Branch> branches = new ArrayList<>();

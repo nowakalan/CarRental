@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -37,6 +39,11 @@ public class SecurityConfig {
         return jdbcUserDetailsManager;
     }
 
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -51,7 +58,20 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/index").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/search").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/search").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/create-customer").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/create-customer").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/custom-login").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/custom-login").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/reservations").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
+
                                 .requestMatchers(HttpMethod.GET, "/cars").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/deleteCar").hasAnyRole("EMPLOYEE", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/updateCar").hasAnyRole("EMPLOYEE", "ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/updateCar").hasAnyRole("EMPLOYEE", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/createCar").hasAnyRole("EMPLOYEE", "ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/create-car").hasAnyRole("EMPLOYEE", "ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/find-car-by-id").hasAnyRole("EMPLOYEE", "ADMIN")
+                                //      .requestMatchers(HttpMethod.GET, "/home2").hasRole("OWNER")
                                 .requestMatchers(HttpMethod.GET, "/owner").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/booking/criteria").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/booking/cars").permitAll()
@@ -63,6 +83,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/preselect-car").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/confirm-page").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/api/booking/reservation").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/deleteReservation").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
 
 
 
@@ -70,6 +91,11 @@ public class SecurityConfig {
 
 
         http.formLogin(Customizer.withDefaults());
+//                http.formLogin(form -> form
+//                    .loginPage("/login")
+//                    .loginProcessingUrl("/authenticateUser")
+//                    .permitAll());
+                http.httpBasic(Customizer.withDefaults());
 
 
         http.csrf(AbstractHttpConfigurer::disable);

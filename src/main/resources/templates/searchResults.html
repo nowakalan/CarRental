@@ -3,129 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wyniki wyszukiwania</title>
+    <title>searchResults</title>
     <link rel="stylesheet" href="../CSS/styles.css">
 </head>
-<body>
-<div class="car-rental-logo">
-    <p class="logo-text">CAR - RENT</p>
-</div>
 
-<nav class="menu">
+    <body>
+        <div class="header">
+            <div class="car-rental-logo">
+                <a href="/" class="logo-text">CAR - RENT</a>
+            </div>
 
-    <div class="dropdown" sec:authorize="hasRole('ROLE_CUSTOMER')">
-        <a href="#">Reservation</a>
-        <ul>
-            <li><a href="../index.html">New reservation</a></li>
-            <li><a href="#">Your reservations</a></li>
-            <li><a href="#">Delete reservation</a></li>
-            <li><a href="#">Rent a Car/employee</a></li>
-            <li><a href="#">Return Car/employee</a></li>
-        </ul>
-    </div>
+            <nav class="menu">
 
-    <div class="dropdown"  sec:authorize="hasRole('ROLE_EMPLOYEE')">
-        <a href="#/display cars for clients">Cars</a>
-        <ul>
-            <li><a href="../cars-list.html">Display car list</a></li>
-            <li><a href="#">Add vehicle</a></li>
-            <li><a href="#">Remove vehicle</a></li>
-            <li><a href="#">Find a car (by model/reg num/km...)</a></li>
-            <li><a href="#">Change cars data</a></li>
-            <li><a href="#">//set status</a></li>
-            <li><a href="#">//set km</a></li>
-        </ul>
-    </div>
-
-    <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
-        <a href="#">Clients</a>
-        <ul>
-            <li><a href="#">Display clients list</a></li>
-            <li><a href="#">Add client</a></li>
-            <li><a href="#">Remove client</a></li>
-            <li><a href="#">Show reservations</a></li>
-            <li><a href="#">Find client(by name/client ID)</a></li>
-        </ul>
-    </div>
-
-    <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
-        <a href="#">Branch</a>
-        <ul>
-            <li><a href="#">List of employees</a></li>
-            <li><a href="#">Add employee</a></li>
-            <li><a href="#">//set employee status</a></li>
-            <li><a href="#">Remove employee</a></li>
-            <li><a href="#">List of available cars</a></li>
-        </ul>
-    </div>
-
-    <!--            <div class="dropdown">
-                <a href="#">???Statistics</a>
+                <div class="dropdown" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE')">
+                    <a href="#">Reservation</a>
                     <ul>
-                        <li><a href="#">Display Incomes/branch</a></li>
-                        <li><a href="#">Most rented car</a></li>
+                        <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="/reservations">Display reservations</a></li>
+                        <li sec:authorize="hasRole('ROLE_CUSTOMER')"><a href="/reservations">Your reservations</a></li>
+                        <li><a href="/">New reservation</a></li>
+                        <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Rent a Car</a></li>
+                        <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Return Car</a></li>
                     </ul>
-                </div>-->
+                </div>
 
-    <div class="dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
-        <a href="#">Rent Companies</a>
-        <ul>
-            <li><a href="#">List of companies</a></li>
-            <li><a href="#">Add company</a></li>
-            <li><a href="#">Remove company</a></li>
-        </ul>
-    </div>
+                <div class="dropdown"  sec:authorize="hasRole('ROLE_EMPLOYEE')">
+                    <a href="#/display cars for clients">Cars</a>
+                    <ul>
+                        <li><a href="/cars">Display car list</a></li>
+                        <li><a href="/createCar">Add vehicle</a></li>
+                        <li><a href="#">Find a car</a></li>
+                    </ul>
+                </div>
 
-    <div class="dropdown">
-        <a href="#">My Account</a>
-        <ul>
-            <li><a href="#">Login</a></li>
-            <li><a href="/logout">Logout</a></li>
-        </ul>
-    </div>
+                <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
+                    <a href="#">Clients</a>
+                    <ul>
+                        <li><a href="#">Display clients list</a></li>
+                        <li><a href="#">Add client</a></li>
+                        <li><a href="#">Remove client</a></li>
+                        <li><a href="#">Show reservations</a></li>
+                        <li><a href="#">Find client(by name/client ID)</a></li>
+                    </ul>
+                </div>
 
+                <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
+                    <a href="#">Branch</a>
+                    <ul>
+                        <li><a href="#">List of employees</a></li>
+                        <li><a href="#">Add employee</a></li>
+                        <li><a href="#">//set employee status</a></li>
+                        <li><a href="#">Remove employee</a></li>
+                        <li><a href="#">List of available cars</a></li>
+                    </ul>
+                </div>
 
+                <!--            <div class="dropdown">
+                            <a href="#">???Statistics</a>
+                                <ul>
+                                    <li><a href="#">Display Incomes/branch</a></li>
+                                    <li><a href="#">Most rented car</a></li>
+                                </ul>
+                            </div>-->
 
-</nav>
-<div class="main">
-    <h1>Available cars</h1>
-    <!-- Wyświetl wyniki wyszukiwania tutaj -->
-    <div class="tables" th:if="${carList}">
-        <table>
-            <thead>
-            <tr>
-                <th>Brand</th>
-                <th>Model</th>
-                <th>Size</th>
-                <th>Transmission <br> Type</th>
-                <th>Price</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
+                <div class="dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a href="#">Rent Companies</a>
+                    <ul>
+                        <li><a href="#">List of companies</a></li>
+                        <li><a href="#">Add company</a></li>
+                        <li><a href="#">Remove company</a></li>
+                    </ul>
+                </div>
 
-                <tr th:each="car : ${carList}">
-                    <td th:text="${car.brand}"></td>
-                    <td th:text="${car.model}"></td>
-                    <td th:text="${car.size}"></td>
-                    <td th:text="${car.transmissionType}"></td>
-                    <td th:text="${car.price}"></td>
-                    <td><a  th:href="@{/preselect-car(carId=${car.id}, currentDropOffBranchId=${currentDropOffBranchId},
-            currentPickUpBranchId=${currentPickUpBranchId},
-            currentPickUpDateTime=${currentPickUpDateTime},
+                <div class="dropdown">
+                    <a href="#">My Account</a>
+                    <ul>
+                        <li th:if="${not #authorization.expression('isAuthenticated()')}">
+                            <a href="/login">Login</a>
+                        </li>
+                        <li th:if="${#authorization.expression('isAuthenticated()')}">
+                            <a href="/logout">Logout</a>
+                        </li>
+                        <li th:if="${not #authorization.expression('isAuthenticated()')}">
+                            <a href="/create-customer">Create Account</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
 
-            currentDropOffDateTime=${currentDropOffDateTime})}" th:method="GET">BOOK</a></td>
-                  
-                </tr>
+        <div class="advertisement-subpage-container">
+            <div class="advertisement-subpage-left">
+                <img src="../images/car-logo.png" alt="car-rental-logo" width="200"  height="100">
+            </div>
+            <div class="advertisement-subpage-right">
+                <h1>AVAILABLE CARS</h1>
+            </div>
+        </div>
 
-            </tbody>
-        </table>
-    </div>
-    <!-- Komunikat, jeśli nie znaleziono wyników -->
-    <p th:if="${carList.isEmpty()}">Brak dostępnych samochodów spełniających podane kryteria.</p>
-</div>
-<div class="footer">
-    <p>&copy; All rights reserved</p>
-</div>
-</body>
+            <div class="main-subpage">
+                <div class="tables" th:if="${carList}">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Brand</th>
+                            <th>Model</th>
+                            <th>Size</th>
+                            <th>Transmission <br> Type</th>
+                            <th>Price/day</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr th:each="car : ${carList}">
+                            <td th:text="${car.brand}"></td>
+                            <td th:text="${car.model}"></td>
+                            <td th:text="${car.size}"></td>
+                            <td th:text="${car.transmissionType}"></td>
+                            <td th:text="${car.price}"></td>
+                            <td><button><a class="button" th:href="@{/preselect-car(carId=${car.id}, currentDropOffBranchId=${currentDropOffBranchId},
+                        currentPickUpBranchId=${currentPickUpBranchId},
+                        currentPickUpDateTime=${currentPickUpDateTime},
+
+                        currentDropOffDateTime=${currentDropOffDateTime})}" th:method="GET">BOOK</a></button></td>
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Komunikat, jeśli nie znaleziono wyników -->
+                <p th:if="${carList.isEmpty()}">Brak dostępnych samochodów spełniających podane kryteria.</p>
+            </div>
+
+            <div class="push"></div>
+
+            <div class="footer">
+                <p>&copy; All rights reserved</p>
+            </div>
+
+    </body>
 </html>

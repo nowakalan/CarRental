@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Car Rental</title>
-  <link rel="stylesheet" href="../static/CSS/styles.css">
+  <title>Create Customer</title>
+  <link rel="stylesheet" href="../CSS/styles.css">
 </head>
 <body>
-  <div class="container">
+
   <div class="header">
     <div class="car-rental-logo">
       <a href="/" class="logo-text">CAR - RENT</a>
     </div>
-
 
     <nav class="menu">
 
@@ -28,7 +27,7 @@
       </div>
 
       <div class="dropdown"  sec:authorize="hasRole('ROLE_EMPLOYEE')">
-        <a href="cars-list.html/display cars for clients">Cars</a>
+        <a href="#/display cars for clients">Cars</a>
         <ul>
           <li><a href="/cars">Display car list</a></li>
           <li><a href="/createCar">Add vehicle</a></li>
@@ -98,85 +97,61 @@
       <img src="../images/car-logo.png" alt="car-rental-logo" width="200"  height="100">
     </div>
     <div class="advertisement-subpage-right">
-      <h1>Cars</h1>
+      <h1>Create Account</h1>
     </div>
-  </div>
+  </div>  
 
-
-  <div>
-    <form action="/find-car-by-id" method="post" class="form form-search-car-by-id">
-      <input type="text" id="carId" name="carId" placeholder="Enter Car ID:" required>
-      <button class="button" type="submit">Search</button>
-    </form>
-  </div>
-
-
-  <div class="filter">
-    <select id="brand" name="brand" class="select"></select>
-    <select id="size" name="size" class="select"></select>
-    <select id="price" name="price" class="select"></select>
-    <select id="gearbox" name="gearbox" class="select"></select>
-  </div>
 
 
   <div class="main-subpage">
-    <div class="tables">
-    <table>
-      <thead>
-      <tr>
-        <th>Id</th>
-        <th>Brand</th>
-        <th>Model</th>
-        <th>Size</th>
-        <th>Color</th>
-        <th>Production <br>Year</th>
-        <th>Price <br>/ day</th>
-        <th>Mileage</th>
-        <th>Rental</th>
-        <th></th>
-        <th></th>
-      </tr>
-      </thead>
 
-      <tbody>
-      <tr th:each="car : ${cars}">
-
-        <td th:text="${car.id}" />
-        <td th:text="${car.brand}" />
-        <td th:text="${car.model}" />
-        <td th:text="${car.size}" />
-        <td th:text="${car.color}" />
-        <td th:text="${car.productionYear}" />
-        <td th:text="${car.price}" />
-        <td th:text="${car.mileage}" />
-        <td th:text="${car.rental.address.city + ', ' + car.rental.name}" />
-
-        <td style="text-align: right">
-          <a th:href="@{/updateCar(carId=${car.id})}"><button class="button-warning button-common">Update</button></a>
-          <form th:action="@{/updateCar}" method="post">
-            <input type="hidden" th:value="${car.id}" name="carId" />
-          </form>
-        </td>
-
-        <td >
-          <form th:action="@{/deleteCar}" method="post"
-                onsubmit="return confirm('Are you sure you want to delete this car?')">
-            <input type="hidden" name="carId" th:value="${car.id}" />
-            <button class="button-danger button-common" type="submit">Delete</button>
-          </form>
-        </td>
-
-      </tr>
-      </tbody>
-    </table>
+    <div th:if="${customerAddedMessage}" class="success-message">
+      <p th:text="${customerAddedMessage}"></p>
     </div>
+
+    <a href="/"><button class="button" th:if="${customerAddedMessage}">Login</button></a>
+
+    <form class="form" th:unless="${customerAddedMessage}"
+          th:action="@{/create-customer}" method="post">
+
+      <label for="firstName">First Name:</label>
+      <input type="text" id="firstName" name="firstName" required><br>
+
+      <label for="lastName">Last Name:</label>
+      <input type="text" id="lastName" name="lastName" required><br>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required><br>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required><br>
+
+      <label for="phone">Phone:</label>
+      <input type="text" id="phone" name="phone" required><br>
+
+      <label for="country">Country:</label>
+      <input type="text" id="country" name="country" required><br>
+
+      <label for="city">City:</label>
+      <input type="text" id="city" name="city" required><br>
+
+      <label for="postalCode">Postal Code:</label>
+      <input type="text" id="postalCode" name="postalCode" required><br>
+
+      <label for="details">Details:</label>
+      <input type="text" id="details" name="details" required><br>
+
+      <button class="button" type="submit" th:unless="${customerAddedMessage}">Create Account</button>
+<!--      <input type="submit" value="Create Customer">-->
+    </form>
+
   </div>
 
   <div class="push"></div>
-</div>
 
-<div class="footer">
-  <p>&copy; All rights reserved.</p>
-</div>
+  <div class="footer">
+    <p>&copy; All rights reserved</p>
+  </div>
+
 </body>
 </html>

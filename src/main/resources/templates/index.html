@@ -4,24 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Car Rental</title>
-    <link rel="stylesheet" href="../CSS/styles.css">
+    <link rel="stylesheet" href="../static/CSS/styles.css">
 </head>
 <body>
 
         <div class="container">
-
-                <div class="car-rental-logo">
-                    <a href="/index" class="logo-text">CAR - RENT</a>
+            <div class="header">
+                <div class="logo">
+                    <a href="/" class="logo-text">CAR - RENT</a>
                 </div>
+
+                <div class="contact">
+                    <img src="../static/images/phone-icon.svg" width="30">
+                    + 47 486 27 952
+                </div>
+            </div>
                 
                  <nav class="menu">
 
                     <div class="dropdown" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE')">
                         <a href="#">Reservation</a>
                         <ul>
-                            <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Display reservations</a></li>
-                            <li sec:authorize="hasRole('ROLE_CUSTOMER')"><a href="#">Your reservations</a></li>
-                            <li><a href="/index">New reservation</a></li>
+                            <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="/reservations">Display reservations</a></li>
+                            <li sec:authorize="hasRole('ROLE_CUSTOMER')"><a href="/reservations">Your reservations</a></li>
+                            <li><a href="/">New reservation</a></li>
                             <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Rent a Car</a></li>
                             <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Return Car</a></li>
                         </ul>
@@ -31,7 +37,7 @@
                         <a href="#/display cars for clients">Cars</a>
                             <ul>
                                 <li><a href="/cars">Display car list</a></li>
-                                <li><a href="#">Add vehicle</a></li>
+                                <li><a href="/createCar">Add vehicle</a></li>
                                 <li><a href="#">Find a car</a></li>
                             </ul>
                      </div>
@@ -80,14 +86,21 @@
                      <div class="dropdown">
                         <a href="#">My Account</a>
                             <ul>
-                                <li><a href="#">Login</a></li>
-                                <li><a href="/logout">Logout</a></li>
+                                <li th:if="${not #authorization.expression('isAuthenticated()')}">
+                                    <a href="/login">Login</a>
+                                </li>
+                                <li th:if="${#authorization.expression('isAuthenticated()')}">
+                                    <a href="/logout">Logout</a>
+                                </li>
+                                <li th:if="${not #authorization.expression('isAuthenticated()')}">
+                                    <a href="/create-customer">Create Account</a>
+                                </li>
                             </ul>
                      </div>
 
                 </nav>
-            </div>
-        
+
+
 
             <div class="main">
                 <div class="advertisement">
@@ -96,20 +109,19 @@
                     Rental Car.<br>
                     Go wherever the road may lead.
 
-                    <img src="../images/car-logo.png" alt="car-rental-logo" width="600"  height="300">
+                    <img src="../static/images/car-logo.png" alt="car-rental-logo" width="600"  height="300">
                 </div>
                 <div class="search">
-                    <div class="search-container">
-                        <form th:action="@{/search}" method="GET">
+                        <form class="search-form" th:action="@{/search}" method="GET">
                             <label for="currentPickUpBranchId">pickup LOCATION:</label>
                             <select id="currentPickUpBranchId" name="currentPickUpBranchId" class="location-select">
-                                <option th:each="pickUpLocation : ${allBranches}" th:text="${pickUpLocation.address}"
+                                <option th:each="pickUpLocation : ${allBranches}" th:text="${pickUpLocation.address.city + ', ' + pickUpLocation.address.details}"
                                         th:value="${pickUpLocation.getId()}"></option>
                             </select>
             
                             <label for="currentDropOffBranchId">drop-off LOCATION:</label>
                             <select id="currentDropOffBranchId" name="currentDropOffBranchId" class="location-select">
-                                <option th:each="dropOffLocation : ${allBranches}" th:text="${dropOffLocation.address}"
+                                <option th:each="dropOffLocation : ${allBranches}" th:text="${dropOffLocation.getName() + ' / ' + dropOffLocation.address.city + ' / ' + dropOffLocation.address.details}"
                                 th:value="${dropOffLocation.getId()}"></option>
 
                             </select>
@@ -120,14 +132,18 @@
                             <label for="dropOffDate">drop-off DATE:</label>
                             <input type="datetime-local" id="dropOffDate" name="currentDropOffDateTime">
 
-                            <button type="submit">Search</button>
+                            <button class="button" type="submit">Search</button>
                         </form>
                     </div>
                 </div>
-                <div id="push"></div>
+            <div id="push"></div>
+        </div>
+
+
+
             <div class="footer">
                 <p>&copy; All rights reserved.</p>
             </div>
-        </div>
+
 </body>
 </html>

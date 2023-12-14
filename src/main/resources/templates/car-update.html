@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Customer</title>
+  <link rel="stylesheet" href="../CSS/styles.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="car-rental-logo">
+    <a href="/" class="logo-text">CAR - RENT</a>
+  </div>
+
+  <nav class="menu">
+
+    <div class="dropdown" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE')">
+      <a href="#">Reservation</a>
+      <ul>
+        <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="/reservations">Display reservations</a></li>
+        <li sec:authorize="hasRole('ROLE_CUSTOMER')"><a href="/reservations">Your reservations</a></li>
+        <li><a href="/">New reservation</a></li>
+        <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Rent a Car</a></li>
+        <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Return Car</a></li>
+      </ul>
+    </div>
+
+    <div class="dropdown"  sec:authorize="hasRole('ROLE_EMPLOYEE')">
+      <a href="#/display cars for clients">Cars</a>
+      <ul>
+        <li><a href="/cars">Display car list</a></li>
+        <li><a href="#">Add vehicle</a></li>
+        <li><a href="#">Find a car</a></li>
+      </ul>
+    </div>
+
+    <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
+      <a href="#">Clients</a>
+      <ul>
+        <li><a href="#">Display clients list</a></li>
+        <li><a href="#">Add client</a></li>
+        <li><a href="#">Remove client</a></li>
+        <li><a href="#">Show reservations</a></li>
+        <li><a href="#">Find client(by name/client ID)</a></li>
+      </ul>
+    </div>
+
+    <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
+      <a href="#">Branch</a>
+      <ul>
+        <li><a href="#">List of employees</a></li>
+        <li><a href="#">Add employee</a></li>
+        <li><a href="#">//set employee status</a></li>
+        <li><a href="#">Remove employee</a></li>
+        <li><a href="#">List of available cars</a></li>
+      </ul>
+    </div>
+
+    <!--            <div class="dropdown">
+                <a href="#">???Statistics</a>
+                    <ul>
+                        <li><a href="#">Display Incomes/branch</a></li>
+                        <li><a href="#">Most rented car</a></li>
+                    </ul>
+                </div>-->
+
+    <div class="dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+      <a href="#">Rent Companies</a>
+      <ul>
+        <li><a href="#">List of companies</a></li>
+        <li><a href="#">Add company</a></li>
+        <li><a href="#">Remove company</a></li>
+      </ul>
+    </div>
+
+    <div class="dropdown">
+      <a href="#">My Account</a>
+      <ul>
+        <li th:if="${not #authorization.expression('isAuthenticated()')}">
+          <a href="/login">Login</a>
+        </li>
+        <li th:if="${#authorization.expression('isAuthenticated()')}">
+          <a href="/logout">Logout</a>
+        </li>
+        <li th:if="${not #authorization.expression('isAuthenticated()')}">
+          <a href="/create-customer">Create Account</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+
+
+<div class="advertisement-subpage-container">
+  <div class="advertisement-subpage-left">
+    <img src="../images/car-logo.png" alt="car-rental-logo" width="200"  height="100">
+  </div>
+  <div class="advertisement-subpage-right">
+    <h1>Update cars data</h1>
+  </div>
+</div>
+
+
+
+<div class="main-subpage">
+
+
+  <form th:object="${car}" th:action="@{/updateCar}" method="post" class="form">
+    <!-- Hidden input to send car id to the server -->
+    <input type="hidden" th:field="*{id}" />
+    <input type="hidden" th:field="*{brand}" />
+    <input type="hidden" th:field="*{model}" />
+
+    <div class="tables">
+    <table>
+      <thead>
+        <tr>
+          <td><span th:text="${car.brand + ' ' + car.model}"></span></td>
+          <td></td>
+          <td><span th:text="'Car Id: '+${car.id}"></span></td>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td><span th:unless="${carDataUpdatedMessage}">SET NEW DATA:</span></td>
+        </tr>
+        <tr>
+          <td><label for="mileage">Mileage</label></td>
+          <td><label th:text="${car.mileage}"></label></td>
+          <td><input type="text" id="mileage" th:field="*{mileage}"  th:unless="${carDataUpdatedMessage}"></td>
+        </tr>
+        <tr>
+          <td><label for="price">Price</label></td>
+          <td><label th:text="${car.price}"></label></td>
+          <td><input type="text" id="price" th:field="*{price}" th:unless="${carDataUpdatedMessage}"></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div th:if="${carDataUpdatedMessage}" class="success-message">
+      <p th:text="${carDataUpdatedMessage}"></p>
+    </div>
+
+    <button class="button" type="submit" th:unless="${carDataUpdatedMessage}">Save</button>
+  </form>
+
+</div>
+
+<div class="push"></div>
+
+<div class="footer">
+  <p>&copy; All rights reserved</p>
+</div>
+
+</body>
+</html>

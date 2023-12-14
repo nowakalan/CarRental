@@ -115,7 +115,7 @@ public class CustomerService {
 
     public Customer findCustomerByEmail(String email) {
 
-        return customerRepository.findCustomerByEmail(email).orElseThrow(() -> new RuntimeException("Customer id not found"));
+        return customerRepository.findCustomerByEmail(email).orElseThrow(() -> new RuntimeException("Customer not found"));
     }
 
     public List<Customer> findCustomersByCityName(String city) {
@@ -146,5 +146,10 @@ public class CustomerService {
     public List<Customer> findCustomersByPhoneNumber(String phone) {
 
         return customerRepository.findCustomersByPhone(phone);
+    }
+
+    public Customer findCustomersByEmail(String email) {
+
+        return customerRepository.findCustomersByEmail(email);
     }
 }

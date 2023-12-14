@@ -1,5 +1,6 @@
 package pl.zdjavapol140.carrental.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import pl.zdjavapol140.carrental.model.Car;
@@ -26,11 +27,9 @@ public class CarService {
         return carRepository.findAll();
     }
 
-    private final ReservationRepository reservationRepository;
 
-    public CarService(CarRepository carRepository, ReservationRepository reservationRepository) {
+    public CarService(CarRepository carRepository) {
         this.carRepository = carRepository;
-        this.reservationRepository = reservationRepository;
     }
 
 
@@ -40,20 +39,35 @@ public class CarService {
         return true;
     }
 
-    @Transactional
-    public boolean removeCar(Long carId) {
-        Optional<Car> optionalCarToRemove = carRepository.findById(carId);
-        if (optionalCarToRemove.isEmpty()) {
-            throw new RuntimeException("Car id not found");
-        }
-        carRepository.delete(optionalCarToRemove.get());
-        return true;
-    }
-
-
     public Car findCarById(Long carId) {
         return carRepository.findById(carId).orElseThrow(() -> new RuntimeException("Car id not found"));
     }
+
+    public void deleteCar(Long carId) {
+        Optional<Car> carOptional = carRepository.findById(carId);
+
+        if (carOptional.isPresent()) {
+            Car carToDelete = carOptional.get();
+            carRepository.delete(carToDelete);
+        } else {
+            throw new EntityNotFoundException("The car with id: " + carId + " doesn't exist.");
+        }
+    }
+    @Transactional
+//    public boolean removeCar(Long carId) {
+//        Optional<Car> optionalCarToRemove = carRepository.findById(carId);
+//        if (optionalCarToRemove.isEmpty()) {
+//            throw new RuntimeException("Car id not found");
+//        }
+//        carRepository.delete(optionalCarToRemove.get());
+//        return true;
+//    }
+
+    public Car saveCar(Car car){
+        return carRepository.save(car);
+    }
+
+
     public List<Car> findCarsBySize(CarSize size) {
         return carRepository.findCarsBySize(size);
     }
