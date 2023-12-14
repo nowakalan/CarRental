@@ -13,7 +13,6 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -307,7 +306,7 @@ public class ReservationService {
                 continue;
             }
 
-            Optional<Reservation> optionalNextReservation = this.findNotCancelledNextReservationAfter(car.getId(), currentDropOffDateTime);
+            Optional<Reservation> optionalNextReservation = this.findNotCanceledNextReservationAfter(car.getId(), currentDropOffDateTime);
 
             if (this.isNextReservationEmptyOrNotConflicting(optionalNextReservation, currentDropOffBranchId, currentDropOffDateTime)) {
 
@@ -381,8 +380,8 @@ public class ReservationService {
 
         BigDecimal surcharge = car.getPrice().multiply(BigDecimal.valueOf(0.5));
 
-        if (!dropOffBranchId.equals(pickUpBranchId)) {
-            surcharge = BigDecimal.ONE;
+        if (dropOffBranchId.equals(pickUpBranchId)) {
+            surcharge = BigDecimal.ZERO;
         }
         return car.getPrice().multiply(BigDecimal.valueOf(durationInDaysRoundedCeil)).add(surcharge);
     }
@@ -398,7 +397,7 @@ public class ReservationService {
 
         long minutes = duration.toMinutes();
 
-        if (minutes - Duration.ofDays(days).toMinutes() > 1) {
+        if (minutes - Duration.ofDays(days).toMinutes() >= 1) {
             days++;
         }
         return days;
@@ -563,7 +562,7 @@ public class ReservationService {
 
     @Transactional
     public Optional<Reservation> setOrUpdateOrDeletePreviousTransferReservation(Reservation currentPreReservation,
-                                                                                 Map<Car, List<Optional<Reservation>>> availableCarsWithOptionalAdjacentReservations) {
+                                                                                Map<Car, List<Optional<Reservation>>> availableCarsWithOptionalAdjacentReservations) {
 
         Optional<Reservation> optionalNewTransferReservationPreviousToCurrent = Optional.empty();
 
@@ -607,7 +606,7 @@ public class ReservationService {
      */
     @Transactional
     public Optional<Reservation> setOrUpdateOrDeleteNextTransferReservation(Reservation currentPreReservation,
-                                                                             Map<Car, List<Optional<Reservation>>> availableCarsWithOptionalAdjacentReservations) {
+                                                                            Map<Car, List<Optional<Reservation>>> availableCarsWithOptionalAdjacentReservations) {
 
         Optional<Reservation> optionalNextReservation = availableCarsWithOptionalAdjacentReservations.get(currentPreReservation.getCar()).get(1);
 
@@ -648,7 +647,7 @@ public class ReservationService {
     /**
      * Sets current reservation if still available and updates, creates or deletes transfer reservation/reservations if needed
      */
-@Transactional
+    @Transactional
     public boolean setCurrentReservationAndOptionalTransferReservations(Reservation currentPreReservation) {
 
 
@@ -675,7 +674,7 @@ public class ReservationService {
         return reservationRepository.findReservationsByCarId(carId)
                 .stream()
                 .filter(reservation -> reservation != null
-                        && !reservation.getStatus().equals(ReservationStatus.CANCELLED)
+                        && !reservation.getStatus().equals(ReservationStatus.CANCELED)
                         && reservation.getDropOffDateTime().isBefore(currentPickUpDateTime))
                 .max(Comparator.comparing(Reservation::getDropOffDateTime));
     }
@@ -684,15 +683,26 @@ public class ReservationService {
      * @return optional next reservation (by carId, currentPickUpDateTime)
      */
 
-    public Optional<Reservation> findNotCancelledNextReservationAfter(Long carId, LocalDateTime currentDropOffDateTime) {
+    public Optional<Reservation> findNotCanceledNextReservationAfter(Long carId, LocalDateTime currentDropOffDateTime) {
 
         return reservationRepository.findReservationsByCarId(carId)
                 .stream()
                 .filter(reservation -> reservation != null
-                        && !reservation.getStatus().equals(ReservationStatus.CANCELLED)
+                        && !reservation.getStatus().equals(ReservationStatus.CANCELED)
                         && reservation.getPickUpDateTime().isAfter(currentDropOffDateTime))
                 .min(Comparator.comparing(Reservation::getPickUpDateTime));
     }
+
+//    public void cancelReservation(Long reservationToCancelId) {
+//
+//        Reservation reservationToCancel = this.findReservationById(reservationToCancelId);
+//        Car car = reservationToCancel.getCar();
+//
+//        Optional<Reservation> optionalNextReservation = this.findNotCanceledNextReservationAfter(car.getId(), reservationToCancel.getDropOffDateTime());
+//        Optional<Reservation> optionalPreviousReservation = this.findNotCancelledPreviousReservationBefore(car.getId(), reservationToCancel.getPickUpDateTime());
+//
+//        switch (optionalPreviousReservation, optionalNextReservation)
+//    }
 
     //TODO może kiedyś: Optymalizacja wykorzystania floty; Samochód jak najkrócej stoi bezczynnie; Ograniczony czasowo status samochodu UNAVAILABLE w związku z przeglądem/naprawą
 

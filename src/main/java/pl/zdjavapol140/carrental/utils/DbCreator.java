@@ -6,6 +6,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import pl.zdjavapol140.carrental.repository.*;
 import pl.zdjavapol140.carrental.service.*;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -50,8 +51,54 @@ public class DbCreator {
     @EventListener(ApplicationReadyEvent.class)
     public void insertDataToDb() {
 
+
        // employeeService.addNewEmployee("employee", "employee", "employee@gmail.com", EMPLOYEE, null);
        // adminService.addNewAdmin("admin", "admin", "admin@gmail.com");
+
+      
+//        Reservation reservation = reservationService.findReservationById(112L);
+//        log.info(reservation.toString());
+//        List<Reservation> reservations = reservationService.findReservationsByCarId(reservation.getCar().getId());
+//
+//        log.info(reservations.toString());
+//        log.info(String.valueOf(reservations.size()));
+//
+//        List<Reservation> notNull = reservations.stream().filter(Objects::nonNull).toList();
+//
+//        log.info(notNull.toString());
+//        log.info(String.valueOf(notNull.size()));
+//
+//        List<Reservation> notCanceled = notNull.stream().filter(r -> !r.getStatus().equals(ReservationStatus.CANCELED)).toList();
+//
+//        log.info(notCanceled.toString());
+//        log.info(String.valueOf(notCanceled.size()));
+//
+//        List<Reservation> isAfter = notCanceled.stream().filter(r -> r.getPickUpDateTime().isAfter(reservation.getDropOffDateTime())).toList();
+//
+//        log.info(isAfter.toString());
+//        log.info(String.valueOf(isAfter.size()));
+//
+//        Reservation myNext = isAfter.stream().min(Comparator.comparing(Reservation::getPickUpDateTime)).orElse(null);
+//
+//        log.info(myNext != null ? myNext.toString() : null);
+//
+//        List<Reservation> collected = reservations.stream()
+//                .filter(r -> r != null
+//                        && !r.getStatus().equals(ReservationStatus.CANCELED)
+//                        && r.getPickUpDateTime().isAfter(reservation.getDropOffDateTime())).toList();
+//
+//        log.info(collected.toString());
+//        log.info(String.valueOf(collected.size()));
+
+//Reservation next = reservationService.findNotCanceledNextReservationAfter(reservation.getCar().getId(), reservation.getDropOffDateTime()).get();
+//log.info(String.valueOf(next));
+//
+//Reservation previous = reservationService.findNotCancelledPreviousReservationBefore(reservation.getCar().getId(), reservation.getPickUpDateTime()).get();
+//log.info(previous.toString());
+//
+//Optional<ReservationStatus> check = Optional.ofNullable(reservationRepository.findById(300L).get().getStatus());
+//
+//log.info(check.toString());
 
 
 //        List<Address> addresses = new ArrayList<>();
