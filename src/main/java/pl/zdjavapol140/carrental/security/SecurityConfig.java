@@ -30,10 +30,11 @@ public class SecurityConfig {
         jdbcUserDetailsManager.setUsersByUsernameQuery(
 
                 "select email, password, true from users where email = ?");
-                //"select username, password, true from users where username = ?");
+
         jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
+
                 "select email, role, true from users where email = ?");
-                //"select username, authority, true from authorities where username = ?");
+
 
         return jdbcUserDetailsManager;
     }
@@ -87,12 +88,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/deleteReservation").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
 
 
-//
-//                        .requestMatchers(HttpMethod.GET, "/api/owners").hasRole("USER")
-//                        .requestMatchers(HttpMethod.POST, "/api/owner").hasRole("USER")
-//                        .requestMatchers(HttpMethod.POST, "/api/createVet").hasRole("VET")
-//                        .requestMatchers(HttpMethod.POST, "/api/createSpeciality").hasRole("ADMIN")
-        //).logout( logout -> logout.permitAll());
+
         ).logout( logout -> logout.logoutUrl("/logout"));
 
 
@@ -102,6 +98,7 @@ public class SecurityConfig {
 //                    .loginProcessingUrl("/authenticateUser")
 //                    .permitAll());
                 http.httpBasic(Customizer.withDefaults());
+
 
         http.csrf(AbstractHttpConfigurer::disable);
         return http.build();

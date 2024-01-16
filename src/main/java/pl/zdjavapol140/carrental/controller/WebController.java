@@ -113,7 +113,7 @@ public class WebController {
                                @RequestParam Long currentPickUpBranchId,
                                @RequestParam Long currentDropOffBranchId, Model model) {
         Car car = carService.findCarById(carId);
-        log.info(car.toString());
+
         model.addAttribute("car", car);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -121,10 +121,10 @@ public class WebController {
             throw new RuntimeException("User not found.");
         }
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        log.info(String.valueOf(userDetails));
+
 
         Customer customer = customerService.findCustomerByEmail(userDetails.getUsername());
-        log.info(customer.toString());
+
 
         BigDecimal totalPrice = reservationService.calculateReservationPrice(currentPickUpDateTime, currentDropOffDateTime, currentPickUpBranchId, currentDropOffBranchId, car);
 
@@ -137,7 +137,7 @@ public class WebController {
                 branchService.findBranchById(currentDropOffBranchId),
                 totalPrice);
 
-        log.info(preReservation.toString());
+//        log.info(preReservation.toString());
         model.addAttribute("preReservation", preReservation);
 
 
@@ -158,7 +158,7 @@ public class WebController {
         currentReservation.setDropOffDateTime(preReservation.getDropOffDateTime());
         currentReservation.setDropOffBranchId(preReservation.getDropOffBranch().getId());
         currentReservation.setTotalPrice(preReservation.getTotalPrice());
-        log.info(currentReservation.toString());
+//        log.info(currentReservation.toString());
 
 //        model.addAttribute("reservationConfirmed", "Reservation confirmed");
 
@@ -169,7 +169,6 @@ public class WebController {
         } catch (Exception e) {
             model.addAttribute("error", "Reservation aborted" + e.getMessage());
         }
-
 
         return "confirm-page";
 

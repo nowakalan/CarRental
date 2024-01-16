@@ -134,6 +134,8 @@
             <input th:type="hidden" th:field="*{totalPrice}" th:value="${preReservation.totalPrice}" th:text="${preReservation.totalPrice}"/><br>
             <button class="button" type="submit">confirm</button>
         </form>
+        <p></p>
+            <button th:onclick="'window.location.href = \'/\' '" type="button" th:method="GET">Cancel</button>
     </div>
 
     <div class="push"></div>
