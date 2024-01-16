@@ -16,5 +16,7 @@ public interface BranchRepository extends JpaRepository<Branch, Long> {
 
     Long findBranchByAddress(Address address);
 
+    Address findAddressById(Long branchId);
+
 
 }

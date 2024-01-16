@@ -1,59 +1,69 @@
-package pl.zdjavapol140.carrental.utils;
-
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
-import pl.zdjavapol140.carrental.repository.*;
-import pl.zdjavapol140.carrental.service.*;
-
-@Slf4j
-@Component
-public class DbCreator {
-
-    private final AddressRepository addressRepository;
-    private final AdminService adminService;
-    private final BranchRepository branchRepository;
-    private final CarRepository carRepository;
-    private final CarRentRepository carRentRepository;
-    private final CarReturnRepository carReturnRepository;
-    private final CustomerRepository customerRepository;
-    private final EmployeeRepository employeeRepository;
-    private final RentalRepository rentalRepository;
-    private final ReservationRepository reservationRepository;
-    private final ReservationService reservationService;
-    private final CarService carService;
-    private final CustomerService customerService;
-    private final UserRepository userRepository;
-    private final EmployeeService employeeService;
-    private final BranchService branchService;
-
-    public DbCreator(AddressRepository addressRepository, AdminService adminService, BranchRepository branchRepository, CarRepository carRepository, CarRentRepository carRentRepository, CarReturnRepository carReturnRepository, CustomerRepository customerRepository, EmployeeRepository employeeRepository, RentalRepository rentalRepository, ReservationRepository reservationRepository, ReservationService reservationService, CarService carService, CustomerService customerService, UserRepository userRepository, EmployeeService employeeService, BranchService branchService) {
-        this.addressRepository = addressRepository;
-        this.adminService = adminService;
-        this.branchRepository = branchRepository;
-        this.carRepository = carRepository;
-        this.carRentRepository = carRentRepository;
-        this.carReturnRepository = carReturnRepository;
-        this.customerRepository = customerRepository;
-        this.employeeRepository = employeeRepository;
-        this.rentalRepository = rentalRepository;
-        this.reservationRepository = reservationRepository;
-        this.reservationService = reservationService;
-        this.carService = carService;
-        this.customerService = customerService;
-        this.userRepository = userRepository;
-        this.employeeService = employeeService;
-        this.branchService = branchService;
-    }
-
-    @EventListener(ApplicationReadyEvent.class)
-    public void insertDataToDb() {
-
-       // employeeService.addNewEmployee("employee", "employee", "employee@gmail.com", EMPLOYEE, null);
-       // adminService.addNewAdmin("admin", "admin", "admin@gmail.com");
-
-
+//package pl.zdjavapol140.carrental.utils;
+//
+//import lombok.extern.slf4j.Slf4j;
+//import org.springframework.boot.context.event.ApplicationReadyEvent;
+//import org.springframework.context.event.EventListener;
+//import org.springframework.stereotype.Component;
+//import pl.zdjavapol140.carrental.model.*;
+//import pl.zdjavapol140.carrental.repository.*;
+//import pl.zdjavapol140.carrental.service.*;
+//
+//import java.time.LocalDateTime;
+//import java.util.ArrayList;
+//import java.util.Comparator;
+//import java.util.List;
+//import java.util.Random;
+//
+//import static pl.zdjavapol140.carrental.model.Job.EMPLOYEE;
+//import static pl.zdjavapol140.carrental.utils.CarGenerator.generateCarByType;
+//
+//@Slf4j
+//@Component
+//public class DbCreator {
+//
+//    private final AddressRepository addressRepository;
+//    private final AdminService adminService;
+//    private final BranchRepository branchRepository;
+//    private final CarRepository carRepository;
+//    private final CarRentRepository carRentRepository;
+//    private final CarReturnRepository carReturnRepository;
+//    private final CustomerRepository customerRepository;
+//    private final EmployeeRepository employeeRepository;
+//    private final RentalRepository rentalRepository;
+//    private final ReservationRepository reservationRepository;
+//    private final ReservationService reservationService;
+//    private final CarService carService;
+//    private final CustomerService customerService;
+//    private final UserRepository userRepository;
+//    private final EmployeeService employeeService;
+//    private final BranchService branchService;
+//
+//    public DbCreator(AddressRepository addressRepository, AdminService adminService, BranchRepository branchRepository, CarRepository carRepository, CarRentRepository carRentRepository, CarReturnRepository carReturnRepository, CustomerRepository customerRepository, EmployeeRepository employeeRepository, RentalRepository rentalRepository, ReservationRepository reservationRepository, ReservationService reservationService, CarService carService, CustomerService customerService, UserRepository userRepository, EmployeeService employeeService, BranchService branchService) {
+//        this.addressRepository = addressRepository;
+//        this.adminService = adminService;
+//        this.branchRepository = branchRepository;
+//        this.carRepository = carRepository;
+//        this.carRentRepository = carRentRepository;
+//        this.carReturnRepository = carReturnRepository;
+//        this.customerRepository = customerRepository;
+//        this.employeeRepository = employeeRepository;
+//        this.rentalRepository = rentalRepository;
+//        this.reservationRepository = reservationRepository;
+//        this.reservationService = reservationService;
+//        this.carService = carService;
+//        this.customerService = customerService;
+//        this.userRepository = userRepository;
+//        this.employeeService = employeeService;
+//        this.branchService = branchService;
+//    }
+//
+//    @EventListener(ApplicationReadyEvent.class)
+//    public void insertDataToDb() {
+//
+//        employeeService.addNewEmployee("employee", "employee", "employee@gmail.com", EMPLOYEE, null);
+//        adminService.addNewAdmin("admin", "admin", "admin@gmail.com");
+//
+//
 //        List<Address> addresses = new ArrayList<>();
 //        List<Branch> branches = new ArrayList<>();
 //        List<Car> cars = new ArrayList<>();
@@ -116,15 +126,17 @@ public class DbCreator {
 //        /**Fill carRepository
 //         *
 //         */
-//        for (int i = 0; i < baseNumberOfObjects * 30; i++) {
-//            int randomForRental = random.nextInt(rentals.size());
-//            Rental rental = rentals.get(randomForRental);
-//            Car car = CarGenerator.generateRandomCar();
-//            car.setRental(rental);
+//        String[] carTypes = {"small", "economy", "midsize", "estates", "suv"};
 //
-//            cars.add(car);
+//        for (String carType : carTypes) {
+//            for (int i = 0; i < baseNumberOfObjects * 30; i++) {
+//                int randomForRental = random.nextInt(rentals.size());
+//                Rental rental = rentals.get(randomForRental);
+//                Car car = generateCarByType(carType);
+//                car.setRental(rental);
+//                cars.add(car);
+//            }
 //        }
-//        carRepository.saveAll(cars);
 //
 //
 //        /**Fill customerRepository
@@ -273,6 +285,6 @@ public class DbCreator {
 //            customer.setReservations(reservationRepository.findReservationsByCustomerId(customer.getId()));
 //        }
 //        customerRepository.saveAll(customers);
-
-    }
-}
+//
+//    }
+//}

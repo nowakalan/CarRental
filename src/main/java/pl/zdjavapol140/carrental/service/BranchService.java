@@ -8,6 +8,7 @@ import pl.zdjavapol140.carrental.model.Branch;
 import pl.zdjavapol140.carrental.repository.BranchRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BranchService {
@@ -35,8 +36,15 @@ public class BranchService {
         return branchRepository.findById(id).get();
     }
 
-    public Long findBranchIdByAddress(Address address) {
+    public Address findBranchAddressById(Long id) {
 
-        return branchRepository.findBranchByAddress(address);
+        Optional<Branch> branchOptional = branchRepository.findById(id);
+
+        if (branchOptional.isPresent()) {
+            Branch branch = branchOptional.get();
+            return branch.getAddress();
+        } else {
+            return null;
+        }
     }
 }

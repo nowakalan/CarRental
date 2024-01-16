@@ -34,11 +34,13 @@ public class Car {
     @Enumerated(value = EnumType.STRING)
     private CarTransmissionType transmissionType;
 
+    private String registrationNumber;
     private Integer productionYear;
     private String color;
-    private Double mileage;
+    private Integer mileage;
 
     private BigDecimal price;
+    private String imagePath;
 
     @ManyToOne
     @JoinColumn(name = "rental_id")

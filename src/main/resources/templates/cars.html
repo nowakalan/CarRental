@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/styles.css">
+
+    <title>Car Rental</title>
+</head>
+<body>
+
+        <div class="container">
+            <div class="header">
+
+                <div class="logo">
+                    <a href="/"><img src="../images/logo.svg"></a>
+                </div>
+
+                <nav class="nav">
+
+                     <div class="dropdown toggle" onclick="toggleDropdown(this)" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE', 'ROLE_ADMIN')">
+                        <a href="../templates/cars.html">CARS</a>
+                     </div>
+
+                     <div class="dropdown toggle" onclick="toggleDropdown(this)" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE', 'ROLE_ADMIN')">
+                        <a href="#">RESERVATIONS</a>
+                        <ul class="dropdown-content">
+                            <li><a href="/">New reservation</a></li>
+                            <li sec:authorize="hasRole('ROLE_CUSTOMER')"><a href="/reservations">Your reservations</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="dropdown toggle" onclick="toggleDropdown(this)">
+                        <a href="#">MY ACCOUNT</a>   
+                            <ul class="dropdown-content">
+                                <li th:if="${not #authorization.expression('isAuthenticated()')}">
+                                    <a href="/login">Login</a>
+                                </li>
+                                <li th:if="${#authorization.expression('isAuthenticated()')}">
+                                    <a href="/logout">Logout</a>
+                                </li>
+                                <li th:if="${not #authorization.expression('isAuthenticated()')}">
+                                    <a href="/create-customer">Create Account</a>
+                                </li>
+                            </ul>
+                     </div>
+                </nav>  
+                
+                <button class="burger" id="burger-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>  
+
+            </div>
+ 
+            <div class="filter-cars">
+                <h2 class="filter-cars-h2">Filters: </h2>
+                <button class="filters-dropdown" id="filters-dropdown">
+                    <h2>Filters: </h2>
+                    <img src="../static/images/arrow-down.png" width="20px">
+                </button>
+            
+                <div class="filters" id="filters">
+                    <label>
+                        <input type="checkbox" id="automat" />
+                        <p>Automat</p>
+                    </label>
+                  
+                    <label>
+                        <input type="checkbox" id="manual"/>
+                        <p>Manual</p>
+                    </label>
+                  
+                    <label>
+                        <input type="checkbox" id="small" />
+                        <p>Small</p>
+                    </label>
+                  
+                    <label>
+                        <input type="checkbox" id="economy" />
+                        <p>Economy</p>
+                    </label>
+
+                    <label>
+                        <input type="checkbox" id="compact" />
+                        <p>Compact</p>
+                    </label>
+                  
+                    <label>
+                        <input type="checkbox" id="estates" />
+                        <p>Estates</p>
+                    </label>
+
+                    <label>
+                        <input type="checkbox" id="large"/>
+                        <p>SUV</p>
+                    </label>
+                </div>
+            </div>
+
+            <div class="car-cards">
+                <div class="car-card" data-car-class="small" data-car-feature="manual">
+                    <img src="../images/fiat-500.png" alt="fiat 500">
+                    <h2>Fiat 500</h2>
+                    <div class="car-description">
+                        <div>
+                            <p><span class="red-check-mark">&#x2713;</span> Vehicle of class Small</p>
+                            <p><span class="red-check-mark">&#x2713;</span> 4 seats</p>
+                            <p><span class="red-check-mark">&#x2713;</span> 1 bag</p>
+                            <p><span class="red-check-mark">&#x2713;</span> 2 doors</p>
+                        </div>
+                        <div>
+                            <p><span class="red-check-mark">&#x2713;</span> Manual</p>
+                            <p><span class="red-check-mark">&#x2713;</span> Air con</p>
+                            <p><span class="red-check-mark">&#x2713;</span> Petrol/Diesel</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="car-card" data-car-class="economy" data-car-feature="manual">
+                    <img src="../images/renault-clio.png" alt="renault clio">
+                    <h2>Renault Clio</h2>
+                    <div class="car-description">
+                        <div>
+                            <p><span class="red-check-mark">&#x2713;</span> Vehicle of class Economy</p>
+                            <p><span class="red-check-mark">&#x2713;</span> 4 seats</p>
+                            <p><span class="red-check-mark">&#x2713;</span> 1 bag</p>
+                            <p><span class="red-check-mark">&#x2713;</span> 4 doors</p>
+                        </div>
+                        <div>
+                            <p><span class="red-check-mark">&#x2713;</span> Manual</p>
+                            <p><span class="red-check-mark">&#x2713;</span> Air con</p>
+                            <p><span class="red-check-mark">&#x2713;</span> Petrol/Diesel</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="car-card" data-car-class="mid-size" data-car-feature="manual">
+                    <img src="../images/seat-leon.png" alt="seat leon">
+                    <h2>Seat Leon</h2>
+                    <div class="car-description">
+                        <div>
+                            <p><span class="red-check-mark">&#x2713;</span> Vehicle of class Mid-Size</p>
+                            <p><span class="red-check-mark">&#x2713;</span> 5 seats</p>
+                            <p><span class="red-check-mark">&#x2713;</span> 2 bag</p>
+                            <p><span class="red-check-mark">&#x2713;</span> 4 doors</p>
+                        </div>
+                        <div>
+                            <p><span class="red-check-mark">&#x2713;</span> Manual</p>
+                            <p><span class="red-check-mark">&#x2713;</span> Air con</p>
+                            <p><span class="red-check-mark">&#x2713;</span> Petrol/Diesel</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="car-card" data-car-class="estates" data-car-feature="automat">
+                    <img src="../images/skoda-octavia-combi.png" alt="skoda octavia combi">
+                    <h2>Skoda Octavia Combi</h2>
+                    <div class="car-description">
+                        <div>
+                            <p><span class="red-check-mark">&#x2713;</span> Vehicle of class Estates</p>
+                            <p><span class="red-check-mark">&#x2713;</span> 5 seats</p>
+                            <p><span class="red-check-mark">&#x2713;</span> 3 bag</p>
+                            <p><span class="red-check-mark">&#x2713;</span> 5 doors</p>
+                        </div>
+                        <div>
+                            <p><span class="red-check-mark">&#x2713;</span> Automatic</p>
+                            <p><span class="red-check-mark">&#x2713;</span> Air con</p>
+                            <p><span class="red-check-mark">&#x2713;</span> Petrol/Diesel</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="car-card" data-car-class="suv" data-car-feature="automat">
+                    <img src="../images/volvo-xc60.png" alt="volvo xc60">
+                    <h2>Volvo XC60</h2>
+                    <div class="car-description">
+                        <div>
+                            <p><span class="red-check-mark">&#x2713;</span> Vehicle of class SUV</p>
+                            <p><span class="red-check-mark">&#x2713;</span> 5 seats</p>
+                            <p><span class="red-check-mark">&#x2713;</span> 3 bag</p>
+                            <p><span class="red-check-mark">&#x2713;</span> 4 doors</p>
+                        </div>
+                        <div>
+                            <p><span class="red-check-mark">&#x2713;</span> Automatic</p>
+                            <p><span class="red-check-mark">&#x2713;</span> Air con</p>
+                            <p><span class="red-check-mark">&#x2713;</span> Petrol/Diesel</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="push"></div>
+        </div>
+
+
+
+            <div class="footer">
+                <div class="footer-columns">
+                    <div class="footer-column-side">
+                        <img src="../images/logo.svg">
+                    </div>
+                    <div class="footer-column">
+                        <a href="#">Terms and conditions</a>
+                        <a href="#">FAQ</a>
+                        <a href="#">Rental points</a>
+                        <a href="#">Promotions</a>
+                        <a href="#">Cars</a>
+                    </div>
+                    <div class="footer-column">
+                        <a href="#">About us</a>
+                        <a href="#">Contact</a>
+                        <a href="#">Privacy policy</a>
+                    </div>
+                    <div class="footer-column">
+                        <a href="#">Book a car</a>
+                        <a href="#">Long term rental</a>
+                        <a href="#">Car-Rent inclusive</a>
+                        <a href="#">QuickPass</a>
+                        <a href="#">Offer for companies</a>
+                    </div>
+                    <div class="footer-column-side">
+                        <p>+47 486 27 952</p>
+                        <p>contact@car-rent.no</p>
+                        <p>Car-Rent AS, <br>
+                            Gaupåsvegen 257, 5265 Ytre Arna</p>
+                        <div class="social-icons">
+                            <img src="../images/icon-facebook.png">
+                            <img src="../images/icon-linkedin.png">
+                            <img src="../images/icon-instagram.png">
+                        </div>
+                    </div>
+                </div>
+                <h5>&copy; 2023 Car-Rent Company - All Rights Reserved.</h5>
+            </div>
+        
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+        <!--BURGER MENU-->
+        <script>
+            document.getElementById('burger-menu').addEventListener('click', function () {
+                document.querySelector('.nav').classList.toggle('show');
+            });
+
+            document.addEventListener('DOMContentLoaded', function () {
+        if (window.innerWidth <= 767) {
+            var dropdowns = document.querySelectorAll('.nav .dropdown');
+
+            dropdowns.forEach(function (dropdown) {
+                dropdown.addEventListener('click', function () {
+                    var submenu = this.querySelector('.submenu');
+                    if (submenu) {
+                        // Schowaj wszystkie otwarte podmenu
+                        var openSubmenus = document.querySelectorAll('.submenu.show');
+                        openSubmenus.forEach(function (openSubmenu) {
+                            openSubmenu.classList.remove('show');
+                        });
+
+                        // Pokaż/ukryj aktualne podmenu
+                            submenu.classList.toggle('show');
+                        }
+                    });
+
+                    // Dodaj obsługę zamykania podmenu po kliknięciu poza nim
+                    document.addEventListener('click', function (event) {
+                        var isClickInside = dropdown.contains(event.target);
+                        if (!isClickInside) {
+                            var openSubmenu = document.querySelector('.submenu.show');
+                            if (openSubmenu) {
+                                openSubmenu.classList.remove('show');
+                            }
+                        }
+                    });
+                });
+            }});
+        </script>
+
+        <!-- SHOW/HIDE FILTERS SMALL SCREAN -->
+        <script>
+            document.getElementById('filters-dropdown').addEventListener('click', function () {
+                document.querySelector('.filters').classList.toggle('show');
+            });
+        </script>
+
+
+
+        <script>
+            $(document).ready(function () {
+                // Pobierz wszystkie checkboxy
+                var checkboxes = $('input[type=checkbox]');
+
+                // Dodaj event listener dla zmiany stanu checkboxa
+                checkboxes.change(function () {
+                    // Pobierz wartość "id" checkboxa
+                    var checkboxId = $(this).attr('id');
+
+                    // Pokaż lub ukryj karty samochodowe w zależności od stanu checkboxa
+                    toggleCarCards(checkboxId);
+                });
+
+                // Funkcja do pokazywania lub ukrywania kart w zależności od stanu checkboxa
+                function toggleCarCards(checkboxId) {
+                    // Pobierz stan checkboxa
+                    var isChecked = $('#' + checkboxId).prop('checked');
+
+                    // Sprawdź dla każdej karty, czy spełnia warunki checkboxów i ukryj lub pokaż
+                    $('.car-card').each(function () {
+                        var carFeatures = $(this).data('features').split(' ');
+
+                        // Warunki filtrowania (dodaj więcej warunków według potrzeb)
+                        var shouldShow = true;
+
+                        // Sprawdź, czy cecha karty odpowiada zaznaczonemu checkboxowi
+                        if (isChecked && carFeatures.indexOf(checkboxId) === -1) {
+                            shouldShow = false;
+                        }
+
+                        // Pokaż lub ukryj kartę w zależności od warunków
+                        if (shouldShow) {
+                            $(this).show();
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+                }
+            });
+        </script>
+</body>
+</html>

@@ -3,28 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/styles.css">
     <title>Car Rental</title>
-    <link rel="stylesheet" href="../static/CSS/styles.css">
 </head>
 <body>
 
         <div class="container">
             <div class="header">
+
                 <div class="logo">
-                    <a href="/" class="logo-text">CAR - RENT</a>
+                    <a href="/"><img src="../images/logo.svg"></a>
                 </div>
 
-                <div class="contact">
-                    <img src="../static/images/phone-icon.svg" width="30">
-                    + 47 486 27 952
-                </div>
-            </div>
-                
-                 <nav class="menu">
+                <nav class="nav">
 
-                    <div class="dropdown" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE')">
-                        <a href="#">Reservation</a>
-                        <ul>
+                     <div class="dropdown toggle" onclick="toggleDropdown(this)" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE', 'ROLE_ADMIN')">
+                        <a href="#/display cars for clients">CARS</a>
+                            <ul class="dropdown-content">
+                                <li><a href="/cars">Display car list</a></li>
+                                <li><a href="/createCar">Add vehicle</a></li>
+                                <li><a href="#">Find a car</a></li>
+                            </ul>
+                     </div>
+
+                     <div class="dropdown toggle" onclick="toggleDropdown(this)" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE', 'ROLE_ADMIN')">
+                        <a href="#">RESERVATIONS</a>
+                        <ul class="dropdown-content">
                             <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="/reservations">Display reservations</a></li>
                             <li sec:authorize="hasRole('ROLE_CUSTOMER')"><a href="/reservations">Your reservations</a></li>
                             <li><a href="/">New reservation</a></li>
@@ -33,59 +37,9 @@
                         </ul>
                     </div>
 
-                     <div class="dropdown"  sec:authorize="hasRole('ROLE_EMPLOYEE')">
-                        <a href="#/display cars for clients">Cars</a>
-                            <ul>
-                                <li><a href="/cars">Display car list</a></li>
-                                <li><a href="/createCar">Add vehicle</a></li>
-                                <li><a href="#">Find a car</a></li>
-                            </ul>
-                     </div>
-
-                     <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
-                        <a href="#">Clients</a>
-                            <ul>
-                                <li><a href="#">Display clients list</a></li>
-                                <li><a href="#">Add client</a></li>
-                                <li><a href="#">Remove client</a></li>
-                                <li><a href="#">Show reservations</a></li>
-                                <li><a href="#">Find client(by name/client ID)</a></li>
-                            </ul>
-                     </div>
-
-                     <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
-                        <a href="#">Branch</a>
-                            <ul>
-                                <li><a href="#">List of employees</a></li>
-                                <li><a href="#">Add employee</a></li>
-                                <li><a href="#">//set employee status</a></li>
-                                <li><a href="#">Remove employee</a></li>
-                                <li><a href="#">List of available cars</a></li>
-                            </ul>
-                     </div>
-
-                     <!--
-                        <div class="dropdown">
-                        <a href="#">???Statistics</a>
-                            <ul>
-                                <li><a href="#">Display Incomes/branch</a></li>
-                                <li><a href="#">Most rented car</a></li>
-                            </ul>
-                        </div>
-                     -->
-
-                     <div class="dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
-                        <a href="#">Rent Companies</a>
-                            <ul>
-                                <li><a href="#">List of companies</a></li>
-                                <li><a href="#">Add company</a></li>
-                                <li><a href="#">Remove company</a></li>
-                            </ul>
-                     </div>
-
-                     <div class="dropdown">
-                        <a href="#">My Account</a>
-                            <ul>
+                    <div class="dropdown toggle" onclick="toggleDropdown(this)">
+                        <a href="#">MY ACCOUNT</a>   
+                            <ul class="dropdown-content">
                                 <li th:if="${not #authorization.expression('isAuthenticated()')}">
                                     <a href="/login">Login</a>
                                 </li>
@@ -97,53 +51,268 @@
                                 </li>
                             </ul>
                      </div>
+                </nav>  
+                
+                <button class="burger" id="burger-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>  
 
-                </nav>
+            </div>
+ 
 
-
-
-            <div class="main">
-                <div class="advertisement">
 
             
-                    Rental Car.<br>
-                    Go wherever the road may lead.
-
-                    <img src="../static/images/car-logo.png" alt="car-rental-logo" width="600"  height="300">
-                </div>
                 <div class="search">
-                        <form class="search-form" th:action="@{/search}" method="GET">
-                            <label for="currentPickUpBranchId">pickup LOCATION:</label>
-                            <select id="currentPickUpBranchId" name="currentPickUpBranchId" class="location-select">
-                                <option th:each="pickUpLocation : ${allBranches}" th:text="${pickUpLocation.address.city + ', ' + pickUpLocation.address.details}"
-                                        th:value="${pickUpLocation.getId()}"></option>
-                            </select>
-            
-                            <label for="currentDropOffBranchId">drop-off LOCATION:</label>
-                            <select id="currentDropOffBranchId" name="currentDropOffBranchId" class="location-select">
-                                <option th:each="dropOffLocation : ${allBranches}" th:text="${dropOffLocation.getName() + ' / ' + dropOffLocation.address.city + ' / ' + dropOffLocation.address.details}"
-                                th:value="${dropOffLocation.getId()}"></option>
 
-                            </select>
-            
-                            <label for="pickUpDate">pickup DATE:</label>
-                            <input type="datetime-local" id="pickUpDate" name="currentPickUpDateTime">
-            
-                            <label for="dropOffDate">drop-off DATE:</label>
-                            <input type="datetime-local" id="dropOffDate" name="currentDropOffDateTime">
-
-                            <button class="button" type="submit">Search</button>
-                        </form>
+                    <div class="motto">
+                        <span class="motto">Car - Rent. Your moment starts here. Let’s Go!</span>
                     </div>
+
+                        <form class="search-form" th:action="@{/search}" method="GET">
+                            <div class="search-form-row">
+                                <div class="search-form-column">
+                                    <label for="currentPickUpBranchId">PICK-UP LOCATION:</label>
+                                    <select id="currentPickUpBranchId" name="currentPickUpBranchId" class="location-select">
+                                        <option th:each="pickUpLocation : ${allBranches}" th:text="${pickUpLocation.address.city + ', ' + pickUpLocation.address.details}"
+                                                th:value="${pickUpLocation.getId()}"></option>
+                                    </select>
+                                </div>
+                                <div class="search-form-column">
+                                    <label for="pickUpDate">pickup DATE:</label>
+                                    <input type="datetime-local" id="pickUpDate" name="currentPickUpDateTime">
+                                </div>
+                            </div>
+                            
+                            <div class="search-form-row">
+                                <div class="search-form-column">
+                                    <label for="currentDropOffBranchId">DROP-OFF LOCATION:</label>
+                                    <select id="currentDropOffBranchId" name="currentDropOffBranchId" class="location-select">
+                                        <option th:each="dropOffLocation : ${allBranches}" th:text="${dropOffLocation.getName() + ' / ' + dropOffLocation.address.city + ' / ' + dropOffLocation.address.details}"
+                                        th:value="${dropOffLocation.getId()}"></option>
+                                    </select>
+                                </div>
+                                <div class="search-form-column">
+                                    <label for="dropOffDate">drop-off DATE:</label>
+                                    <input type="datetime-local" id="dropOffDate" name="currentDropOffDateTime">
+                                </div>
+                            </div>
+                        
+                            <div class="search-form-row">
+                                <div class="search-form-column">
+                                    <button class="button-search" type="submit">FIND A CAR</button>
+                                </div>
+                                <div class="search-form-column">
+
+                                </div>
+                            </div>        
+                        </form>
                 </div>
+
+
+            <div class="shortcut-nav">
+                <div class="shortcut-nav-item">
+                    <a href="#">Manage your booking<img src="../images/arrow-right.png"></a>
+                </div>
+                <div class="shortcut-nav-item">
+                    <a href="#">Retrieve an invoice<img src="../images/arrow-right.png"></a>
+                </div>
+                <div class="shortcut-nav-item">
+                    <a href="#">Find an answer<img src="../images/arrow-right.png"></a>
+                </div>
+            </div>
+
+
+            <div class="special-offer">
+                <div class="special-offer-item">
+                    <img src="../images/arrows-spin.png">
+                    <a href="#">Flexible cancelation policy</a>
+                    <p class="special-offer-item-description">No cancellation fees, just full cash refunds</p>
+                </div>
+                <div class="special-offer-line">
+                    <img src="../images/line-vertical.png">
+                </div>
+                <div class="special-offer-item">
+                    <img src="../images/numbers-off.png">
+                    <a href="#">Unlimited mileage</a>
+                    <p class="special-offer-item-description">An unlimited mileage gives you more freedom of mobility.</p>
+                </div>
+                <div class="special-offer-line">
+                    <img src="../images/line-vertical.png">
+                </div>
+                <div class="special-offer-item">
+                    <img src="../images/clock-clockwise.png">
+                    <a href="#">Speedy QuickPass</a>
+                    <p class="special-offer-item-description">Time-saving free pre-registration service</p>
+                </div>
+                <div class="special-offer-line">
+                    <img src="../images/line-vertical.png">
+                </div>
+                <div class="special-offer-item">
+                    <img src="../images/heart.png">
+                    <a href="#">Car-Rent loyalty</a>
+                    <p class="special-offer-item-description">Priority service, free voucher & dedicated app</p>
+                </div>
+            </div>
+            
+
+            <div class="make-the-most-of-your-car-hire">
+                <h1>Make the most of your car hire</h1>
+                <div class="make-the-most-of-your-car-hire-items">
+                    
+                    <div class="make-the-most-of-your-car-hire-item">
+                        <a href="#">
+                            <img src="../images/rectangle-road.png">
+                            <div class="make-the-most-of-your-car-hire-item-description">
+                                <h2>Flexible long term car rental</h2>
+                                <p>Enjoy a flexible mileage range 
+                                that suits your journey 
+                                and receive a free additional driver.</p>
+                                <button class="button">BOOK NOW</button> 
+                            </div>   
+                        </a>
+                    </div>  
+
+                    <div class="make-the-most-of-your-car-hire-item">
+                        <a href="#">
+                            <img src="../images/rectangle-yoga.png">
+                            <div class="make-the-most-of-your-car-hire-item-description">
+                                <h2>Get Car-Rent Inclusive</h2>
+                                <p>Enjoy free Roadside Assistance Plus, 
+                                discounted zero- excess cover and complete 
+                                peace of mind all for one upfront cost.</p>
+                                <button class="button">BOOK NOW</button> 
+                            </div>   
+                        </a>
+                    </div>
+
+                    <div class="make-the-most-of-your-car-hire-item">
+                        <a href="#">
+                            <img src="../images/rectangle-quickpass.png">
+                            <div class="make-the-most-of-your-car-hire-item-description">
+                                <h2>QuickPass</h2>
+                                <p>Our pre-travel registration service 
+                                    saves you time at collection.</p>
+                                <button class="button">BOOK NOW</button> 
+                            </div>   
+                        </a>
+                    </div>
+                </div>    
+            </div>
+
+
             <div id="push"></div>
         </div>
 
 
 
             <div class="footer">
-                <p>&copy; All rights reserved.</p>
+                <div class="footer-columns">
+                    <div class="footer-column-side">
+                        <img src="../images/logo.svg">
+                    </div>
+                    <div class="footer-column">
+                        <a href="#">Terms and conditions</a>
+                        <a href="#">FAQ</a>
+                        <a href="#">Rental points</a>
+                        <a href="#">Promotions</a>
+                        <a href="#">Cars</a>
+                    </div>
+                    <div class="footer-column">
+                        <a href="#">About us</a>
+                        <a href="#">Contact</a>
+                        <a href="#">Privacy policy</a>
+                    </div>
+                    <div class="footer-column">
+                        <a href="#">Book a car</a>
+                        <a href="#">Long term rental</a>
+                        <a href="#">Car-Rent inclusive</a>
+                        <a href="#">QuickPass</a>
+                        <a href="#">Offer for companies</a>
+                    </div>
+                    <div class="footer-column-side">
+                        <p>+47 486 27 952</p>
+                        <p>contact@car-rent.no</p>
+                        <p>Car-Rent AS, <br>
+                            Gaupåsvegen 257, 5265 Ytre Arna</p>
+                        <div class="social-icons">
+                            <img src="../images/icon-facebook.png">
+                            <img src="../images/icon-linkedin.png">
+                            <img src="../images/icon-instagram.png">
+                        </div>
+                    </div>
+                </div>
+                <h5>&copy; 2023 Car-Rent Company - All Rights Reserved.</h5>
             </div>
+        <!-- <script src="../static/js/script.js"></script>        -->
+        <script>
+            document.getElementById('burger-menu').addEventListener('click', function () {
+                document.querySelector('.nav').classList.toggle('show');
+            });
+
+            // // Funkcja do przełączania stanu rozwijalnego podmenu
+            // function toggleDropdown(element) {
+            // element.classList.toggle("show");
+            // var dropdownContent = element.querySelector('.dropdown-content');
+            // dropdownContent.style.display = (dropdownContent.style.display === 'block') ? 'none' : 'block';
+            // }
+            document.addEventListener('DOMContentLoaded', function () {
+        if (window.innerWidth <= 767) {
+            var dropdowns = document.querySelectorAll('.nav .dropdown');
+
+            dropdowns.forEach(function (dropdown) {
+                dropdown.addEventListener('click', function () {
+                    var submenu = this.querySelector('.submenu');
+                    if (submenu) {
+                        // Schowaj wszystkie otwarte podmenu
+                        var openSubmenus = document.querySelectorAll('.submenu.show');
+                        openSubmenus.forEach(function (openSubmenu) {
+                            openSubmenu.classList.remove('show');
+                        });
+
+                        // Pokaż/ukryj aktualne podmenu
+                        submenu.classList.toggle('show');
+                    }
+                });
+
+                // Dodaj obsługę zamykania podmenu po kliknięciu poza nim
+                document.addEventListener('click', function (event) {
+                    var isClickInside = dropdown.contains(event.target);
+                    if (!isClickInside) {
+                        var openSubmenu = document.querySelector('.submenu.show');
+                        if (openSubmenu) {
+                            openSubmenu.classList.remove('show');
+                        }
+                    }
+                });
+            });
+        }
+    });
+        </script>
+        <script type="module">
+            // Import the functions you need from the SDKs you need
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+            import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+            // TODO: Add SDKs for Firebase products that you want to use
+            // https://firebase.google.com/docs/web/setup#available-libraries
+          
+            // Your web app's Firebase configuration
+            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+            const firebaseConfig = {
+              apiKey: "AIzaSyBsPWPadVEtUOuElYhJ2blCJvy2p6PG4VE",
+              authDomain: "car-rent-c2c69.firebaseapp.com",
+              projectId: "car-rent-c2c69",
+              storageBucket: "car-rent-c2c69.appspot.com",
+              messagingSenderId: "901334010326",
+              appId: "1:901334010326:web:1dd7c008891e366aaf7c77",
+              measurementId: "G-D5NBC3XLYF"
+            };
+          
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const analytics = getAnalytics(app);
+          </script>
 
 </body>
 </html>

@@ -86,6 +86,9 @@ public class WebController {
                          @RequestParam Long currentPickUpBranchId,
                          @RequestParam Long currentDropOffBranchId, Model model) {
 
+        Address currentPickUpBranchAddress = branchService.findBranchAddressById(currentPickUpBranchId);
+        Address currentDropOffBranchAddress = branchService.findBranchAddressById(currentDropOffBranchId);
+
         var optionalReservations = this.reservationService.findAvailableCarsWithOptionalAdjacentReservations(currentPickUpDateTime, currentDropOffDateTime, currentPickUpBranchId, currentDropOffBranchId);
         List<Car> carList = reservationService.findAvailableCars(optionalReservations);
         model.addAttribute("carList", carList);
@@ -93,9 +96,11 @@ public class WebController {
         model.addAttribute("currentDropOffDateTime", currentDropOffDateTime);
         model.addAttribute("currentPickUpBranchId", currentPickUpBranchId);
         model.addAttribute("currentDropOffBranchId", currentDropOffBranchId);
+        model.addAttribute("currentPickUpBranchAddress", currentPickUpBranchAddress);
+        model.addAttribute("currentDropOffBranchAddress", currentDropOffBranchAddress);
 
 
-        return "searchResults";
+        return "cars-founded";
     }
 
 
@@ -171,10 +176,21 @@ public class WebController {
     }
 
     @GetMapping("/cars")
+    public String showAllTypesOfCars() {
+        return "cars";
+    }
+
+    @GetMapping("/cars-founded")
+    public String getCars(Model model) {
+        model.addAttribute("cars", carService.getAll());
+        return "cars-founded";
+    }
+
+/*    @GetMapping("/cars-list")
     public String getCars(Model model) {
         model.addAttribute("cars", carService.getAll());
         return "cars-list";
-    }
+    }*/
 
     @PostMapping("/deleteCar")
     public String deleteCar(@RequestParam("carId") Long carId){
@@ -231,7 +247,7 @@ public class WebController {
             @RequestParam("productionYear") Integer productionYear,
             @RequestParam("transmissionType") CarTransmissionType transmissionType,
             @RequestParam("color") String color,
-            @RequestParam("mileage") Double mileage,
+            @RequestParam("mileage") Integer mileage,
             @RequestParam("price") BigDecimal price,
             @RequestParam("rental") Long rentalId,
             Model carModel) {
