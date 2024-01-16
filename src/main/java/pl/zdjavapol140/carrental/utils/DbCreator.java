@@ -1,106 +1,69 @@
-package pl.zdjavapol140.carrental.utils;
-
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
-import pl.zdjavapol140.carrental.repository.*;
-import pl.zdjavapol140.carrental.service.*;
-import java.util.Optional;
-
-@Slf4j
-@Component
-public class DbCreator {
-
-    private final AddressRepository addressRepository;
-    private final AdminService adminService;
-    private final BranchRepository branchRepository;
-    private final CarRepository carRepository;
-    private final CarRentRepository carRentRepository;
-    private final CarReturnRepository carReturnRepository;
-    private final CustomerRepository customerRepository;
-    private final EmployeeRepository employeeRepository;
-    private final RentalRepository rentalRepository;
-    private final ReservationRepository reservationRepository;
-    private final ReservationService reservationService;
-    private final CarService carService;
-    private final CustomerService customerService;
-    private final UserRepository userRepository;
-    private final EmployeeService employeeService;
-    private final BranchService branchService;
-
-    public DbCreator(AddressRepository addressRepository, AdminService adminService, BranchRepository branchRepository, CarRepository carRepository, CarRentRepository carRentRepository, CarReturnRepository carReturnRepository, CustomerRepository customerRepository, EmployeeRepository employeeRepository, RentalRepository rentalRepository, ReservationRepository reservationRepository, ReservationService reservationService, CarService carService, CustomerService customerService, UserRepository userRepository, EmployeeService employeeService, BranchService branchService) {
-        this.addressRepository = addressRepository;
-        this.adminService = adminService;
-        this.branchRepository = branchRepository;
-        this.carRepository = carRepository;
-        this.carRentRepository = carRentRepository;
-        this.carReturnRepository = carReturnRepository;
-        this.customerRepository = customerRepository;
-        this.employeeRepository = employeeRepository;
-        this.rentalRepository = rentalRepository;
-        this.reservationRepository = reservationRepository;
-        this.reservationService = reservationService;
-        this.carService = carService;
-        this.customerService = customerService;
-        this.userRepository = userRepository;
-        this.employeeService = employeeService;
-        this.branchService = branchService;
-    }
-
-    @EventListener(ApplicationReadyEvent.class)
-    public void insertDataToDb() {
-
-
-       // employeeService.addNewEmployee("employee", "employee", "employee@gmail.com", EMPLOYEE, null);
-       // adminService.addNewAdmin("admin", "admin", "admin@gmail.com");
-
-      
-//        Reservation reservation = reservationService.findReservationById(112L);
-//        log.info(reservation.toString());
-//        List<Reservation> reservations = reservationService.findReservationsByCarId(reservation.getCar().getId());
+//package pl.zdjavapol140.carrental.utils;
 //
-//        log.info(reservations.toString());
-//        log.info(String.valueOf(reservations.size()));
+//import lombok.extern.slf4j.Slf4j;
+//import org.springframework.boot.context.event.ApplicationReadyEvent;
+//import org.springframework.context.event.EventListener;
+//import org.springframework.stereotype.Component;
+//import pl.zdjavapol140.carrental.model.*;
+//import pl.zdjavapol140.carrental.repository.*;
+//import pl.zdjavapol140.carrental.service.*;
 //
-//        List<Reservation> notNull = reservations.stream().filter(Objects::nonNull).toList();
+//import java.time.LocalDateTime;
+//import java.util.ArrayList;
+//import java.util.Comparator;
+//import java.util.List;
+//import java.util.Random;
 //
-//        log.info(notNull.toString());
-//        log.info(String.valueOf(notNull.size()));
+//import static pl.zdjavapol140.carrental.model.Job.EMPLOYEE;
+//import static pl.zdjavapol140.carrental.utils.CarGenerator.generateCarByType;
 //
-//        List<Reservation> notCanceled = notNull.stream().filter(r -> !r.getStatus().equals(ReservationStatus.CANCELED)).toList();
+//@Slf4j
+//@Component
+//public class DbCreator {
 //
-//        log.info(notCanceled.toString());
-//        log.info(String.valueOf(notCanceled.size()));
+//    private final AddressRepository addressRepository;
+//    private final AdminService adminService;
+//    private final BranchRepository branchRepository;
+//    private final CarRepository carRepository;
+//    private final CarRentRepository carRentRepository;
+//    private final CarReturnRepository carReturnRepository;
+//    private final CustomerRepository customerRepository;
+//    private final EmployeeRepository employeeRepository;
+//    private final RentalRepository rentalRepository;
+//    private final ReservationRepository reservationRepository;
+//    private final ReservationService reservationService;
+//    private final CarService carService;
+//    private final CustomerService customerService;
+//    private final UserRepository userRepository;
+//    private final EmployeeService employeeService;
+//    private final BranchService branchService;
 //
-//        List<Reservation> isAfter = notCanceled.stream().filter(r -> r.getPickUpDateTime().isAfter(reservation.getDropOffDateTime())).toList();
+//    public DbCreator(AddressRepository addressRepository, AdminService adminService, BranchRepository branchRepository, CarRepository carRepository, CarRentRepository carRentRepository, CarReturnRepository carReturnRepository, CustomerRepository customerRepository, EmployeeRepository employeeRepository, RentalRepository rentalRepository, ReservationRepository reservationRepository, ReservationService reservationService, CarService carService, CustomerService customerService, UserRepository userRepository, EmployeeService employeeService, BranchService branchService) {
+//        this.addressRepository = addressRepository;
+//        this.adminService = adminService;
+//        this.branchRepository = branchRepository;
+//        this.carRepository = carRepository;
+//        this.carRentRepository = carRentRepository;
+//        this.carReturnRepository = carReturnRepository;
+//        this.customerRepository = customerRepository;
+//        this.employeeRepository = employeeRepository;
+//        this.rentalRepository = rentalRepository;
+//        this.reservationRepository = reservationRepository;
+//        this.reservationService = reservationService;
+//        this.carService = carService;
+//        this.customerService = customerService;
+//        this.userRepository = userRepository;
+//        this.employeeService = employeeService;
+//        this.branchService = branchService;
+//    }
 //
-//        log.info(isAfter.toString());
-//        log.info(String.valueOf(isAfter.size()));
+//    @EventListener(ApplicationReadyEvent.class)
+//    public void insertDataToDb() {
 //
-//        Reservation myNext = isAfter.stream().min(Comparator.comparing(Reservation::getPickUpDateTime)).orElse(null);
+//        employeeService.addNewEmployee("employee", "employee", "employee@gmail.com", EMPLOYEE, null);
+//        adminService.addNewAdmin("admin", "admin", "admin@gmail.com");
 //
-//        log.info(myNext != null ? myNext.toString() : null);
 //
-//        List<Reservation> collected = reservations.stream()
-//                .filter(r -> r != null
-//                        && !r.getStatus().equals(ReservationStatus.CANCELED)
-//                        && r.getPickUpDateTime().isAfter(reservation.getDropOffDateTime())).toList();
-//
-//        log.info(collected.toString());
-//        log.info(String.valueOf(collected.size()));
-
-//Reservation next = reservationService.findNotCanceledNextReservationAfter(reservation.getCar().getId(), reservation.getDropOffDateTime()).get();
-//log.info(String.valueOf(next));
-//
-//Reservation previous = reservationService.findNotCancelledPreviousReservationBefore(reservation.getCar().getId(), reservation.getPickUpDateTime()).get();
-//log.info(previous.toString());
-//
-//Optional<ReservationStatus> check = Optional.ofNullable(reservationRepository.findById(300L).get().getStatus());
-//
-//log.info(check.toString());
-
-
 //        List<Address> addresses = new ArrayList<>();
 //        List<Branch> branches = new ArrayList<>();
 //        List<Car> cars = new ArrayList<>();
@@ -163,15 +126,17 @@ public class DbCreator {
 //        /**Fill carRepository
 //         *
 //         */
-//        for (int i = 0; i < baseNumberOfObjects * 30; i++) {
-//            int randomForRental = random.nextInt(rentals.size());
-//            Rental rental = rentals.get(randomForRental);
-//            Car car = CarGenerator.generateRandomCar();
-//            car.setRental(rental);
+//        String[] carTypes = {"small", "economy", "midsize", "estates", "suv"};
 //
-//            cars.add(car);
+//        for (String carType : carTypes) {
+//            for (int i = 0; i < baseNumberOfObjects * 30; i++) {
+//                int randomForRental = random.nextInt(rentals.size());
+//                Rental rental = rentals.get(randomForRental);
+//                Car car = generateCarByType(carType);
+//                car.setRental(rental);
+//                cars.add(car);
+//            }
 //        }
-//        carRepository.saveAll(cars);
 //
 //
 //        /**Fill customerRepository
@@ -320,6 +285,6 @@ public class DbCreator {
 //            customer.setReservations(reservationRepository.findReservationsByCustomerId(customer.getId()));
 //        }
 //        customerRepository.saveAll(customers);
-
-    }
-}
+//
+//    }
+//}
