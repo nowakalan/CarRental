@@ -16,41 +16,29 @@
                 </div>
 
                 <nav class="nav">
-
-                     <div class="dropdown toggle" onclick="toggleDropdown(this)" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE', 'ROLE_ADMIN')">
-                        <a href="#/display cars for clients">CARS</a>
+                     <div class="dropdown toggle" onclick="toggleDropdown(this)">
+                        <a href="/cars">CARS</a>
                             <ul class="dropdown-content">
-                                <li><a href="/cars">Display car list</a></li>
-                                <li><a href="/createCar">Add vehicle</a></li>
-                                <li><a href="#">Find a car</a></li>
+                                <li><a sec:authorize="hasRole('ROLE_EMPLOYEE')" href="/cars">Display car list</a></li>
+                                <li><a sec:authorize="hasRole('ROLE_EMPLOYEE')" href="/createCar">Add vehicle</a></li>
+                                <li><a sec:authorize="hasRole('ROLE_EMPLOYEE')" href="#">Find a car</a></li>
                             </ul>
                      </div>
 
                      <div class="dropdown toggle" onclick="toggleDropdown(this)" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE', 'ROLE_ADMIN')">
-                        <a href="#">RESERVATIONS</a>
+                        <a href="/reservations">RESERVATIONS</a>
                         <ul class="dropdown-content">
                             <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="/reservations">Display reservations</a></li>
-                            <li sec:authorize="hasRole('ROLE_CUSTOMER')"><a href="/reservations">Your reservations</a></li>
-                            <li><a href="/">New reservation</a></li>
+                            <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="/">New reservation</a></li>
                             <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Rent a Car</a></li>
                             <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Return Car</a></li>
                         </ul>
                     </div>
 
                     <div class="dropdown toggle" onclick="toggleDropdown(this)">
-                        <a href="#">MY ACCOUNT</a>   
-                            <ul class="dropdown-content">
-                                <li th:if="${not #authorization.expression('isAuthenticated()')}">
-                                    <a href="/login">Login</a>
-                                </li>
-                                <li th:if="${#authorization.expression('isAuthenticated()')}">
-                                    <a href="/logout">Logout</a>
-                                </li>
-                                <li th:if="${not #authorization.expression('isAuthenticated()')}">
-                                    <a href="/create-customer">Create Account</a>
-                                </li>
-                            </ul>
-                     </div>
+                        <a th:if="${not #authorization.expression('isAuthenticated()')}" href="/login">LOGIN<img src="../images/login-person.png" alt="login-person"></a>
+                        <a th:if="${#authorization.expression('isAuthenticated()')}" href="/logout">LOGOUT<img src="../images/login-person.png" alt="login-person"></a>
+                    </div>
                 </nav>  
                 
                 <button class="burger" id="burger-menu">
@@ -70,38 +58,38 @@
                         <span class="motto">Car - Rent. Your moment starts here. Let’s Go!</span>
                     </div>
 
-                        <form class="search-form" th:action="@{/search}" method="GET">
+                        <form class="search-form" th:action="@{/search}" method="GET" onsubmit="return validateDateTime()">
                             <div class="search-form-row">
                                 <div class="search-form-column">
                                     <label for="currentPickUpBranchId">PICK-UP LOCATION:</label>
-                                    <select id="currentPickUpBranchId" name="currentPickUpBranchId" class="location-select">
+                                    <select id="currentPickUpBranchId" name="currentPickUpBranchId" class="location-select" required>
                                         <option th:each="pickUpLocation : ${allBranches}" th:text="${pickUpLocation.address.city + ', ' + pickUpLocation.address.details}"
                                                 th:value="${pickUpLocation.getId()}"></option>
                                     </select>
                                 </div>
                                 <div class="search-form-column">
                                     <label for="pickUpDate">pickup DATE:</label>
-                                    <input type="datetime-local" id="pickUpDate" name="currentPickUpDateTime">
+                                    <input type="datetime-local" id="pickUpDate" name="currentPickUpDateTime" required>
                                 </div>
                             </div>
                             
                             <div class="search-form-row">
                                 <div class="search-form-column">
                                     <label for="currentDropOffBranchId">DROP-OFF LOCATION:</label>
-                                    <select id="currentDropOffBranchId" name="currentDropOffBranchId" class="location-select">
-                                        <option th:each="dropOffLocation : ${allBranches}" th:text="${dropOffLocation.getName() + ' / ' + dropOffLocation.address.city + ' / ' + dropOffLocation.address.details}"
+                                    <select id="currentDropOffBranchId" name="currentDropOffBranchId" class="location-select" required>
+                                        <option th:each="dropOffLocation : ${allBranches}" th:text="${dropOffLocation.address.city + ', ' + dropOffLocation.address.details}"
                                         th:value="${dropOffLocation.getId()}"></option>
                                     </select>
                                 </div>
                                 <div class="search-form-column">
                                     <label for="dropOffDate">drop-off DATE:</label>
-                                    <input type="datetime-local" id="dropOffDate" name="currentDropOffDateTime">
+                                    <input type="datetime-local" id="dropOffDate" name="currentDropOffDateTime" required>
                                 </div>
                             </div>
                         
                             <div class="search-form-row">
                                 <div class="search-form-column">
-                                    <button class="button-search" type="submit">FIND A CAR</button>
+                                    <button class="button button-search" type="submit">FIND A CAR</button>
                                 </div>
                                 <div class="search-form-column">
 
@@ -245,74 +233,7 @@
                 </div>
                 <h5>&copy; 2023 Car-Rent Company - All Rights Reserved.</h5>
             </div>
-        <!-- <script src="../static/js/script.js"></script>        -->
-        <script>
-            document.getElementById('burger-menu').addEventListener('click', function () {
-                document.querySelector('.nav').classList.toggle('show');
-            });
 
-            // // Funkcja do przełączania stanu rozwijalnego podmenu
-            // function toggleDropdown(element) {
-            // element.classList.toggle("show");
-            // var dropdownContent = element.querySelector('.dropdown-content');
-            // dropdownContent.style.display = (dropdownContent.style.display === 'block') ? 'none' : 'block';
-            // }
-            document.addEventListener('DOMContentLoaded', function () {
-        if (window.innerWidth <= 767) {
-            var dropdowns = document.querySelectorAll('.nav .dropdown');
-
-            dropdowns.forEach(function (dropdown) {
-                dropdown.addEventListener('click', function () {
-                    var submenu = this.querySelector('.submenu');
-                    if (submenu) {
-                        // Schowaj wszystkie otwarte podmenu
-                        var openSubmenus = document.querySelectorAll('.submenu.show');
-                        openSubmenus.forEach(function (openSubmenu) {
-                            openSubmenu.classList.remove('show');
-                        });
-
-                        // Pokaż/ukryj aktualne podmenu
-                        submenu.classList.toggle('show');
-                    }
-                });
-
-                // Dodaj obsługę zamykania podmenu po kliknięciu poza nim
-                document.addEventListener('click', function (event) {
-                    var isClickInside = dropdown.contains(event.target);
-                    if (!isClickInside) {
-                        var openSubmenu = document.querySelector('.submenu.show');
-                        if (openSubmenu) {
-                            openSubmenu.classList.remove('show');
-                        }
-                    }
-                });
-            });
-        }
-    });
-        </script>
-        <script type="module">
-            // Import the functions you need from the SDKs you need
-            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-            import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-            // TODO: Add SDKs for Firebase products that you want to use
-            // https://firebase.google.com/docs/web/setup#available-libraries
-          
-            // Your web app's Firebase configuration
-            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-            const firebaseConfig = {
-              apiKey: "AIzaSyBsPWPadVEtUOuElYhJ2blCJvy2p6PG4VE",
-              authDomain: "car-rent-c2c69.firebaseapp.com",
-              projectId: "car-rent-c2c69",
-              storageBucket: "car-rent-c2c69.appspot.com",
-              messagingSenderId: "901334010326",
-              appId: "1:901334010326:web:1dd7c008891e366aaf7c77",
-              measurementId: "G-D5NBC3XLYF"
-            };
-          
-            // Initialize Firebase
-            const app = initializeApp(firebaseConfig);
-            const analytics = getAnalytics(app);
-          </script>
-
+         <script src="../js/script.js"></script>
 </body>
 </html>

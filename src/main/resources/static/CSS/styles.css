@@ -37,6 +37,13 @@ h2 {
 	margin: 0;
 }
 
+h4 {
+	font-family: 'Inter', sans-serif;
+	font-size: 14px;
+	font-weight: 600;
+	margin: 0;
+}
+
 h5 {
 	font-family: 'Inter', sans-serif;
 	font-size: 14px;
@@ -128,12 +135,12 @@ body {
 }
 
 .button {
-	margin: 0; /* Wyśrodkowanie w poziomie */
+	/* Wyśrodkowanie w poziomie */
     display: block;
 	width: 150px;
 	height: 25px;
-    margin-top: 15px;
-    padding: 3px 20px;
+	margin: 15px 0 0;
+	padding: 3px 20px;
     background-color: var(--primary-color);
     color: #333;
     border: none;
@@ -145,20 +152,15 @@ body {
 }
 
 .button-book-now {
-    display: block;
 	width: 120px;
 	height: 25px;
     padding: 5px 20px;
-    background-color: var(--primary-color);
 	font-family: 'Inter', sans-serif;
+}
+
+.button-book-now a {
 	font-size: 14px;
-    color: #333;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
 	text-decoration: none;
-	font-size: 14px;
-	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .button-common {
@@ -171,6 +173,12 @@ body {
 	cursor: pointer;
 }
 
+.button-confirm-your-booking {
+	width: 300px;
+	background-color: #5FAA30;
+	color:#ffffff;
+}
+
 .button-danger {
 	margin: 5px;
     padding: 10px 20px;
@@ -181,23 +189,23 @@ body {
     cursor: pointer;
 }
 
+.button-delete-your-booking {
+	width: 300px;
+	background-color: #FF543E;
+	color:#ffffff;
+}
+
+.button-return-your-booking {
+	width: 300px;
+	text-align: center;
+}
+
 .button-search {
-	margin: 0 auto; /* Wyśrodkowanie w poziomie */
-    display: block;
 	width: 300px;
 	height: 25px;
-    margin-top: 15px;
-    padding: 5px 20px;
-    background-color: var(--primary-color);
+	margin: 15px auto 0;
+	padding: 5px 20px;
 	font-family: 'Inter', sans-serif;
-	font-size: 14px;
-    color: #333;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-	text-decoration: none;
-	font-size: 14px;
-	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .button-warning {
@@ -221,8 +229,7 @@ body {
 .car-card {
 	display: flex;
 	flex-direction: column;
-	padding: 20px;
-	padding-bottom: 40px;
+	padding: 20px 20px 40px;
 	border: 1px solid #D9D9D9;
 	border-radius: 3px;
 	border-bottom: 6px solid var(--primary-color);
@@ -231,16 +238,16 @@ body {
 .car-card img {
 	height: 155px;
 	width: 235px;
-	margin: 20px auto;
-	margin-bottom: 30px;
+	margin: 20px auto 30px;
 }
 
 .car-card-price-and-book-now-button {
 	width: 90%;
 	margin: 0 auto;
-	display: flex;
+	display: grid;
+	grid-template-columns: 50% 50%;
 	align-items: center;
-	justify-content: space-between;
+
 }
 
 .car-card-short-description {
@@ -275,6 +282,19 @@ body {
 
 .dropdown {
 	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+.dropdown.toggle a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.dropdown.toggle a img {
+    margin-left: 5px;
+	padding-bottom: 7px;
 }
 
 .dropdown ul {
@@ -284,7 +304,6 @@ body {
 	background: #ffffff;
 	padding: 0;
 	list-style-type: none;
-
 	margin-top: 8px;
 	border-radius: 3px;
 	display: none;
@@ -309,13 +328,12 @@ body {
 
 .filter-cars {
 	width: 80%;
-	margin: 50px auto;
-	margin-bottom: 0px;
+	margin: 50px auto 0;
 	padding: 10px;
 	display: flex;
 	flex-direction: column;
 	justify-content: left;
-	align-items: left;
+	align-items: start;
 	border: 1px solid #D9D9D9;
 	border-radius: 3px;
 }
@@ -377,7 +395,7 @@ body {
 .footer-column-side {
 	width: 20%;
 	padding-top: 10px;
-	margin: 0px 0px 0px 50px;
+	margin: 0 0 0 50px;
 }
 
 .footer-column {
@@ -401,7 +419,7 @@ body {
 	padding: 20px;
 	background-color: var(--primary-color);
 	border-radius: 8px;
-	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 	color: lightblue;
 	text-align: left;
 }
@@ -456,6 +474,18 @@ body {
     background-color: #FFFFFF;
 }
 
+.input-to-form {
+	margin: 5px;
+	border: #D9D9D9 1px solid;
+	flex-grow: 1;
+}
+
+.input-to-form-double {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
 .location-select {
     width: 100%;
 	height: 30px;
@@ -473,12 +503,17 @@ body {
 	max-width: 600px;
 	margin: 50px auto;
 	padding: 20px;
-	background-color: var(--primary-color);
 	border-radius: 8px;
-	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+	border-bottom: 6px solid var(--primary-color);
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 	color: lightblue;
 	text-align: left;
 }
+
+.login-form button {
+	margin: 40px auto;
+}
+
 .login-form label {
 	display: block;
 	margin-top: 20px;
@@ -491,9 +526,22 @@ body {
 	padding: 8px;
 	border: none;
 	border-radius: 4px;
-	margin-top: 5px;
-	background-color: #4A4E4E;
-	color: lightblue;
+	background-color: #FFFFFF;
+	color: #000000;
+}
+
+.login-form input:focus {
+	outline: none;
+}
+
+.login-form a:hover {
+	color: #047DFF;
+	cursor: pointer;
+}
+
+.login-form-success-message {
+	max-width: 600px;
+	margin: 50px auto;
 }
 
 .logo {
@@ -503,26 +551,6 @@ body {
 	text-align: center;
 	padding: 10px;
 	border-bottom: 6px solid var(--primary-color);
-}
-
-.nav {
-	height: 70px;
-	width: 80%;
-	top: 0;
-	left: 0;
-	padding: 0 3rem;
-	background-color: #ffffff;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-end;
-	align-items: center;
-	border-bottom: 6px solid var(--primary-color);
-}
-
-.nav a {
-	margin: 0 1rem;
-	text-decoration: none;
-	padding: 0.5rem 0.5rem;
 }
 
 .main-subpage {
@@ -569,8 +597,40 @@ body {
 .make-the-most-of-your-car-hire-item-description {
 	width: 100%;
 	height: 150px;
-	margin: 0px;
+	margin: 0;
 	padding: 10px 20px 10px 20px;
+}
+
+.message-info {
+	width: 80%;
+	background-color: #FFFFFF;
+	padding: 10px;
+	border: 1px solid #FFCF26;
+	border-radius: 4px;
+    display: block;
+	margin: 40px auto 0;
+	text-align: center;
+    clear: both;
+}
+
+.message-info h1 {
+	color: #FFCF26;
+}
+
+.message-warning {
+	width: 80%;
+	background-color: #FF8171;
+	padding: 10px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+    display: block;
+	margin: 40px auto 0;
+	text-align: center;
+    clear: both;
+}
+
+.message-warning h1 {
+	color: #FFFFFF;
 }
 
 .motto {
@@ -584,13 +644,37 @@ body {
 	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
+.nav {
+	height: 70px;
+	width: 80%;
+	top: 0;
+	left: 0;
+	padding: 0 3rem;
+	background-color: #ffffff;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+	border-bottom: 6px solid var(--primary-color);
+}
+
+.nav a {
+	margin: 0 1rem;
+	text-decoration: none;
+	padding: 0.5rem 0.5rem;
+}
+
+.nav button {
+	margin: 0;
+}
+
 .preselect-car-form {
 	max-width: 600px;
 	margin: 50px auto;
 	padding: 20px;
 	background-color: var(--primary-color);
 	border-radius: 8px;
-	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 	color: lightblue;
 	line-height: 2;
 	text-align: left;
@@ -717,6 +801,22 @@ body {
 	font-size: 18px;
 }
 
+.signup-body {
+	width: 90%;
+	margin: 50px auto;
+	display: grid;
+	grid-template-columns: 50% 50%;
+}
+
+.signup-description {
+	padding: 10px;
+}
+
+.signup-form {
+	display: flex;
+	flex-direction: column;
+}
+
 .special-offer {
 	width: 100%;
 	height: 250px;
@@ -755,16 +855,19 @@ body {
 }
 
 .success-message {
-	width: 60%;
-	background-color: rgba(144, 238, 144, 0.62);
-	color: #155724;
+	width: 80%;
+	background-color: #E4FFB7;
 	padding: 10px;
 	border: 1px solid transparent;
 	border-radius: 4px;
     display: block;
-	margin: 20px auto 10px;
+	margin: 40px auto 0;
 	text-align: center;
     clear: both; /* Dodaj clear: both, aby opłynąć inne elementy */
+}
+
+.success-message h1 {
+	color: #335E33;
 }
 
 .success-message p {
@@ -818,6 +921,42 @@ tr{
 	text-align: left;
 }
 
+.your-booking {
+	width: 80%;
+	margin: 50px auto;
+	padding: 50px;
+	display: grid;
+	grid-template-columns: 60% 40%;
+	border: 1px solid #D9D9D9;
+	border-radius: 3px;
+	border-bottom: 6px solid var(--primary-color);
+}
+
+.your-booking-place-and-time-description {
+
+}
+
+.your-booking-locations {
+	margin-top: 30px;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-rows: repeat(2, 1fr);
+	gap: 10px;
+}
+
+.your-booking-car-description {
+	
+}
+
+.your-booking-price-confirmation {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+
+
 /* mobile phone*/
 
 @media only screen and (max-width: 767px) {
@@ -850,6 +989,21 @@ tr{
 		font-size: 12px;
 	}
 
+	.button-confirm-your-booking {
+		width: 200px;
+		margin: 5px auto;
+	}
+
+	.button-delete-your-booking {
+		width: 200px;
+		margin: 5px auto;
+	}
+
+	.button-return-your-booking {
+		width: 200px;
+		margin: 5px auto;
+	}
+
 	.button-search {
 		width: 150px;
 		font-size: 12px;
@@ -872,6 +1026,10 @@ tr{
 	.dropdown ul {
 		position: static;
 		box-shadow: none;
+	}
+
+	.dropdown.toggle a img {
+		display: none;
 	}
 
 	.filters {
@@ -898,7 +1056,7 @@ tr{
 	.footer {
 		width: 100%;
 		height: 600px;
-		padding-top: 0px;
+		padding-top: 0;
 	}
 	
 	.footer p {
@@ -938,6 +1096,15 @@ tr{
 		padding-left: 10px;
 	}
 
+	.input-to-form-double {
+		flex-direction: column;
+	}
+
+	form input {
+		font-size: 14px;
+		font-weight: 200;
+	}
+
 	form input[type="datetime-local"] {
 		width: 100%;
 		height: 20px;
@@ -950,6 +1117,11 @@ tr{
 		font-size: 14px;
 	}
 
+	.login-form {
+		width: 90%;
+		margin: 20px auto;
+		padding: 5px;
+	}
 	.logo {
 		width: 100%;
 		text-align: left;
@@ -1011,12 +1183,33 @@ tr{
 		text-align: center;
 	}
 
+	.rental-details-bar {
+		height: 100px;
+		flex-direction: column;
+	}
+
+	.rental-details-bar h5 {
+		margin: 0;
+	}
+
+	.rental-details-bar-item {
+		display: grid;
+		grid-template-columns: 50% 50%;
+		gap: 10px;
+		margin-top: 3px;
+		margin-bottom: 2px;
+	}
+
+	.rental-details-bar-line {
+		display: none;
+	}
+
 	.search {
 		height: 600px;
 	}
 
 	.search-form {
-		margin: 0px auto;
+		margin: 0 auto;
 		width: 100%;
 	}
 
@@ -1052,6 +1245,16 @@ tr{
         margin-bottom: 20px;
     }
 
+	.signup-description {
+		display: none;
+	}
+
+	.signup-body {
+		width: 99%;
+		margin: 0 auto;
+		grid-template-columns: 100%;
+	}
+
 	.social-icons{
 		width: 100px;
 	}
@@ -1075,6 +1278,16 @@ tr{
 		display: none;
 	}
 
+	.your-booking {
+		grid-template-columns: 100%;
+		padding: 5px;
+	}
+
+	.your-booking-locations {
+		grid-template-columns: 100%;
+		margin-bottom: 20px;
+	}
+
 }
 
 /* ipad*/
@@ -1083,6 +1296,10 @@ tr{
 
 	.car-cards {
 		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.input-to-form-double {
+		flex-direction: column;
 	}
 
 }	

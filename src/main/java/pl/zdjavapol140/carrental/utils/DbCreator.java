@@ -3,6 +3,7 @@
 //import lombok.extern.slf4j.Slf4j;
 //import org.springframework.boot.context.event.ApplicationReadyEvent;
 //import org.springframework.context.event.EventListener;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //import org.springframework.stereotype.Component;
 //import pl.zdjavapol140.carrental.model.*;
 //import pl.zdjavapol140.carrental.repository.*;
@@ -37,8 +38,9 @@
 //    private final UserRepository userRepository;
 //    private final EmployeeService employeeService;
 //    private final BranchService branchService;
+//    private final BCryptPasswordEncoder passwordEncoder;
 //
-//    public DbCreator(AddressRepository addressRepository, AdminService adminService, BranchRepository branchRepository, CarRepository carRepository, CarRentRepository carRentRepository, CarReturnRepository carReturnRepository, CustomerRepository customerRepository, EmployeeRepository employeeRepository, RentalRepository rentalRepository, ReservationRepository reservationRepository, ReservationService reservationService, CarService carService, CustomerService customerService, UserRepository userRepository, EmployeeService employeeService, BranchService branchService) {
+//    public DbCreator(AddressRepository addressRepository, AdminService adminService, BranchRepository branchRepository, CarRepository carRepository, CarRentRepository carRentRepository, CarReturnRepository carReturnRepository, CustomerRepository customerRepository, EmployeeRepository employeeRepository, RentalRepository rentalRepository, ReservationRepository reservationRepository, ReservationService reservationService, CarService carService, CustomerService customerService, UserRepository userRepository, EmployeeService employeeService, BranchService branchService, BCryptPasswordEncoder passwordEncoder) {
 //        this.addressRepository = addressRepository;
 //        this.adminService = adminService;
 //        this.branchRepository = branchRepository;
@@ -55,6 +57,7 @@
 //        this.userRepository = userRepository;
 //        this.employeeService = employeeService;
 //        this.branchService = branchService;
+//        this.passwordEncoder = passwordEncoder;
 //    }
 //
 //    @EventListener(ApplicationReadyEvent.class)
@@ -62,6 +65,7 @@
 //
 //        employeeService.addNewEmployee("employee", "employee", "employee@gmail.com", EMPLOYEE, null);
 //        adminService.addNewAdmin("admin", "admin", "admin@gmail.com");
+//        customerService.addNewCustomer("customer", "customer", "customer@gmail.com", null);
 //
 //
 //        List<Address> addresses = new ArrayList<>();
@@ -152,7 +156,10 @@
 //
 //            Customer customer = CustomerGenerator.generateRandomCustomer();
 //            customer.setAddress(address);
-//            User user = new User(customer.getEmail(), "{noop}" + customer.getFirstName().toLowerCase(), Role.ROLE_CUSTOMER);
+//
+//            String encodedPassword = passwordEncoder.encode(customer.getFirstName().toLowerCase());
+//
+//            User user = new User(customer.getEmail(), encodedPassword, Role.ROLE_CUSTOMER);
 //
 //            if (!customers.stream().map(Customer::getEmail).toList().contains(customer.getEmail())) {
 //                customer.setUser(user);
@@ -172,7 +179,9 @@
 //            int randomNumber = random.nextInt(branches.size());
 //            Employee employee = EmployeeGenerator.generateRandomEmployee();
 //            employee.setBranch(branches.get(randomNumber));
-//            User user = new User(employee.getEmail(), "{noop}" + employee.getFirstName().toLowerCase(), Role.ROLE_EMPLOYEE);
+//
+//            String encodedPassword = passwordEncoder.encode(employee.getFirstName().toLowerCase());
+//            User user = new User(employee.getEmail(), encodedPassword, Role.ROLE_EMPLOYEE);
 //            if (!employees.stream().map(Employee::getEmail).toList().contains(employee.getEmail()) &&
 //                    !customers.stream().map(Customer::getEmail).toList().contains(employee.getEmail())) {
 //                employee.setUser(user);

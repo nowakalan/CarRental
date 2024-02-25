@@ -1,6 +1,7 @@
 package pl.zdjavapol140.carrental.service;
 
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.zdjavapol140.carrental.model.Address;
 import pl.zdjavapol140.carrental.model.Customer;
@@ -20,12 +21,13 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public CustomerService(CustomerRepository customerRepository, UserRepository userRepository, AddressRepository addressRepository) {
+    public CustomerService(CustomerRepository customerRepository, UserRepository userRepository, AddressRepository addressRepository, BCryptPasswordEncoder passwordEncoder) {
         this.customerRepository = customerRepository;
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
-
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -48,8 +50,9 @@ public class CustomerService {
                 new ArrayList<>(),
                 null);
 
+        String encryptedPassword = passwordEncoder.encode(customer.getFirstName().toLowerCase());
 
-        User user = new User(customer.getEmail(), "{noop}" + customer.getFirstName().toLowerCase(), Role.ROLE_CUSTOMER);
+        User user = new User(customer.getEmail(), encryptedPassword, Role.ROLE_CUSTOMER);
 
         userRepository.save(user);
         customer.setUser(user);

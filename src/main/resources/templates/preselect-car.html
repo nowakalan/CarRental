@@ -1,149 +1,281 @@
 <!DOCTYPE html>
-<html lang="pl" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Preselect-car</title>
     <link rel="stylesheet" href="../CSS/styles.css">
+
+    <title>Car Rental</title>
 </head>
 <body>
 
+        <div class="container">
+            <div class="header">
 
-    <div class="header">
-        <div class="car-rental-logo">
-            <a href="/" class="logo-text">CAR - RENT</a>
+                <div class="logo">
+                    <a href="/"><img src="../images/logo.svg"></a>
+                </div>
+
+                <nav class="nav">
+                    <a href="/">
+                        <button class="button">
+                            NEW BOOKING
+                        </button>
+                    </a>
+                    <div class="dropdown toggle" onclick="toggleDropdown(this)">
+                        <a href="/cars">CARS</a>
+                        <ul class="dropdown-content">
+                            <li><a sec:authorize="hasRole('ROLE_EMPLOYEE')" href="/cars">Display car list</a></li>
+                            <li><a sec:authorize="hasRole('ROLE_EMPLOYEE')" href="/createCar">Add vehicle</a></li>
+                            <li><a sec:authorize="hasRole('ROLE_EMPLOYEE')" href="#">Find a car</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="dropdown toggle" onclick="toggleDropdown(this)" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE', 'ROLE_ADMIN')">
+                        <a href="/reservations">RESERVATIONS</a>
+                        <ul class="dropdown-content">
+                            <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="/reservations">Display reservations</a></li>
+                            <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="/">New reservation</a></li>
+                            <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Rent a Car</a></li>
+                            <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Return Car</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="dropdown toggle" onclick="toggleDropdown(this)">
+                        <a th:if="${not #authorization.expression('isAuthenticated()')}" href="/login">LOGIN<img src="../images/login-person.png" alt="login-person"></a>
+                        <a th:if="${#authorization.expression('isAuthenticated()')}" href="/logout">LOGOUT<img src="../images/login-person.png" alt="login-person"></a>
+                    </div>
+                </nav>
+
+                <button class="burger" id="burger-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>  
+
+            </div>
+
+
+            <div class="success-message" th:if="${reservationConfirmed}">
+                <h1>Reservation confirmed</h1>
+            </div>
+
+            <!-- <div class="rental-details-bar">
+                <div class="rental-details-bar-item">
+                    <h5>PICK-UP LOCATION</h5>
+                    <p th:text="${currentPickUpBranchAddress.city}" />
+                </div>
+                <div class="rental-details-bar-line">
+                    <img src="../images/line-vertical-short.png">
+                </div>
+                <div class="rental-details-bar-item">
+                    <h5>DROP-OFF LOCATION</h5>
+                    <p th:text="${currentDropOffBranchAddress.city}" />
+                </div>
+                <div class="rental-details-bar-line">
+                    <img src="../images/line-vertical-short.png">
+                </div>
+                <div class="rental-details-bar-item">
+                    <h5>PICK-UP DATE</h5>
+                    <p th:text="${currentPickUpDateTime}" />
+                </div>
+                <div class="rental-details-bar-line">
+                    <img src="../images/line-vertical-short.png">
+                </div>
+                <div class="rental-details-bar-item">
+                    <h5>DROP-OFF DATE</h5>
+                    <p th:text="${currentDropOffDateTime}" />
+                </div>
+            </div> -->
+ 
+            <form th:action="@{/confirm-reservation}" th:object="${preReservation}" th:method="POST">
+            <div class="your-booking">
+                <div class="your-booking-place-and-time-description">
+
+                    <input th:type="hidden" th:field="*{car}" th:value="${preReservation.car}"/>
+                    <input th:type="hidden" th:field="*{pickUpDateTime}" th:value="${preReservation.pickUpDateTime}" />
+                    <input th:type="hidden" th:field="*{dropOffDateTime}" th:value="${preReservation.dropOffDateTime}" />
+                    <input th:type="hidden" th:field="*{pickUpBranch}" th:value="${preReservation.pickUpBranch}" />
+                    <input th:type="hidden" th:field="*{dropOffBranch}" th:value="${preReservation.dropOffBranch}" />
+                    <input th:type="hidden" th:field="*{totalPrice}" th:value="${preReservation.totalPrice}" />
+                    <input th:type="hidden" th:field="*{customer}" th:value="${preReservation.customer}" />
+                    <input type="hidden" th:name="toCarsFoundedReturnUrl" th:value="${toCarsFoundedReturnUrl}" />
+
+
+
+                    <h2>YOUR BOOKING</h2>
+                    <div class="your-booking-locations">
+                        <div>
+                            <h4>PICK-UP LOCATION</h4>
+                            <h5 th:text="${preReservation.pickUpBranch.address.city}" />
+                        </div>
+                        <div>
+                            <h4>PICK-UP DATE</h4>
+                            <h5 th:text="${preReservation.pickUpDateTime}" />
+                        </div>
+                        <div>
+                            <h4>DROP-OFF LOCATION</h4>
+                            <h5 th:text="${preReservation.dropOffBranch.address.city}" />
+                        </div>
+                        <div>
+                            <h4>DROP-OFF DATE</h4>
+                            <h5 th:text="${preReservation.dropOffDateTime}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="your-booking-car-description">
+                    <h2>Vehicle</h2>
+                    <img th:src="${'..' + preReservation.car.imagePath}" th:alt="${preReservation.car.brand + ' ' + preReservation.car.model}">
+                    <h2 th:text="${preReservation.car.size}" />
+                    <p th:text="${preReservation.car.size.carClassShortDescription}" />
+                    <p th:text="${preReservation.car.size.maxNumberOfPersons} + ' seats, ' + ${preReservation.car.size.numberOfDoors} + ' doors, ' + ${preReservation.car.transmissionType}" />
+                </div>
+                <div class="your-booking-price-confirmation">
+                    <h2 th:text="${'Total: $' + preReservation.totalPrice}" />
+                    <a th:if="${reservationConfirmed}" th:href="@{/reservations}" class="button button-return-your-booking">YOUR RESERVATIONS</a>
+                    <button th:unless="${reservationConfirmed}" class="button button-confirm-your-booking">CONFIRM YOUR BOOKING</button>
+                    <a th:unless="${reservationConfirmed}" th:href="@{${toCarsFoundedReturnUrl}}" class="button button-return-your-booking">RETURN</a>
+
+                </div>
+                <div></div>
+            </div>
+            </form>
+
+            <div id="push"></div>
         </div>
 
-        <nav class="menu">
 
-            <div class="dropdown" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE')">
-                <a href="#">Reservation</a>
-                <ul>
-                    <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="/reservations">Display reservations</a></li>
-                    <li sec:authorize="hasRole('ROLE_CUSTOMER')"><a href="/reservations">Your reservations</a></li>
-                    <li><a href="/">New reservation</a></li>
-                    <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Rent a Car</a></li>
-                    <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Return Car</a></li>
-                </ul>
+
+            <div class="footer">
+                <div class="footer-columns">
+                    <div class="footer-column-side">
+                        <img src="../images/logo.svg">
+                    </div>
+                    <div class="footer-column">
+                        <a href="#">Terms and conditions</a>
+                        <a href="#">FAQ</a>
+                        <a href="#">Rental points</a>
+                        <a href="#">Promotions</a>
+                        <a href="#">Cars</a>
+                    </div>
+                    <div class="footer-column">
+                        <a href="#">About us</a>
+                        <a href="#">Contact</a>
+                        <a href="#">Privacy policy</a>
+                    </div>
+                    <div class="footer-column">
+                        <a href="#">Book a car</a>
+                        <a href="#">Long term rental</a>
+                        <a href="#">Car-Rent inclusive</a>
+                        <a href="#">QuickPass</a>
+                        <a href="#">Offer for companies</a>
+                    </div>
+                    <div class="footer-column-side">
+                        <p>+47 486 27 952</p>
+                        <p>contact@car-rent.no</p>
+                        <p>Car-Rent AS, <br>
+                            Gaupåsvegen 257, 5265 Ytre Arna</p>
+                        <div class="social-icons">
+                            <img src="../images/icon-facebook.png">
+                            <img src="../images/icon-linkedin.png">
+                            <img src="../images/icon-instagram.png">
+                        </div>
+                    </div>
+                </div>
+                <h5>&copy; 2023 Car-Rent Company - All Rights Reserved.</h5>
             </div>
+        
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script type="text/javascript" src="../js/script.js"></script>
 
-            <div class="dropdown"  sec:authorize="hasRole('ROLE_EMPLOYEE')">
-                <a href="#/display cars for clients">Cars</a>
-                <ul>
-                    <li><a href="/cars">Display car list</a></li>
-                    <li><a href="/createCar">Add vehicle</a></li>
-                    <li><a href="#">Find a car</a></li>
-                </ul>
-            </div>
+        <!--BURGER MENU-->
+        <script>
+            document.getElementById('burger-menu').addEventListener('click', function () {
+                document.querySelector('.nav').classList.toggle('show');
+            });
 
-            <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
-                <a href="#">Clients</a>
-                <ul>
-                    <li><a href="#">Display clients list</a></li>
-                    <li><a href="#">Add client</a></li>
-                    <li><a href="#">Remove client</a></li>
-                    <li><a href="#">Show reservations</a></li>
-                    <li><a href="#">Find client(by name/client ID)</a></li>
-                </ul>
-            </div>
+            document.addEventListener('DOMContentLoaded', function () {
+        if (window.innerWidth <= 767) {
+            var dropdowns = document.querySelectorAll('.nav .dropdown');
 
-            <div class="dropdown" sec:authorize="hasRole('ROLE_EMPLOYEE')">
-                <a href="#">Branch</a>
-                <ul>
-                    <li><a href="#">List of employees</a></li>
-                    <li><a href="#">Add employee</a></li>
-                    <li><a href="#">//set employee status</a></li>
-                    <li><a href="#">Remove employee</a></li>
-                    <li><a href="#">List of available cars</a></li>
-                </ul>
-            </div>
+            dropdowns.forEach(function (dropdown) {
+                dropdown.addEventListener('click', function () {
+                    var submenu = this.querySelector('.submenu');
+                    if (submenu) {
+                        // Schowaj wszystkie otwarte podmenu
+                        var openSubmenus = document.querySelectorAll('.submenu.show');
+                        openSubmenus.forEach(function (openSubmenu) {
+                            openSubmenu.classList.remove('show');
+                        });
 
-            <!--            <div class="dropdown">
-                        <a href="#">???Statistics</a>
-                            <ul>
-                                <li><a href="#">Display Incomes/branch</a></li>
-                                <li><a href="#">Most rented car</a></li>
-                            </ul>
-                        </div>-->
+                        // Pokaż/ukryj aktualne podmenu
+                            submenu.classList.toggle('show');
+                        }
+                    });
 
-            <div class="dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
-                <a href="#">Rent Companies</a>
-                <ul>
-                    <li><a href="#">List of companies</a></li>
-                    <li><a href="#">Add company</a></li>
-                    <li><a href="#">Remove company</a></li>
-                </ul>
-            </div>
+                    // Dodaj obsługę zamykania podmenu po kliknięciu poza nim
+                    document.addEventListener('click', function (event) {
+                        var isClickInside = dropdown.contains(event.target);
+                        if (!isClickInside) {
+                            var openSubmenu = document.querySelector('.submenu.show');
+                            if (openSubmenu) {
+                                openSubmenu.classList.remove('show');
+                            }
+                        }
+                    });
+                });
+            }});
+        </script>
 
-            <div class="dropdown">
-                <a href="#">My Account</a>
-                <ul>
-                    <li th:if="${not #authorization.expression('isAuthenticated()')}">
-                        <a href="/login">Login</a>
-                    </li>
-                    <li th:if="${#authorization.expression('isAuthenticated()')}">
-                        <a href="/logout">Logout</a>
-                    </li>
-                    <li th:if="${not #authorization.expression('isAuthenticated()')}">
-                        <a href="/create-customer">Create Account</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </div>
+        <!-- SHOW/HIDE FILTERS SMALL SCREAN -->
+        <script>
+            document.getElementById('filters-dropdown').addEventListener('click', function () {
+                document.querySelector('.filters').classList.toggle('show');
+            });
+        </script>
 
 
-    <div class="advertisement-subpage-container">
-        <div class="advertisement-subpage-left">
-            <img src="../images/car-logo.png" alt="car-rental-logo" width="200"  height="100">
-        </div>
-        <div class="advertisement-subpage-right">
-            <h1>RESERVATION</h1>
-        </div>
-    </div>
 
+        <script>
+            $(document).ready(function () {
+                // Pobierz wszystkie checkboxy
+                var checkboxes = $('input[type=checkbox]');
 
-    <div class="main-subpage">
+                // Dodaj event listener dla zmiany stanu checkboxa
+                checkboxes.change(function () {
+                    // Pobierz wartość "id" checkboxa
+                    var checkboxId = $(this).attr('id');
 
+                    // Pokaż lub ukryj karty samochodowe w zależności od stanu checkboxa
+                    toggleCarCards(checkboxId);
+                });
 
-        <form class="preselect-car-form" action="#" th:action="@{/confirm-page}" th:object="${preReservation}" th:method="POST">
+                // Funkcja do pokazywania lub ukrywania kart w zależności od stanu checkboxa
+                function toggleCarCards(checkboxId) {
+                    // Pobierz stan checkboxa
+                    var isChecked = $('#' + checkboxId).prop('checked');
 
-            <input th:type="hidden" th:field="*{car.id}" th:value="${car.id}"/>
+                    // Sprawdź dla każdej karty, czy spełnia warunki checkboxów i ukryj lub pokaż
+                    $('.car-card').each(function () {
+                        var carFeatures = $(this).data('features').split(' ');
 
-            <label>BRAND: </label>
-            <input th:type="hidden" th:field="*{car.brand}" th:value="${car.brand}" th:text="${car.brand}"/>
-            <input th:type="hidden" th:field="*{car.model}" th:value="${car.model}" th:text="${car.model}"/><br>
+                        // Warunki filtrowania (dodaj więcej warunków według potrzeb)
+                        var shouldShow = true;
 
-            <label>SIZE: </label>
-            <input th:type="hidden" th:field="*{car.size}" th:value="${car.size}" th:text="${car.size}"/><br>
-            <label>TRANSMISSION TYPE: </label>
-            <input th:type="hidden" th:field="*{car.transmissionType}" th:value="${car.transmissionType}" th:text="${car.transmissionType}"/><br>
+                        // Sprawdź, czy cecha karty odpowiada zaznaczonemu checkboxowi
+                        if (isChecked && carFeatures.indexOf(checkboxId) === -1) {
+                            shouldShow = false;
+                        }
 
-            <label>PICK UP: </label>
-            <input th:type="hidden" th:field="*{pickUpDateTime}" th:value="${preReservation.pickUpDateTime}" th:text="${preReservation.pickUpDateTime}"/>
-            <input th:type="hidden" th:field="*{pickUpBranch.id}" th:value="${preReservation.pickUpBranch.id}" th:text="${preReservation.pickUpBranch.address.city + ', ' + preReservation.pickUpBranch.address.details}"/><br>
-
-            <label>DROP OFF: </label>
-            <input th:type="hidden" th:field="*{dropOffDateTime}" th:value="${preReservation.dropOffDateTime}" th:text="${preReservation.dropOffDateTime}"/>
-            <input th:type="hidden" th:field="*{dropOffBranch.id}" th:value="${preReservation.dropOffBranch.address.city}" th:text="${preReservation.dropOffBranch.address.city + ', ' + preReservation.pickUpBranch.address.details}"/><br>
-
-            <label>EMAIL: </label>
-            <input th:type="hidden" th:field="*{customer}" th:value="${preReservation.customer}" th:text="${preReservation.customer.email}"/><br>
-
-            <label>TOTAL PRICE: </label>
-            <input th:type="hidden" th:field="*{totalPrice}" th:value="${preReservation.totalPrice}" th:text="${preReservation.totalPrice}"/><br>
-            <button class="button" type="submit">confirm</button>
-        </form>
-        <p></p>
-            <button th:onclick="'window.location.href = \'/\' '" type="button" th:method="GET">Cancel</button>
-    </div>
-
-    <div class="push"></div>
-
-
-    <div class="footer">
-        <p>&copy; All rights reserved</p>
-    </div>
-
+                        // Pokaż lub ukryj kartę w zależności od warunków
+                        if (shouldShow) {
+                            $(this).show();
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+                }
+            });
+        </script>
 </body>
 </html>

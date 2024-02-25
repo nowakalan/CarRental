@@ -17,35 +17,36 @@
                 </div>
 
                 <nav class="nav">
-
-                     <div class="dropdown toggle" onclick="toggleDropdown(this)" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE', 'ROLE_ADMIN')">
-                        <a href="../templates/cars.html">CARS</a>
-                     </div>
-
-                     <div class="dropdown toggle" onclick="toggleDropdown(this)" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE', 'ROLE_ADMIN')">
-                        <a href="#">RESERVATIONS</a>
+                    <a href="/">
+                        <button class="button">
+                            NEW BOOKING
+                        </button>
+                    </a>
+                    <div class="dropdown toggle" onclick="toggleDropdown(this)">
+                        <a href="/cars">CARS</a>
                         <ul class="dropdown-content">
-                            <li><a href="/">New reservation</a></li>
-                            <li sec:authorize="hasRole('ROLE_CUSTOMER')"><a href="/reservations">Your reservations</a></li>
+                            <li><a sec:authorize="hasRole('ROLE_EMPLOYEE')" href="/cars">Display car list</a></li>
+                            <li><a sec:authorize="hasRole('ROLE_EMPLOYEE')" href="/createCar">Add vehicle</a></li>
+                            <li><a sec:authorize="hasRole('ROLE_EMPLOYEE')" href="#">Find a car</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="dropdown toggle" onclick="toggleDropdown(this)" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE', 'ROLE_ADMIN')">
+                        <a href="/reservations">RESERVATIONS</a>
+                        <ul class="dropdown-content">
+                            <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="/reservations">Display reservations</a></li>
+                            <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="/">New reservation</a></li>
+                            <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Rent a Car</a></li>
+                            <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Return Car</a></li>
                         </ul>
                     </div>
 
                     <div class="dropdown toggle" onclick="toggleDropdown(this)">
-                        <a href="#">MY ACCOUNT</a>   
-                            <ul class="dropdown-content">
-                                <li th:if="${not #authorization.expression('isAuthenticated()')}">
-                                    <a href="/login">Login</a>
-                                </li>
-                                <li th:if="${#authorization.expression('isAuthenticated()')}">
-                                    <a href="/logout">Logout</a>
-                                </li>
-                                <li th:if="${not #authorization.expression('isAuthenticated()')}">
-                                    <a href="/create-customer">Create Account</a>
-                                </li>
-                            </ul>
-                     </div>
-                </nav>  
-                
+                        <a th:if="${not #authorization.expression('isAuthenticated()')}" href="/login">LOGIN<img src="../images/login-person.png" alt="login-person"></a>
+                        <a th:if="${#authorization.expression('isAuthenticated()')}" href="/logout">LOGOUT<img src="../images/login-person.png" alt="login-person"></a>
+                    </div>
+                </nav>
+
                 <button class="burger" id="burger-menu">
                     <span></span>
                     <span></span>
@@ -140,11 +141,21 @@
                         <p th:text="${car.transmissionType}"/>
                     </div>
                     <div class="car-card-price-and-book-now-button">
-                        <h2 th:text="'$ ' + ${car.price}" />
-                        <button class="button-book-now" type="submit">BOOK NOW</button>
+                        <div >
+                            <h2 th:text="'$ ' + ${car.price}" />
+                            <p>per day</p>
+                        </div>
+                        <div>
+                            <button class="button button-book-now"><a th:href="@{/preselect-car(carId=${car.id}, currentDropOffBranchId=${currentDropOffBranchId},
+                                currentPickUpBranchId=${currentPickUpBranchId},
+                                currentPickUpDateTime=${currentPickUpDateTime},
+                                currentDropOffDateTime=${currentDropOffDateTime},
+                                toCarsFoundedReturnUrl=${toCarsFoundedReturnUrl})}" th:method="GET">BOOK NOW</a></button>
+                        </div>                        
                     </div>
                 </div>
             </div>
+
 
             <div id="push"></div>
         </div>
@@ -189,49 +200,13 @@
                 </div>
                 <h5>&copy; 2023 Car-Rent Company - All Rights Reserved.</h5>
             </div>
-        
-        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-        <!--BURGER MENU-->
-        <script>
-            document.getElementById('burger-menu').addEventListener('click', function () {
-                document.querySelector('.nav').classList.toggle('show');
-            });
 
-            document.addEventListener('DOMContentLoaded', function () {
-        if (window.innerWidth <= 767) {
-            var dropdowns = document.querySelectorAll('.nav .dropdown');
+<!--        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>-->
 
-            dropdowns.forEach(function (dropdown) {
-                dropdown.addEventListener('click', function () {
-                    var submenu = this.querySelector('.submenu');
-                    if (submenu) {
-                        // Schowaj wszystkie otwarte podmenu
-                        var openSubmenus = document.querySelectorAll('.submenu.show');
-                        openSubmenus.forEach(function (openSubmenu) {
-                            openSubmenu.classList.remove('show');
-                        });
 
-                        // Pokaż/ukryj aktualne podmenu
-                            submenu.classList.toggle('show');
-                        }
-                    });
 
-                    // Dodaj obsługę zamykania podmenu po kliknięciu poza nim
-                    document.addEventListener('click', function (event) {
-                        var isClickInside = dropdown.contains(event.target);
-                        if (!isClickInside) {
-                            var openSubmenu = document.querySelector('.submenu.show');
-                            if (openSubmenu) {
-                                openSubmenu.classList.remove('show');
-                            }
-                        }
-                    });
-                });
-            }});
-        </script>
-
-        <!-- SHOW/HIDE FILTERS SMALL SCREAN -->
+         SHOW/HIDE FILTERS SMALL SCREAN
         <script>
             document.getElementById('filters-dropdown').addEventListener('click', function () {
                 document.querySelector('.filters').classList.toggle('show');
@@ -281,5 +256,7 @@
                 }
             });
         </script>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="../js/script.js"></script>
 </body>
 </html>

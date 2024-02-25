@@ -83,7 +83,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/submit-reservation").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/submit-reservation").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/preselect-car").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
-                                .requestMatchers(HttpMethod.POST, "/confirm-page").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/confirm-reservation").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/api/booking/reservation").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/deleteReservation").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
 
@@ -92,11 +92,13 @@ public class SecurityConfig {
         ).logout( logout -> logout.logoutUrl("/logout"));
 
 
-        http.formLogin(Customizer.withDefaults());
-//                http.formLogin(form -> form
-//                    .loginPage("/login")
-//                    .loginProcessingUrl("/authenticateUser")
-//                    .permitAll());
+//        http.formLogin(Customizer.withDefaults());
+                http.formLogin(form -> form
+                    .loginPage("/login")
+                        .usernameParameter("email")
+                        .passwordParameter("password")
+                    .loginProcessingUrl("/authenticateUser")
+                    .permitAll());
                 http.httpBasic(Customizer.withDefaults());
 
 

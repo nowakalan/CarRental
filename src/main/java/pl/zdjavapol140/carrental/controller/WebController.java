@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.zdjavapol140.carrental.model.*;
 import pl.zdjavapol140.carrental.repository.*;
 import pl.zdjavapol140.carrental.service.*;
@@ -70,6 +71,17 @@ public class WebController {
         return "index";
     }
 
+
+    @GetMapping("/login")
+    public String login(Model model){
+        if(userService.isUserLoggedIn()){
+            model.addAttribute("loggedIn", true);
+        } else{
+            model.addAttribute("loggedIn", false);
+        }
+        return "custom-login";
+    }
+
     @PostMapping("/authenticateUser")
     public String authenticateUser(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
@@ -99,6 +111,9 @@ public class WebController {
         model.addAttribute("currentPickUpBranchAddress", currentPickUpBranchAddress);
         model.addAttribute("currentDropOffBranchAddress", currentDropOffBranchAddress);
 
+        String toCarsFoundedReturnUrl = ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString();
+        model.addAttribute("toCarsFoundedReturnUrl", toCarsFoundedReturnUrl);
+        log.info(toCarsFoundedReturnUrl);
 
         return "cars-founded";
     }
@@ -111,8 +126,13 @@ public class WebController {
                                @RequestParam LocalDateTime currentPickUpDateTime,
                                @RequestParam LocalDateTime currentDropOffDateTime,
                                @RequestParam Long currentPickUpBranchId,
-                               @RequestParam Long currentDropOffBranchId, Model model) {
+                               @RequestParam Long currentDropOffBranchId,
+                               @RequestParam String toCarsFoundedReturnUrl, Model model) {
+
+
         Car car = carService.findCarById(carId);
+        log.info("Found Car: {}", car);
+        log.info(toCarsFoundedReturnUrl);
 
         model.addAttribute("car", car);
 
@@ -124,6 +144,7 @@ public class WebController {
 
 
         Customer customer = customerService.findCustomerByEmail(userDetails.getUsername());
+        log.info("found Customer: {}", customer);
 
 
         BigDecimal totalPrice = reservationService.calculateReservationPrice(currentPickUpDateTime, currentDropOffDateTime, currentPickUpBranchId, currentDropOffBranchId, car);
@@ -139,13 +160,16 @@ public class WebController {
 
 //        log.info(preReservation.toString());
         model.addAttribute("preReservation", preReservation);
+        model.addAttribute("toCarsFoundedReturnUrl", toCarsFoundedReturnUrl);
 
 
         return "preselect-car";
     }
 
-    @PostMapping("/confirm-page")
+    @PostMapping("/confirm-reservation")
     public String confirmReservation(@ModelAttribute PreReservation preReservation, Model model) {
+
+        log.info("Received PreReservation: {}", preReservation);
 
         Reservation currentReservation = new Reservation();
 
@@ -158,7 +182,7 @@ public class WebController {
         currentReservation.setDropOffDateTime(preReservation.getDropOffDateTime());
         currentReservation.setDropOffBranchId(preReservation.getDropOffBranch().getId());
         currentReservation.setTotalPrice(preReservation.getTotalPrice());
-//        log.info(currentReservation.toString());
+        log.info(currentReservation.toString());
 
 //        model.addAttribute("reservationConfirmed", "Reservation confirmed");
 
@@ -170,8 +194,7 @@ public class WebController {
             model.addAttribute("error", "Reservation aborted" + e.getMessage());
         }
 
-        return "confirm-page";
-
+        return "preselect-car";
     }
 
     @GetMapping("/cars")
@@ -344,17 +367,6 @@ public class WebController {
         return "create-customer";
     }
 
-    @GetMapping("/login")
-    public String login(Model model){
-        if(userService.isUserLoggedIn()){
-            model.addAttribute("loggedIn", true);
-        } else{
-            model.addAttribute("loggedIn", false);
-        }
-
-        return "login";
-    }
-
 
 
     @GetMapping("/reservations")
@@ -384,7 +396,7 @@ public class WebController {
             }
         }
 
-        return "reservations-list";
+        return "reservations";
     }
 
     @PostMapping("/deleteReservation")
