@@ -24,7 +24,7 @@
                     </a>
                     <div class="dropdown toggle" onclick="toggleDropdown(this)">
                         <a href="/cars">CARS</a>
-                        <ul class="dropdown-content">
+                        <ul>
                             <li><a sec:authorize="hasRole('ROLE_EMPLOYEE')" href="/cars">Display car list</a></li>
                             <li><a sec:authorize="hasRole('ROLE_EMPLOYEE')" href="/createCar">Add vehicle</a></li>
                             <li><a sec:authorize="hasRole('ROLE_EMPLOYEE')" href="#">Find a car</a></li>
@@ -33,7 +33,7 @@
 
                     <div class="dropdown toggle" onclick="toggleDropdown(this)" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE', 'ROLE_ADMIN')">
                         <a href="/reservations">RESERVATIONS</a>
-                        <ul class="dropdown-content">
+                        <ul>
                             <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="/reservations">Display reservations</a></li>
                             <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="/">New reservation</a></li>
                             <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Rent a Car</a></li>
@@ -64,37 +64,37 @@
             
                 <div class="filters" id="filters">
                     <label>
-                        <input type="checkbox" id="automat" />
+                        <input type="checkbox" class="filter-checkbox" id="automat" />
                         <p>Automat</p>
                     </label>
                   
                     <label>
-                        <input type="checkbox" id="manual"/>
+                        <input type="checkbox" class="filter-checkbox" id="manual"/>
                         <p>Manual</p>
                     </label>
                   
                     <label>
-                        <input type="checkbox" id="small" />
+                        <input type="checkbox" class="filter-checkbox" id="small" />
                         <p>Small</p>
                     </label>
                   
                     <label>
-                        <input type="checkbox" id="economy" />
+                        <input type="checkbox" class="filter-checkbox" id="economy" />
                         <p>Economy</p>
                     </label>
 
                     <label>
-                        <input type="checkbox" id="compact" />
+                        <input type="checkbox" class="filter-checkbox" id="compact" />
                         <p>Compact</p>
                     </label>
                   
                     <label>
-                        <input type="checkbox" id="estates" />
+                        <input type="checkbox" class="filter-checkbox" id="estates" />
                         <p>Estates</p>
                     </label>
 
                     <label>
-                        <input type="checkbox" id="large"/>
+                        <input type="checkbox" class="filter-checkbox" id="suv"/>
                         <p>SUV</p>
                     </label>
                 </div>
@@ -135,12 +135,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="car-card" data-car-class="mid-size" data-car-feature="manual">
+                <div class="car-card" data-car-class="compact" data-car-feature="manual">
                     <img src="../images/seat-leon.png" alt="seat leon">
                     <h2>Seat Leon</h2>
                     <div class="car-description">
                         <div>
-                            <p><span class="red-check-mark">&#x2713;</span> Vehicle of class Mid-Size</p>
+                            <p><span class="red-check-mark">&#x2713;</span> Vehicle of class Compact</p>
                             <p><span class="red-check-mark">&#x2713;</span> 5 seats</p>
                             <p><span class="red-check-mark">&#x2713;</span> 2 bag</p>
                             <p><span class="red-check-mark">&#x2713;</span> 4 doors</p>
@@ -230,19 +230,7 @@
                     </div>
                 </div>
                 <h5>&copy; 2023 Car-Rent Company - All Rights Reserved.</h5>
-            </div>
-        
-
-
-
-
-        <!-- SHOW/HIDE FILTERS SMALL SCREAN -->
-        <script>
-            document.getElementById('filters-dropdown').addEventListener('click', function () {
-                document.querySelector('.filters').classList.toggle('show');
-            });
-        </script>
-        
+            </div>  
         <script src="../js/script.js"></script>
 </body>
 </html>

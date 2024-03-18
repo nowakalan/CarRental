@@ -92,44 +92,46 @@
             
                 <div class="filters" id="filters">
                     <label>
-                        <input type="checkbox" id="automat" />
+                        <input type="checkbox" class="filter-checkbox" id="automat" />
                         <p>Automat</p>
                     </label>
                   
                     <label>
-                        <input type="checkbox" id="manual"/>
+                        <input type="checkbox" class="filter-checkbox" id="manual"/>
                         <p>Manual</p>
                     </label>
                   
                     <label>
-                        <input type="checkbox" id="small" />
+                        <input type="checkbox" class="filter-checkbox" id="small" />
                         <p>Small</p>
                     </label>
                   
                     <label>
-                        <input type="checkbox" id="economy" />
+                        <input type="checkbox" class="filter-checkbox" id="economy" />
                         <p>Economy</p>
                     </label>
 
                     <label>
-                        <input type="checkbox" id="compact" />
+                        <input type="checkbox" class="filter-checkbox" id="compact" />
                         <p>Compact</p>
                     </label>
                   
                     <label>
-                        <input type="checkbox" id="estates" />
+                        <input type="checkbox" class="filter-checkbox" id="estates" />
                         <p>Estates</p>
                     </label>
 
                     <label>
-                        <input type="checkbox" id="large"/>
+                        <input type="checkbox" class="filter-checkbox" id="suv"/>
                         <p>SUV</p>
                     </label>
                 </div>
             </div>
 
             <div class="car-cards">
-                <div class="car-card" th:each="car : ${carList}">
+                <div class="car-card" th:each="car : ${carList}"
+                     th:data-car-class="${#strings.toLowerCase(car.size)}"
+                     th:data-car-feature="${#strings.toLowerCase(car.transmissionType)}">
                     <img th:src="'..' + ${car.imagePath}" th:alt="${car.brand + ' ' + car.model}">
                     <h2 th:text="${car.getSize()}"></h2>
                     <p th:text="${car.size.getCarClassShortDescription()}" />
@@ -200,63 +202,6 @@
                 </div>
                 <h5>&copy; 2023 Car-Rent Company - All Rights Reserved.</h5>
             </div>
-
-
-<!--        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>-->
-
-
-
-         SHOW/HIDE FILTERS SMALL SCREAN
-        <script>
-            document.getElementById('filters-dropdown').addEventListener('click', function () {
-                document.querySelector('.filters').classList.toggle('show');
-            });
-        </script>
-
-
-
-        <script>
-            $(document).ready(function () {
-                // Pobierz wszystkie checkboxy
-                var checkboxes = $('input[type=checkbox]');
-
-                // Dodaj event listener dla zmiany stanu checkboxa
-                checkboxes.change(function () {
-                    // Pobierz wartość "id" checkboxa
-                    var checkboxId = $(this).attr('id');
-
-                    // Pokaż lub ukryj karty samochodowe w zależności od stanu checkboxa
-                    toggleCarCards(checkboxId);
-                });
-
-                // Funkcja do pokazywania lub ukrywania kart w zależności od stanu checkboxa
-                function toggleCarCards(checkboxId) {
-                    // Pobierz stan checkboxa
-                    var isChecked = $('#' + checkboxId).prop('checked');
-
-                    // Sprawdź dla każdej karty, czy spełnia warunki checkboxów i ukryj lub pokaż
-                    $('.car-card').each(function () {
-                        var carFeatures = $(this).data('features').split(' ');
-
-                        // Warunki filtrowania (dodaj więcej warunków według potrzeb)
-                        var shouldShow = true;
-
-                        // Sprawdź, czy cecha karty odpowiada zaznaczonemu checkboxowi
-                        if (isChecked && carFeatures.indexOf(checkboxId) === -1) {
-                            shouldShow = false;
-                        }
-
-                        // Pokaż lub ukryj kartę w zależności od warunków
-                        if (shouldShow) {
-                            $(this).show();
-                        } else {
-                            $(this).hide();
-                        }
-                    });
-                }
-            });
-        </script>
-        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script src="../js/script.js"></script>
 </body>
 </html>

@@ -130,7 +130,7 @@
 //        /**Fill carRepository
 //         *
 //         */
-//        String[] carTypes = {"small", "economy", "midsize", "estates", "suv"};
+//        String[] carTypes = {"small", "economy", "compact", "estates", "suv"};
 //
 //        for (String carType : carTypes) {
 //            for (int i = 0; i < baseNumberOfObjects * 30; i++) {

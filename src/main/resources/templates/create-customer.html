@@ -25,7 +25,7 @@
                     </a>
                     <div class="dropdown toggle" onclick="toggleDropdown(this)">
                         <a href="/cars">CARS</a>
-                        <ul class="dropdown-content">
+                        <ul>
                             <li><a sec:authorize="hasRole('ROLE_EMPLOYEE')" href="/cars">Display car list</a></li>
                             <li><a sec:authorize="hasRole('ROLE_EMPLOYEE')" href="/createCar">Add vehicle</a></li>
                             <li><a sec:authorize="hasRole('ROLE_EMPLOYEE')" href="#">Find a car</a></li>
@@ -34,7 +34,7 @@
 
                     <div class="dropdown toggle" onclick="toggleDropdown(this)" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE', 'ROLE_ADMIN')">
                         <a href="/reservations">RESERVATIONS</a>
-                        <ul class="dropdown-content">
+                        <ul>
                             <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="/reservations">Display reservations</a></li>
                             <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="/">New reservation</a></li>
                             <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Rent a Car</a></li>

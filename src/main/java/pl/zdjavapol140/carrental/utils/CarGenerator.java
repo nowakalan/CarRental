@@ -59,11 +59,11 @@ public class CarGenerator {
                 car.setPrice(CarSize.ECONOMY.getPrice());
                 car.setImagePath(IMAGE_DIRECTORY + car.getBrand().toLowerCase() + "-" + car.getModel().toLowerCase() + ".png");
                 break;
-            case "midsize":
+            case "compact":
                 car.setBrand("Seat");
                 car.setModel("Leon");
-                car.setSize(CarSize.MIDSIZE);
-                car.setPrice(CarSize.MIDSIZE.getPrice());
+                car.setSize(CarSize.COMPACT);
+                car.setPrice(CarSize.COMPACT.getPrice());
                 car.setImagePath(IMAGE_DIRECTORY + car.getBrand().toLowerCase() + "-" + car.getModel().toLowerCase() + ".png");
                 break;
             case "estates":
@@ -128,18 +128,18 @@ public class CarGenerator {
         return car;
     }
 
-    public static Car generateMidsizeClassCar() {
+    public static Car generateCompactClassCar() {
         Random random = new Random();
         Car car = new Car();
 
         car.setBrand("Seat");
         car.setModel("Leon");
-        car.setSize(CarSize.MIDSIZE);
+        car.setSize(CarSize.COMPACT);
         car.setTransmissionType(CarTransmissionType.values()[random.nextInt(CarTransmissionType.values().length)]);
         car.setProductionYear(random.nextInt(4) + 2020); // Random production year from 2020 to 2024
         car.setColor(CAR_COLORS[random.nextInt(CAR_COLORS.length)]);
         car.setMileage(random.nextInt(199999) + 1);
-        car.setPrice(CarSize.MIDSIZE.getPrice());
+        car.setPrice(CarSize.COMPACT.getPrice());
         car.setRegistrationNumber(generateUniqueRegistrationNumber());
         car.setImagePath(IMAGE_DIRECTORY + car.getBrand().toLowerCase() + "-" + car.getModel().toLowerCase() + ".png");
         car.setRental(null);

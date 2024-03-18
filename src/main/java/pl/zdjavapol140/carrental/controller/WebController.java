@@ -208,11 +208,11 @@ public class WebController {
         return "cars-founded";
     }
 
-/*    @GetMapping("/cars-list")
-    public String getCars(Model model) {
+    @GetMapping("/cars-list")
+    public String showAllCarsForEmployees(Model model) {
         model.addAttribute("cars", carService.getAll());
         return "cars-list";
-    }*/
+    }
 
     @PostMapping("/deleteCar")
     public String deleteCar(@RequestParam("carId") Long carId){
