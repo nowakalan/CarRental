@@ -601,16 +601,24 @@ body {
 	padding: 10px 20px 10px 20px;
 }
 
-.message-info {
+.message {
 	width: 80%;
-	background-color: #FFFFFF;
 	padding: 10px;
-	border: 1px solid #FFCF26;
 	border-radius: 4px;
-    display: block;
+	display: block;
 	margin: 40px auto 0;
 	text-align: center;
-    clear: both;
+	clear: both;
+	transition: opacity 1s ease;
+}
+
+.message.hidden {
+	opacity: 0;
+}
+
+.message-info {
+	background-color: #FFFFFF;
+	border: 1px solid #FFCF26;
 }
 
 .message-info h1 {
@@ -618,15 +626,8 @@ body {
 }
 
 .message-warning {
-	width: 80%;
 	background-color: #FF8171;
-	padding: 10px;
 	border: 1px solid transparent;
-	border-radius: 4px;
-    display: block;
-	margin: 40px auto 0;
-	text-align: center;
-    clear: both;
 }
 
 .message-warning h1 {
@@ -855,15 +856,8 @@ body {
 }
 
 .success-message {
-	width: 80%;
 	background-color: #E4FFB7;
-	padding: 10px;
 	border: 1px solid transparent;
-	border-radius: 4px;
-    display: block;
-	margin: 40px auto 0;
-	text-align: center;
-    clear: both; /* Dodaj clear: both, aby opłynąć inne elementy */
 }
 
 .success-message h1 {

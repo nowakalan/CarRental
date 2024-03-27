@@ -56,11 +56,12 @@
   </div>
 
 
-  <div class="message-warning" th:if="${reservationDeleted}">
-    <h1>Reservation deleted</h1>
+  <div class="message message-warning" th:if="${reservationDeletedMessage}">
+    <h1 th:text="${reservationDeletedMessage}">Reservation deleted successfully</h1>
   </div>
 
-  <div class="message-info" th:unless="${not #lists.isEmpty(reservations)}">
+
+  <div class="message message-info" th:unless="${not #lists.isEmpty(reservations)}">
     <h1>You don't have any reservations.</h1>
   </div>
 
@@ -72,7 +73,7 @@
         <div class="your-booking-locations">
           <div>
             <h4>PICK-UP LOCATION</h4>
-            <h5 th:text="${reservation.id}" />
+            <h5 th:text="${reservation.pickUpBranch.address.getCity()}" />
           </div>
           <div>
             <h4>PICK-UP DATE</h4>
@@ -80,7 +81,7 @@
           </div>
           <div>
             <h4>DROP-OFF LOCATION</h4>
-            <h5 th:text="${reservation.id}" />
+            <h5 th:text="${reservation.getDropOffBranch.address.city}" />
           </div>
           <div>
             <h4>DROP-OFF DATE</h4>

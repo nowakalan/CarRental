@@ -54,6 +54,14 @@ public class Reservation {
 
     private Long dropOffBranchId;
 
+    @ManyToOne
+    @JoinColumn(name = "pickUpBranch")
+    private Branch pickUpBranch;
+
+    @ManyToOne
+    @JoinColumn(name = "dropOffBranch")
+    private Branch dropOffBranch;
+
     private BigDecimal totalPrice;
 
 

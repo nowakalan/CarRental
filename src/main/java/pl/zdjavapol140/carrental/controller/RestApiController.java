@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.zdjavapol140.carrental.model.*;
 import pl.zdjavapol140.carrental.service.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -49,7 +46,9 @@ public class RestApiController {
                 bookingCriteria.getCurrentPickUpDateTime(),
                 bookingCriteria.getCurrentDropOffDateTime(),
                 bookingCriteria.getCurrentPickUpBranchId(),
-                bookingCriteria.getCurrentDropOffBranchId());
+                bookingCriteria.getCurrentDropOffBranchId(),
+                bookingCriteria.getPickUpBranch(),
+                bookingCriteria.getDropOffBranch());
 
         List<Car> cars = reservationService.findAvailableCars(availableCarsWithOptionalAdjacentReservations);
 
@@ -75,6 +74,8 @@ public class RestApiController {
 
         Customer customer = customerService.findCustomerByEmail(userDetails.getUsername());
         Car car = carService.findCarById(carId);
+        Branch pickUpBranch = branchService.findBranchById(bookingCriteria.getCurrentPickUpBranchId());
+        Branch dropOffBranch = branchService.findBranchById(bookingCriteria.getCurrentDropOffBranchId());
 
         Reservation preReservation = reservationService
                 .createCurrentPreReservation(
@@ -83,7 +84,10 @@ public class RestApiController {
                         bookingCriteria.getCurrentPickUpDateTime(),
                         bookingCriteria.getCurrentDropOffDateTime(),
                         bookingCriteria.getCurrentPickUpBranchId(),
-                        bookingCriteria.getCurrentDropOffBranchId());
+                        bookingCriteria.getCurrentDropOffBranchId(),
+                        pickUpBranch,
+                        dropOffBranch
+                        );
 
         return new ResponseEntity<>(preReservation, HttpStatus.OK);
     }

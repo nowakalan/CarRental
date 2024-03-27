@@ -17,5 +17,6 @@ public class BookingCriteria {
     private LocalDateTime currentDropOffDateTime;
     private Long currentPickUpBranchId;
     private Long currentDropOffBranchId;
-
+    private Branch pickUpBranch;
+    private Branch DropOffBranch;
 }

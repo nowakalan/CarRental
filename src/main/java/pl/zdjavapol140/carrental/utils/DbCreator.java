@@ -247,7 +247,9 @@
 //                reservation.setDropOffDateTime(reservation.getPickUpDateTime().plusDays(random.nextInt(10)));
 //                reservation.setBookingDate(reservation.getPickUpDateTime().minusDays(random.nextInt(10)));
 //                reservation.setPickUpBranchId(lastReservation.getDropOffBranchId());
+//                reservation.setPickUpBranch(branchService.findBranchById(reservation.getPickUpBranchId()));
 //                reservation.setDropOffBranchId(car.getRental().getBranches().get(random.nextInt(car.getRental().getBranches().size())).getId());
+//                reservation.setDropOffBranch(branchService.findBranchById(reservation.getDropOffBranchId()));
 //            }
 //
 //            if (car.getReservations().stream().toList().indexOf(reservation) % 2 == 0) {
@@ -255,7 +257,9 @@
 //                reservation.setPickUpDateTime(reservation.getDropOffDateTime().minusDays(random.nextInt(10)));
 //                reservation.setBookingDate(reservation.getPickUpDateTime().minusDays(random.nextInt(10)));
 //                reservation.setDropOffBranchId(firstReservation.getPickUpBranchId());
+//                reservation.setDropOffBranch(firstReservation.getPickUpBranch());
 //                reservation.setPickUpBranchId(car.getRental().getBranches().get(random.nextInt(car.getRental().getBranches().size())).getId());
+//                reservation.setPickUpBranch(branchService.findBranchById(reservation.getPickUpBranchId()));
 //            }
 //
 //            if (reservation.getPickUpDateTime().isBefore(reservation.getBookingDate()) || reservation.getPickUpDateTime().isAfter(reservation.getDropOffDateTime())) {

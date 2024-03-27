@@ -58,14 +58,14 @@
             <div class="rental-details-bar">
                 <div class="rental-details-bar-item">
                     <h5>PICK-UP LOCATION</h5>
-                    <p th:text="${currentPickUpBranchAddress.city}" />
+                    <p th:text="${currentPickUpBranch.address.city}" />
                 </div>
                 <div class="rental-details-bar-line">
                     <img src="../images/line-vertical-short.png">
                 </div>
                 <div class="rental-details-bar-item">
                     <h5>DROP-OFF LOCATION</h5>
-                    <p th:text="${currentDropOffBranchAddress.city}" />
+                    <p th:text="${currentDropOffBranch.address.city}" />
                 </div>
                 <div class="rental-details-bar-line">
                     <img src="../images/line-vertical-short.png">
@@ -152,6 +152,8 @@
                                 currentPickUpBranchId=${currentPickUpBranchId},
                                 currentPickUpDateTime=${currentPickUpDateTime},
                                 currentDropOffDateTime=${currentDropOffDateTime},
+                                currentPickUpBranch=${currentPickUpBranch},
+                                currentDropOffBranch=${currentDropOffBranch},
                                 toCarsFoundedReturnUrl=${toCarsFoundedReturnUrl})}" th:method="GET">BOOK NOW</a></button>
                         </div>                        
                     </div>

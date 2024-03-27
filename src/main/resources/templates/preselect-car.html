@@ -56,37 +56,10 @@
             </div>
 
 
-            <div class="success-message" th:if="${reservationConfirmed}">
+            <div class="message success-message" th:if="${reservationConfirmed}">
                 <h1>Reservation confirmed</h1>
             </div>
 
-            <!-- <div class="rental-details-bar">
-                <div class="rental-details-bar-item">
-                    <h5>PICK-UP LOCATION</h5>
-                    <p th:text="${currentPickUpBranchAddress.city}" />
-                </div>
-                <div class="rental-details-bar-line">
-                    <img src="../images/line-vertical-short.png">
-                </div>
-                <div class="rental-details-bar-item">
-                    <h5>DROP-OFF LOCATION</h5>
-                    <p th:text="${currentDropOffBranchAddress.city}" />
-                </div>
-                <div class="rental-details-bar-line">
-                    <img src="../images/line-vertical-short.png">
-                </div>
-                <div class="rental-details-bar-item">
-                    <h5>PICK-UP DATE</h5>
-                    <p th:text="${currentPickUpDateTime}" />
-                </div>
-                <div class="rental-details-bar-line">
-                    <img src="../images/line-vertical-short.png">
-                </div>
-                <div class="rental-details-bar-item">
-                    <h5>DROP-OFF DATE</h5>
-                    <p th:text="${currentDropOffDateTime}" />
-                </div>
-            </div> -->
  
             <form th:action="@{/confirm-reservation}" th:object="${preReservation}" th:method="POST">
             <div class="your-booking">
@@ -99,7 +72,8 @@
                     <input th:type="hidden" th:field="*{dropOffBranch}" th:value="${preReservation.dropOffBranch}" />
                     <input th:type="hidden" th:field="*{totalPrice}" th:value="${preReservation.totalPrice}" />
                     <input th:type="hidden" th:field="*{customer}" th:value="${preReservation.customer}" />
-                    <input type="hidden" th:name="toCarsFoundedReturnUrl" th:value="${toCarsFoundedReturnUrl}" />
+
+                    <input th:type="hidden" th:name="toCarsFoundedReturnUrl" th:value="${toCarsFoundedReturnUrl}" />
 
 
 
@@ -107,7 +81,7 @@
                     <div class="your-booking-locations">
                         <div>
                             <h4>PICK-UP LOCATION</h4>
-                            <h5 th:text="${preReservation.pickUpBranch.address.city}" />
+                            <h5 th:text="${preReservation.pickUpBranch.getAddress().city}" />
                         </div>
                         <div>
                             <h4>PICK-UP DATE</h4>
@@ -115,7 +89,7 @@
                         </div>
                         <div>
                             <h4>DROP-OFF LOCATION</h4>
-                            <h5 th:text="${preReservation.dropOffBranch.address.city}" />
+                            <h5 th:text="${preReservation.dropOffBranch.getAddress().city}" />
                         </div>
                         <div>
                             <h4>DROP-OFF DATE</h4>

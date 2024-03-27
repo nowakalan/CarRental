@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.zdjavapol140.carrental.model.*;
 import pl.zdjavapol140.carrental.repository.*;
@@ -23,7 +24,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -101,7 +101,10 @@ public class WebController {
         Address currentPickUpBranchAddress = branchService.findBranchAddressById(currentPickUpBranchId);
         Address currentDropOffBranchAddress = branchService.findBranchAddressById(currentDropOffBranchId);
 
-        var optionalReservations = this.reservationService.findAvailableCarsWithOptionalAdjacentReservations(currentPickUpDateTime, currentDropOffDateTime, currentPickUpBranchId, currentDropOffBranchId);
+        Branch currentPickUpBranch = branchService.findBranchById(currentPickUpBranchId);
+        Branch currentDropOffBranch = branchService.findBranchById(currentDropOffBranchId);
+
+        var optionalReservations = this.reservationService.findAvailableCarsWithOptionalAdjacentReservations(currentPickUpDateTime, currentDropOffDateTime, currentPickUpBranchId, currentDropOffBranchId, currentPickUpBranch, currentDropOffBranch);
         List<Car> carList = reservationService.findAvailableCars(optionalReservations);
         model.addAttribute("carList", carList);
         model.addAttribute("currentPickUpDateTime", currentPickUpDateTime);
@@ -110,6 +113,8 @@ public class WebController {
         model.addAttribute("currentDropOffBranchId", currentDropOffBranchId);
         model.addAttribute("currentPickUpBranchAddress", currentPickUpBranchAddress);
         model.addAttribute("currentDropOffBranchAddress", currentDropOffBranchAddress);
+        model.addAttribute("currentPickUpBranch", currentPickUpBranch);
+        model.addAttribute("currentDropOffBranch", currentDropOffBranch);
 
         String toCarsFoundedReturnUrl = ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString();
         model.addAttribute("toCarsFoundedReturnUrl", toCarsFoundedReturnUrl);
@@ -158,7 +163,7 @@ public class WebController {
                 branchService.findBranchById(currentDropOffBranchId),
                 totalPrice);
 
-//        log.info(preReservation.toString());
+        log.info(preReservation.getPickUpBranch().toString());
         model.addAttribute("preReservation", preReservation);
         model.addAttribute("toCarsFoundedReturnUrl", toCarsFoundedReturnUrl);
 
@@ -181,6 +186,8 @@ public class WebController {
         currentReservation.setPickUpBranchId(preReservation.getPickUpBranch().getId());
         currentReservation.setDropOffDateTime(preReservation.getDropOffDateTime());
         currentReservation.setDropOffBranchId(preReservation.getDropOffBranch().getId());
+        currentReservation.setPickUpBranch(preReservation.getPickUpBranch());
+        currentReservation.setDropOffBranch(preReservation.getDropOffBranch());
         currentReservation.setTotalPrice(preReservation.getTotalPrice());
         log.info(currentReservation.toString());
 
@@ -400,9 +407,10 @@ public class WebController {
     }
 
     @PostMapping("/deleteReservation")
-    public String deleteReservation(@RequestParam("reservationId") Long reservationId){
+    public String deleteReservation(@RequestParam("reservationId") Long reservationId, RedirectAttributes redirectAttributes){
 
         reservationService.deleteReservationById(reservationId);
+        redirectAttributes.addFlashAttribute("reservationDeletedMessage", "Reservation deleted successfully");
 
         return "redirect:/reservations";
     }

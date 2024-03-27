@@ -53,7 +53,9 @@ public class ReservationService {
                                             LocalDateTime pickUpDateTime,
                                             LocalDateTime dropOffDateTime,
                                             Long pickUpBranchId,
-                                            Long dropOffBranchId) {
+                                            Long dropOffBranchId,
+                                            Branch pickUpBranch,
+                                            Branch dropOffBranch) {
 
         Car car = carRepository.findById(carId).orElseThrow(() -> new RuntimeException("Car id not found"));
 
@@ -70,6 +72,8 @@ public class ReservationService {
                 dropOffDateTime,
                 branchRepository.findById(dropOffBranchId)
                         .orElseThrow(() -> new RuntimeException("Branch id not found")).getId(),
+                pickUpBranch,
+                dropOffBranch,
                 null);
 
         reservation.setTotalPrice(this.calculateReservationPrice(pickUpDateTime, dropOffDateTime, pickUpBranchId, dropOffBranchId, car));
@@ -89,7 +93,9 @@ public class ReservationService {
         if (!findAvailableCarsWithOptionalAdjacentReservations(reservation.getPickUpDateTime(),
                 reservation.getDropOffDateTime(),
                 reservation.getPickUpBranchId(),
-                reservation.getDropOffBranchId())
+                reservation.getDropOffBranchId(),
+                reservation.getPickUpBranch(),
+                reservation.getDropOffBranch())
                 .containsKey(reservation.getCar())) {
             throw new RuntimeException("Car is unavailable");
         }
@@ -268,7 +274,9 @@ public class ReservationService {
     public Map<Car, List<Optional<Reservation>>> findAvailableCarsWithOptionalAdjacentReservations(LocalDateTime currentPickUpDateTime,
                                                                                                    LocalDateTime currentDropOffDateTime,
                                                                                                    Long currentPickUpBranchId,
-                                                                                                   Long currentDropOffBranchId) {
+                                                                                                   Long currentDropOffBranchId,
+                                                                                                   Branch pickUpBranch,
+                                                                                                   Branch dropOffBranch) {
         if (currentPickUpDateTime.isAfter(currentDropOffDateTime)) {
 
             throw new RuntimeException("The drop-off date and time must be later than the pickup date and time");
@@ -421,6 +429,8 @@ public class ReservationService {
                 previousReservation.getPickUpBranchId(),
                 currentReservation.getPickUpDateTime().minusHours(2L),
                 currentReservation.getPickUpBranchId(),
+                currentReservation.getPickUpBranch(),
+                previousReservation.getPickUpBranch(),
                 BigDecimal.ZERO);
 
 
@@ -445,6 +455,8 @@ public class ReservationService {
                 currentReservation.getDropOffBranchId(),
                 nextReservation.getPickUpDateTime().minusHours(2L),
                 nextReservation.getPickUpBranchId(),
+                currentReservation.getDropOffBranch(),
+                nextReservation.getDropOffBranch(),
                 BigDecimal.ZERO);
 
         this.addReservation(newTransferReservation);
@@ -493,7 +505,9 @@ public class ReservationService {
             LocalDateTime currentPickUpDateTime,
             LocalDateTime currentDropOffDateTime,
             Long currentPickUpBranchId,
-            Long currentDropOffBranchId) {
+            Long currentDropOffBranchId,
+            Branch currentPickUpBranch,
+            Branch currentDropOffBranch) {
 
         BigDecimal totalPrice = this.calculateReservationPrice(
                 currentPickUpDateTime,
@@ -512,6 +526,8 @@ public class ReservationService {
                 currentPickUpBranchId,
                 currentDropOffDateTime,
                 currentDropOffBranchId,
+                currentPickUpBranch,
+                currentDropOffBranch,
                 totalPrice);
 
     }
@@ -526,7 +542,9 @@ public class ReservationService {
                 currentPreReservation.getPickUpDateTime(),
                 currentPreReservation.getDropOffDateTime(),
                 currentPreReservation.getPickUpBranchId(),
-                currentPreReservation.getDropOffBranchId());
+                currentPreReservation.getDropOffBranchId(),
+                currentPreReservation.getPickUpBranch(),
+                currentPreReservation.getDropOffBranch());
 
         this.checkIfPreReservedCarIsStillAvailable(availableCarsWithOptionalAdjacentReservations, currentPreReservation);
 
