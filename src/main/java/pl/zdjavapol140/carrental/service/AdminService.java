@@ -26,7 +26,8 @@ public class AdminService {
                              String lastName,
                              String email) {
 
-        if(adminRepository.findAdminByEmail(email).isPresent()){
+        if(adminRepository.findByEmail(email).isPresent()){
+
             throw new RuntimeException("User with this email address already exists");
         }
 
@@ -46,5 +47,9 @@ public class AdminService {
         adminRepository.save(admin);
 
         return admin;
+    }
+
+    public Admin findAdminByEmail(String email) {
+        return adminRepository.findAdminByEmail(email);
     }
 }

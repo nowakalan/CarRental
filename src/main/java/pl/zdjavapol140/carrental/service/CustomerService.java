@@ -36,7 +36,7 @@ public class CustomerService {
                                    String email,
                                    String phone) {
 
-        if (customerRepository.findCustomerByEmail(email).isPresent()) {
+        if (customerRepository.findByEmail(email).isPresent()) {
 
             throw new RuntimeException("User with this email address already exists");
         }
@@ -116,39 +116,10 @@ public class CustomerService {
         return customerRepository.findById(id).orElseThrow(() -> new RuntimeException("Customer id not found"));
     }
 
+
     public Customer findCustomerByEmail(String email) {
 
-        return customerRepository.findCustomerByEmail(email).orElseThrow(() -> new RuntimeException("Customer not found"));
-    }
-
-    public List<Customer> findCustomersByCityName(String city) {
-
-        return customerRepository.findCustomersByAddress_City(city);
-    }
-
-    public List<Customer> findCustomersByCountryName(String country) {
-
-        return customerRepository.findCustomersByAddress_Country(country);
-    }
-
-    public List<Customer> findCustomersByPostalCode(String postalCode) {
-
-        return customerRepository.findCustomersByAddress_PostalCode(postalCode);
-    }
-
-    public List<Customer> findCustomersByLastName(String lastName) {
-
-        return customerRepository.findCustomersByLastName(lastName);
-    }
-
-    public List<Customer> findCustomersByLastNameAndFirstName(String lastName, String firstName) {
-
-        return customerRepository.findCustomersByLastNameAndFirstName(lastName, firstName);
-    }
-
-    public List<Customer> findCustomersByPhoneNumber(String phone) {
-
-        return customerRepository.findCustomersByPhone(phone);
+        return customerRepository.findCustomerByEmail(email);
     }
 
     public Customer findCustomersByEmail(String email) {

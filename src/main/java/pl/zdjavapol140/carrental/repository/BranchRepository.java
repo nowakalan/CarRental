@@ -13,8 +13,7 @@ import java.util.List;
 public interface BranchRepository extends JpaRepository<Branch, Long> {
 
     List<Branch> findBranchesByRental(Rental rental);
-
-    Long findBranchByAddress(Address address);
+    Branch findBranchByOwnerAndName(String owner, String name);
 
     Address findAddressById(Long branchId);
 

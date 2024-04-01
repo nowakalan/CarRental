@@ -23,3 +23,4 @@ public class AddressGenerator {
         return address;
     }
 }
+

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import pl.zdjavapol140.carrental.model.Address;
 import pl.zdjavapol140.carrental.repository.AddressRepository;
 
+import java.util.List;
+
 @Service
 public class AddressService {
 
@@ -15,8 +17,8 @@ public class AddressService {
     }
 
     public Address createNewAddress(String country, String city, String postalCode, String details) {
-
-        return new Address(null, country, city, postalCode, details);
+        Address address = new Address(null, country, city, postalCode, details);
+        return addressRepository.save(address);
     }
 
     @Transactional
@@ -26,10 +28,17 @@ public class AddressService {
         return address.getId();
     }
 
+    public List<Address> getAllAddresses() {
+        return addressRepository.findAll();
+    }
+
     public Address findAddressById(Long id) {
 
         return addressRepository.findById(id).orElseThrow(() -> new RuntimeException("Address id not found"));
     }
 
 
+    public Address findByCountryAndCityAndPostalCodeAndDetails(String country, String city, String postalCode, String details) {
+        return addressRepository.findByCountryAndCityAndPostalCodeAndDetails(country, city, postalCode, details);
+    }
 }
