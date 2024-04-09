@@ -371,7 +371,7 @@ public class WebController {
         // Ustawienie atrybutu w modelu do wyświetlenia komunikatu
         model.addAttribute("customerAddedMessage", "Your account has been created");
 
-        return "create-customer";
+        return "redirect:/custom-login";
     }
 
 
