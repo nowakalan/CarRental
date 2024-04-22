@@ -1,5 +1,9 @@
 # Car-rental
 
+Application is a system for managing car rental services. It consists of two modules, the first of which enables users to browse available vehicles and make reservations, while the second is for managing data about reservations, vehicles, and customers.
+
+System ensures the security of customer data through the use of appropriate authentication and authorization mechanisms, as well as data encryption.
+
 **User view:**<br/>
 
 - browse cars from different rent companies,
