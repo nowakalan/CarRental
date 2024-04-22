@@ -7,13 +7,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
   <title>Car Rental</title>
-  <link rel="stylesheet" href="../static/CSS/styles-admin.css">
+  <link rel="stylesheet" href="../CSS/styles-admin.css">
 </head>
 <body>
   <div class="container">
     <div class="left">
       <div class="logo">
-        <img src="../static/images/logo-admin.png">
+        <img src="../images/logo-admin.png">
       </div>
       <nav class="menu">
         <div class="dropdown" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')">
@@ -83,21 +83,21 @@
           <div class="select-custom">
             <select id="brand" name="brand">
               <option disabled selected hidden>Select brand</option>
-              <option value="option1">Brand 1 checkbox</option>
+              <option value="option1">Brand 1</option>
               <option value="option2">Brand 2</option>
               <option value="option3">Brand 3</option>
             </select>
           </div>
           <div class="select-custom">
             <select id="price" name="price">
-              <option value="option1">price 1 checkbox</option>
+              <option value="option1">price 1</option>
               <option value="option2">price 2</option>
               <option value="option3">price 3</option>
             </select>
           </div>
           <div class="select-custom">
             <select id="rental" name="rental">
-              <option value="option1">rental 1 checkbox</option>
+              <option value="option1">rental 1</option>
               <option value="option2">rental 2</option>
               <option value="option3">rental 3</option>
             </select>
@@ -145,7 +145,7 @@
               <td th:text="${car.size}" />
               <td th:text="${car.price}" />
               <td th:text="${car.mileage}" />
-              <td th:text="${car.rental.address.city + ', ' + car.rental.name}" />
+              <td th:text="${car.rental.name}" />
               
               <td>
                 <button class="btn btn-small btn-lightblue">Show</button>
