@@ -29,3 +29,8 @@ _login: admin@gmail.com
 password: admin_
 
 
+![Home screen for user logged as user](src/main/resources/static/images/home_screen_user.png)
+
+![Home screen for user logged as employee](src/main/resources/static/images/home_screen_employee.png)
+
+
