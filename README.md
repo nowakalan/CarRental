@@ -4,6 +4,10 @@ Application is a system for managing car rental services. It consists of two mod
 
 System ensures the security of customer data through the use of appropriate authentication and authorization mechanisms, as well as data encryption.
 
+<br/><br/>
+**Check how the app works by clicking on the [link](http://carrental.vps.webdock.cloud:8080).**
+
+
 **User view:**<br/>
 
 - browse cars from different rent companies,
