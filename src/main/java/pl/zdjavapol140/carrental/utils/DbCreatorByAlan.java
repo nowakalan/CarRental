@@ -131,18 +131,21 @@ public class DbCreatorByAlan {
         /**Fill carRepository
         *
         */
-        String[] carTypes = {"small", "economy", "compact", "estates", "suv"};
+        if (carService.getAll().size() < 50) {
+            String[] carTypes = {"small", "economy", "compact", "estates", "suv"};
 
-        for (String carType : carTypes) {
-            for (int i = 0; i < baseNumberOfObjects * 10; i++) {
-                Car car = generateCarByType(carType);
+            for (String carType : carTypes) {
+                for (int i = 0; i < baseNumberOfObjects * 10; i++) {
+                    Car car = generateCarByType(carType);
 
-                int randomForRental = random.nextInt(rentals.size());
-                Rental rental = rentals.get(randomForRental);
-                car.setRental(rental);
-                carService.addCar(car);
+                    int randomForRental = random.nextInt(rentals.size());
+                    Rental rental = rentals.get(randomForRental);
+                    car.setRental(rental);
+                    carService.addCar(car);
+                }
             }
         }
+
 
         /**
          Fill userRepository

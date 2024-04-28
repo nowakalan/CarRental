@@ -106,21 +106,29 @@ document.addEventListener("DOMContentLoaded", function() {
  * VALIDATE DATE / TIME
  * **/
 function validateDateTime() {
-  var pickUpDate = new Date(document.getElementById('pickUpDate').value);
-  var dropOffDate = new Date(document.getElementById('dropOffDate').value);
+    var pickUpDate = new Date(document.getElementById('pickUpDate').value);
+    var pickUpTime = document.getElementById('pickUpTime').value;
+    var dropOffDate = new Date(document.getElementById('dropOffDate').value);
+    var dropOffTime = document.getElementById('dropOffTime').value;
 
-  if (pickUpDate <= new Date()) {
-    alert("Pick-up date cannot be earlier than the current date/time.");
-    return false;
-  }
+    var pickUpDateTime = new Date(pickUpDate.getFullYear(), pickUpDate.getMonth(), pickUpDate.getDate(), pickUpTime.split(':')[0], pickUpTime.split(':')[1]);
+    var dropOffDateTime = new Date(dropOffDate.getFullYear(), dropOffDate.getMonth(), dropOffDate.getDate(), dropOffTime.split(':')[0], dropOffTime.split(':')[1]);
 
-  if (dropOffDate < pickUpDate) {
-    alert("Drop-off date cannot be earlier than the pick-up date.");
-    return false;
-  }
+    var currentDateTime = new Date();
 
-  return true;
+    if (pickUpDateTime < currentDateTime) {
+        alert("Pick-up date/time cannot be earlier than the current date/time.");
+        return false;
+    }
+
+    if (dropOffDateTime <= pickUpDateTime) {
+        alert("Drop-off date/time cannot be earlier than the pick-up date/time.");
+        return false;
+    }
+
+    return true;
 }
+
 
 
   
