@@ -5,11 +5,11 @@ import java.math.BigDecimal;
 
 public enum CarSize {
 
-    SMALL(4L, 2L, 1L, BigDecimal.valueOf(50), "For example Fiat 500"),
-    ECONOMY(4L, 4L, 1L, BigDecimal.valueOf(60), "For example Renault Clio"),
-    COMPACT(5L, 4L, 2L, BigDecimal.valueOf(70), "For example Seat Leon"),
-    ESTATES(5L,5L, 3L, BigDecimal.valueOf(80), "For example Skoda Octavia Combi"),
-    SUV(5L, 4L, 3L, BigDecimal.valueOf(90), "For example Volvo XC60");
+    SMALL(4L, 2L, 1L, BigDecimal.valueOf(20), "For example Fiat 500"),
+    ECONOMY(4L, 4L, 1L, BigDecimal.valueOf(30), "For example Renault Clio"),
+    COMPACT(5L, 4L, 2L, BigDecimal.valueOf(40), "For example Seat Leon"),
+    ESTATES(5L,5L, 3L, BigDecimal.valueOf(50), "For example Skoda Octavia Combi"),
+    SUV(5L, 4L, 3L, BigDecimal.valueOf(60), "For example Volvo XC60");
 
     private final Long maxNumberOfPersons;
     private final Long numberOfDoors;

@@ -37,11 +37,55 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+
+document.addEventListener("DOMContentLoaded", function() {
+  const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
+  const carCards = document.querySelectorAll('.car-card');
+
+  filterCheckboxes.forEach(function(checkbox) {
+      checkbox.addEventListener('change', function() {
+          filterCars();
+      });
+  });
+
+  function filterCars() {
+      const selectedFilters = getSelectedFilters();
+      const isClassSelected = selectedFilters.some(filter => filter !== 'automat' && filter !== 'manual');
+
+      if (selectedFilters.length === 0) {
+          // Jeśli nie został wybrany żaden filtr, wyświetl wszystkie karty
+          carCards.forEach(function(card) {
+              card.style.display = 'block';
+          });
+      } else {
+          // W przeciwnym razie, filtruj karty na podstawie wybranych opcji
+          carCards.forEach(function(card) {
+              const carClass = card.getAttribute('data-car-class');
+              const carFeature = card.getAttribute('data-car-feature');
+              const isAutomatic = selectedFilters.includes('automat');
+              const isManual = selectedFilters.includes('manual');
+              const shouldDisplay = isClassSelected ? (selectedFilters.includes(carClass) && ((!isAutomatic && !isManual) || (carFeature === 'automat' && isAutomatic) || (carFeature === 'manual' && isManual))) : (carFeature === 'automat' && isAutomatic) || (carFeature === 'manual' && isManual);
+              card.style.display = shouldDisplay ? 'block' : 'none';
+          });
+      }
+  }
+
+  function getSelectedFilters() {
+      const selectedFilters = [];
+      filterCheckboxes.forEach(function(checkbox) {
+          if (checkbox.checked) {
+              selectedFilters.push(checkbox.id);
+          }
+      });
+      return selectedFilters;
+  }
+});
+
+
 /**
  * FILTER CAR CLASS
  * **/
-      
-document.addEventListener("DOMContentLoaded", function() {
+/* document.addEventListener("DOMContentLoaded", function() {
   const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
   const carCards = document.querySelectorAll('.car-card');
 
@@ -64,7 +108,9 @@ document.addEventListener("DOMContentLoaded", function() {
           carCards.forEach(function(card) {
               const carClass = card.getAttribute('data-car-class');
               const carFeature = card.getAttribute('data-car-feature');
-              const shouldDisplay = selectedFilters.includes(carClass) || selectedFilters.includes(carFeature);
+              const isAutomatic = selectedFilters.includes('automat');
+              const isManual = selectedFilters.includes('manual');
+              const shouldDisplay = selectedFilters.includes(carClass) && ((!isAutomatic && !isManual) || (carFeature === 'automat' && isAutomatic) || (carFeature === 'manual' && isManual));
               card.style.display = shouldDisplay ? 'block' : 'none';
           });
       }
@@ -79,7 +125,8 @@ document.addEventListener("DOMContentLoaded", function() {
       });
       return selectedFilters;
   }
-});
+}); */
+
 
 
 /**

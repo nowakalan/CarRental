@@ -72,14 +72,14 @@
                 </div>
                 <div class="rental-details-bar-item">
                     <h5>PICK-UP DATE</h5>
-                    <p th:text="${currentPickUpDateTime}" />
+                    <p th:text="${currentPickUpDateTime.toLocalDate() + ' ' + currentPickUpDateTime.toLocalTime()}" />
                 </div>
                 <div class="rental-details-bar-line">
                     <img src="../images/line-vertical-short.png">
                 </div>
                 <div class="rental-details-bar-item">
                     <h5>DROP-OFF DATE</h5>
-                    <p th:text="${currentDropOffDateTime}" />
+                    <p th:text="${currentDropOffDateTime.toLocalDate() + ' ' + currentDropOffDateTime.toLocalTime()}" />
                 </div>
             </div>
  

@@ -82,18 +82,20 @@
                         <div>
                             <h4>PICK-UP LOCATION</h4>
                             <h5 th:text="${preReservation.pickUpBranch.getAddress().city}" />
+                            <h5 th:text="${preReservation.pickUpBranch.getAddress().details}" />
                         </div>
                         <div>
                             <h4>PICK-UP DATE</h4>
-                            <h5 th:text="${preReservation.pickUpDateTime}" />
+                            <h5 th:text="${preReservation.pickUpDateTime.toLocalDate() + ' ' + preReservation.pickUpDateTime.toLocalTime()}" />
                         </div>
                         <div>
                             <h4>DROP-OFF LOCATION</h4>
                             <h5 th:text="${preReservation.dropOffBranch.getAddress().city}" />
+                            <h5 th:text="${preReservation.dropOffBranch.getAddress().details}" />
                         </div>
                         <div>
                             <h4>DROP-OFF DATE</h4>
-                            <h5 th:text="${preReservation.dropOffDateTime}" />
+                            <h5 th:text="${preReservation.dropOffDateTime.toLocalDate() + ' ' + preReservation.dropOffDateTime.toLocalTime()}" />
                         </div>
                     </div>
                 </div>
