@@ -37,10 +37,10 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+
 /**
  * FILTER CAR CLASS
  * **/
-      
 document.addEventListener("DOMContentLoaded", function() {
   const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
   const carCards = document.querySelectorAll('.car-card');
@@ -53,9 +53,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function filterCars() {
       const selectedFilters = getSelectedFilters();
+      const isClassSelected = selectedFilters.some(filter => filter !== 'automat' && filter !== 'manual');
 
       if (selectedFilters.length === 0) {
-          // Jeśli żaden filtr nie jest zaznaczony, wyświetl wszystkie karty
+          // Jeśli nie został wybrany żaden filtr, wyświetl wszystkie karty
           carCards.forEach(function(card) {
               card.style.display = 'block';
           });
@@ -64,7 +65,9 @@ document.addEventListener("DOMContentLoaded", function() {
           carCards.forEach(function(card) {
               const carClass = card.getAttribute('data-car-class');
               const carFeature = card.getAttribute('data-car-feature');
-              const shouldDisplay = selectedFilters.includes(carClass) || selectedFilters.includes(carFeature);
+              const isAutomatic = selectedFilters.includes('automat');
+              const isManual = selectedFilters.includes('manual');
+              const shouldDisplay = isClassSelected ? (selectedFilters.includes(carClass) && ((!isAutomatic && !isManual) || (carFeature === 'automat' && isAutomatic) || (carFeature === 'manual' && isManual))) : (carFeature === 'automat' && isAutomatic) || (carFeature === 'manual' && isManual);
               card.style.display = shouldDisplay ? 'block' : 'none';
           });
       }
@@ -106,21 +109,89 @@ document.addEventListener("DOMContentLoaded", function() {
  * VALIDATE DATE / TIME
  * **/
 function validateDateTime() {
-  var pickUpDate = new Date(document.getElementById('pickUpDate').value);
-  var dropOffDate = new Date(document.getElementById('dropOffDate').value);
+    var pickUpDate = new Date(document.getElementById('pickUpDate').value);
+    var pickUpTime = document.getElementById('pickUpTime').value;
+    var dropOffDate = new Date(document.getElementById('dropOffDate').value);
+    var dropOffTime = document.getElementById('dropOffTime').value;
 
-  if (pickUpDate <= new Date()) {
-    alert("Pick-up date cannot be earlier than the current date/time.");
-    return false;
-  }
+    var pickUpDateTime = new Date(pickUpDate.getFullYear(), pickUpDate.getMonth(), pickUpDate.getDate(), pickUpTime.split(':')[0], pickUpTime.split(':')[1]);
+    var dropOffDateTime = new Date(dropOffDate.getFullYear(), dropOffDate.getMonth(), dropOffDate.getDate(), dropOffTime.split(':')[0], dropOffTime.split(':')[1]);
 
-  if (dropOffDate < pickUpDate) {
-    alert("Drop-off date cannot be earlier than the pick-up date.");
-    return false;
-  }
+    var currentDateTime = new Date();
 
-  return true;
+    if (pickUpDateTime < currentDateTime) {
+        alert("Pick-up date/time cannot be earlier than the current date/time.");
+        return false;
+    }
+
+    if (dropOffDateTime <= pickUpDateTime) {
+        alert("Drop-off date/time cannot be earlier than the pick-up date/time.");
+        return false;
+    }
+
+    return true;
 }
+
+
+/**
+ * FILTER DROP OFF LOCATION BY CHOSEN RENTAL
+ * **/
+function filterBranchesByRental(branches, rentalId) {
+    console.log('Rental ID to:', rentalId);
+    return branches.filter(branch => branch.rental === rentalId);
+}
+
+// Funkcja aktualizująca opcje drop-off location na podstawie wybranej lokalizacji pick-up location
+function updateDropOffLocation(pickUpBranchId) {
+    // Pobieranie danych o wszystkich oddziałach
+    const allBranches = Array.from(document.querySelectorAll('#currentPickUpBranchId option')).map(option => ({
+        value: option.value,
+        text: option.textContent,
+        rental: option.getAttribute('data-rental')
+    }));
+    console.log('Wszystkie oddziały:', allBranches);
+
+    // Sprawdzenie, czy dane zostały poprawnie pobrane
+    if (allBranches.length === 0) {
+        console.log('Brak danych o oddziałach.');
+        return; // Przerwij funkcję, jeśli brak danych
+    }
+
+    // Wyciągnięcie identyfikatora wypożyczalni z pickUpBranchId
+    const pickUpRentalId = allBranches.find(branch => branch.value === pickUpBranchId).rental;
+    console.log('PickUpRentalId:', pickUpRentalId);
+
+    // Filtrowanie oddziałów na podstawie wynajmu
+    const filteredBranches = filterBranchesByRental(allBranches, pickUpRentalId);
+    console.log('Filtrowane oddziały:', filteredBranches);
+
+    // Aktualizacja opcji drop-off location
+    const dropOffLocationSelect = document.getElementById('currentDropOffBranchId');
+    dropOffLocationSelect.innerHTML = ''; // Usunięcie wszystkich dotychczasowych opcji
+
+    filteredBranches.forEach(branch => {
+        const option = document.createElement('option');
+        option.value = branch.value;
+        option.textContent = branch.text;
+        dropOffLocationSelect.appendChild(option);
+    });
+
+    // Ustawienie drop-off location na pick-up location
+    dropOffLocationSelect.value = pickUpBranchId;
+}
+
+// Wywołanie funkcji po załadowaniu strony
+document.addEventListener('DOMContentLoaded', function() {
+    const pickUpBranchId = document.getElementById('currentPickUpBranchId').value;
+    updateDropOffLocation(pickUpBranchId);
+});
+
+// Wywołanie funkcji po zmianie pickUpLocation
+document.getElementById('currentPickUpBranchId').addEventListener('change', function () {
+    console.log('Zmiana wyboru pick-up location:', this.value);
+    updateDropOffLocation(this.value);
+});
+
 
 
   

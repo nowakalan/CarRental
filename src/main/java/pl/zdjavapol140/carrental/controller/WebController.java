@@ -22,7 +22,9 @@ import pl.zdjavapol140.carrental.service.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Slf4j
@@ -93,8 +95,10 @@ public class WebController {
     }
 
     @GetMapping("/search")
-    public String search(@RequestParam LocalDateTime currentPickUpDateTime,
-                         @RequestParam LocalDateTime currentDropOffDateTime,
+    public String search(@RequestParam String currentPickUpDate,
+                         @RequestParam String currentPickUpTime,
+                         @RequestParam String currentDropOffDate,
+                         @RequestParam String currentDropOffTime,
                          @RequestParam Long currentPickUpBranchId,
                          @RequestParam Long currentDropOffBranchId, Model model) {
 
@@ -103,6 +107,15 @@ public class WebController {
 
         Branch currentPickUpBranch = branchService.findBranchById(currentPickUpBranchId);
         Branch currentDropOffBranch = branchService.findBranchById(currentDropOffBranchId);
+
+        LocalDate pickUpLocalDate = LocalDate.parse(currentPickUpDate);
+        LocalTime pickUpLocalTime = LocalTime.parse(currentPickUpTime);
+        LocalDateTime currentPickUpDateTime = LocalDateTime.of(pickUpLocalDate, pickUpLocalTime);
+        log.info(String.valueOf(currentPickUpDateTime));
+
+        LocalDate dropOffLocalDate = LocalDate.parse(currentDropOffDate);
+        LocalTime dropOffLocalTime = LocalTime.parse(currentDropOffTime);
+        LocalDateTime currentDropOffDateTime = LocalDateTime.of(dropOffLocalDate, dropOffLocalTime);
 
         var optionalReservations = this.reservationService.findAvailableCarsWithOptionalAdjacentReservations(currentPickUpDateTime, currentDropOffDateTime, currentPickUpBranchId, currentDropOffBranchId, currentPickUpBranch, currentDropOffBranch);
         List<Car> carList = reservationService.findAvailableCars(optionalReservations);

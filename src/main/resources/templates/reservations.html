@@ -73,19 +73,21 @@
         <div class="your-booking-locations">
           <div>
             <h4>PICK-UP LOCATION</h4>
-            <h5 th:text="${reservation.pickUpBranch.address.getCity()}" />
+            <h5 th:text="${reservation.pickUpBranch.address.city}" />
+            <h5 th:text="${reservation.pickUpBranch.address.details}" />
           </div>
           <div>
             <h4>PICK-UP DATE</h4>
-            <h5 th:text="${reservation.pickUpDateTime}" />
+            <h5 th:text="${reservation.pickUpDateTime.toLocalDate() + ' ' + reservation.pickUpDateTime.toLocalTime()}" />
           </div>
           <div>
             <h4>DROP-OFF LOCATION</h4>
             <h5 th:text="${reservation.getDropOffBranch.address.city}" />
+            <h5 th:text="${reservation.getDropOffBranch.address.details}" />
           </div>
           <div>
             <h4>DROP-OFF DATE</h4>
-            <h5 th:text="${reservation.dropOffDateTime}" />
+            <h5 th:text="${reservation.dropOffDateTime.toLocalDate() + ' ' + reservation.dropOffDateTime.toLocalTime()}" />
           </div>
         </div>
       </div>
