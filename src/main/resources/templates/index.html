@@ -58,76 +58,74 @@
                         <span class="motto">Car - Rent. Your moment starts here. Let’s Go!</span>
                     </div>
 
-                        <form class="search-form" th:action="@{/search}" method="GET" onsubmit="return validateDateTime()">
-                            <div class="search-form-row">
+                    <form class="search-form" th:action="@{/search}" method="GET" onsubmit="return validateDateTime()">
+                        <div class="search-form-row">
+                            <div class="search-form-column">
+                                <label for="currentPickUpBranchId">PICK-UP LOCATION:</label>
+                                <select id="currentPickUpBranchId" name="currentPickUpBranchId" class="select-location" required>
+                                    <option th:each="pickUpLocation : ${allBranches}" th:text="${pickUpLocation.address.city + ', ' + pickUpLocation.address.details}"
+                                            th:value="${pickUpLocation.getId()}"
+                                            th:attr="data-rental=${pickUpLocation.getRental().id}"></option>
+                                </select>
+                            </div>
+
+                            <div class="search-form-column-pickup-datetime">
                                 <div class="search-form-column">
-                                    <label for="currentPickUpBranchId">PICK-UP LOCATION:</label>
-                                    <select id="currentPickUpBranchId" name="currentPickUpBranchId" class="select-location" required>
-                                        <option th:each="pickUpLocation : ${allBranches}" th:text="${pickUpLocation.address.city + ', ' + pickUpLocation.address.details}"
-                                                th:value="${pickUpLocation.getId()}"></option>
+                                    <label for="pickUpDate">pickup DATE:</label>
+                                    <input type="date" id="pickUpDate" name="currentPickUpDate" required>
+                                </div>
+                                <div class="search-form-column">
+                                    <select class="select-location select-time" id="pickUpTime" name="currentPickUpTime" required>
+                                        <th:block th:each="hour : ${#numbers.sequence(0, 23)}">
+                                            <th:block th:each="minute : ${#numbers.sequence(0, 30, 30)}">
+                                                <option th:value="${hour + ':' + (minute < 10 ? '0' + minute : minute)}"
+                                                        th:selected="${hour == 12 and minute == 30}">
+                                                    <span th:text="${hour + ':' + (minute < 10 ? '0' + minute : minute)}"></span>
+                                                </option>
+                                            </th:block>
+                                        </th:block>
                                     </select>
                                 </div>
-
-                                <div class="search-form-column-pickup-datetime">
-                                    <div class="search-form-column">
-                                        <label for="pickUpDate">pickup DATE:</label>
-                                        <input type="date" id="pickUpDate" name="currentPickUpDate" required>
-                                    </div>
-                                    <div class="search-form-column">
-                                        <!-- <label for="pickUpTime">pickup TIME:</label> -->
-                                        <select class="select-location select-time" id="pickUpTime" name="currentPickUpTime" required>
-                                            <th:block th:each="hour : ${#numbers.sequence(0, 23)}">
-                                                <th:block th:each="minute : ${#numbers.sequence(0, 30, 30)}">
-                                                    <option th:value="${hour + ':' + (minute < 10 ? '0' + minute : minute)}"
-                                                            th:selected="${hour == 12 and minute == 30}">
-                                                        <span th:text="${hour + ':' + (minute < 10 ? '0' + minute : minute)}"></span>
-                                                    </option>
-                                                </th:block>
-                                            </th:block>
-                                        </select>
-                                    </div>
-                                </div>
                             </div>
-                            
-                            <div class="search-form-row">
+                        </div>
+
+                        <div class="search-form-row">
+                            <div class="search-form-column">
+                                <label for="currentDropOffBranchId">DROP-OFF LOCATION:</label>
+                                <select id="currentDropOffBranchId" name="currentDropOffBranchId" class="select-location" required>
+                                    <!-- Options will be populated dynamically by JavaScript -->
+                                </select>
+                            </div>
+
+                            <div class="search-form-column-pickup-datetime">
                                 <div class="search-form-column">
-                                    <label for="currentDropOffBranchId">DROP-OFF LOCATION:</label>
-                                    <select id="currentDropOffBranchId" name="currentDropOffBranchId" class="select-location" required>
-                                        <option th:each="dropOffLocation : ${allBranches}" th:text="${dropOffLocation.address.city + ', ' + dropOffLocation.address.details}"
-                                        th:value="${dropOffLocation.getId()}"></option>
+                                    <label for="dropOffDate">drop-off DATE:</label>
+                                    <input type="date" id="dropOffDate" name="currentDropOffDate" required>
+                                </div>
+                                <div class="search-form-column">
+                                    <select class="select-location select-time" id="dropOffTime" name="currentDropOffTime" required>
+                                        <th:block th:each="hour : ${#numbers.sequence(0, 23)}">
+                                            <th:block th:each="minute : ${#numbers.sequence(0, 30, 30)}">
+                                                <option th:value="${hour + ':' + (minute < 10 ? '0' + minute : minute)}"
+                                                        th:selected="${hour == 12 and minute == 30}">
+                                                    <span th:text="${hour + ':' + (minute < 10 ? '0' + minute : minute)}"></span>
+                                                </option>
+                                            </th:block>
+                                        </th:block>
                                     </select>
                                 </div>
-
-                                <div class="search-form-column-pickup-datetime">
-                                    <div class="search-form-column">
-                                        <label for="dropOffDate">drop-off DATE:</label>
-                                        <input type="date" id="dropOffDate" name="currentDropOffDate" required>
-                                    </div>
-                                    <div class="search-form-column">
-                                    <!-- <label for="dropOffTime">drop-off TIME:</label> -->
-                                        <select class="select-location select-time" id="dropOffTime" name="currentDropOffTime" required>
-                                            <th:block th:each="hour : ${#numbers.sequence(0, 23)}">
-                                                <th:block th:each="minute : ${#numbers.sequence(0, 30, 30)}">
-                                                    <option th:value="${hour + ':' + (minute < 10 ? '0' + minute : minute)}"
-                                                            th:selected="${hour == 12 and minute == 30}">
-                                                        <span th:text="${hour + ':' + (minute < 10 ? '0' + minute : minute)}"></span>
-                                                    </option>
-                                                </th:block>
-                                            </th:block>
-                                        </select>
-                                    </div>
-                                </div>
                             </div>
-                        
-                            <div class="search-form-row">
-                                <div class="search-form-column">
-                                    <button class="button button-search" type="submit">FIND A CAR</button>
-                                </div>
-                                <div class="search-form-column">
+                        </div>
 
-                                </div>
-                            </div>        
-                        </form>
+                        <div class="search-form-row">
+                            <div class="search-form-column">
+                                <button class="button button-search" type="submit">FIND A CAR</button>
+                            </div>
+                            <div class="search-form-column">
+
+                            </div>
+                        </div>
+                    </form>
                 </div>
 
 
@@ -265,7 +263,6 @@
                 </div>
                 <h5>&copy; 2023 Car-Rent Company - All Rights Reserved.</h5>
             </div>
-
-         <script src="../js/script.js"></script>
+        <script src="../js/script.js"></script>
 </body>
 </html>
