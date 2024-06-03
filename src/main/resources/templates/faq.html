@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../CSS/styles.css">
+
+  <title>Car Rental</title>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+
+    <div class="logo">
+      <a href="/"><img src="../images/logo.svg"></a>
+    </div>
+
+    <nav class="nav">
+      <a href="/">
+        <button class="button">
+          NEW BOOKING
+        </button>
+      </a>
+      <div class="dropdown">
+        <a href="/cars">CARS</a>
+      </div>
+
+      <div class="dropdown">
+        <div class="dropdown-toggle">
+          <a href="#">SERVICES</a>
+          <img src="../images/arrow-down-2.png">
+        </div>
+            <ul class="dropdown-content">
+                <li><a href="/longTermCarRental">Long-Term Rental</a></li>
+                <li><a href="/loyaltyProgramme">Loyalty Programme</a></li>
+                <li><a href="/quickPass">QuickPass</a></li>
+                <li><a href="/faq">FAQ</a></li>
+            </ul>
+      </div>
+
+      <div class="dropdown">
+        <a href="/reservations">RESERVATIONS</a>
+      </div>
+
+      <div class="dropdown toggle">
+        <a th:if="${not #authorization.expression('isAuthenticated()')}" href="/login">LOGIN<img src="../images/login-person.png" alt="login-person"></a>
+        <a th:if="${#authorization.expression('isAuthenticated()')}" href="/logout">LOGOUT<img src="../images/login-person.png" alt="login-person"></a>
+      </div>
+    </nav>
+
+    <button class="burger" id="burger-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+  </div>
+
+  <div class="banner-low">
+    <img src="../images/banner-faq.png">
+  </div>
+
+  <div class="faq-body">
+    <div class="faq-nav">
+      <div class="faq-nav-line" onclick="toggleSection('faq-claims-and-accident')">
+        <img src="../images/icon-claim-and-accident.png">
+        <h3>Claims & Accident</h3>
+      </div>
+      <div class="faq-nav-line" onclick="toggleSection('faq-customer-service')">
+        <img src="../images/icon-customer-service.png">
+        <h3>Customer Service</h3>
+      </div>
+      <div class="faq-nav-line" onclick="toggleSection('faq-requirements-for-rent')">
+        <img src="../images/icon-requirements-for-renting.png">
+        <h3>Requirements for Renting</h3>
+      </div>
+      <div class="faq-nav-line" onclick="toggleSection('faq-rental-policies')">
+        <img src="../images/icon-rental-policies.png">
+        <h3>Rental Policies</h3>
+      </div>
+    </div>
+
+    <div class="faq-description">
+      <div class="faq-hide-section faq-claims-and-accident" id="claims-and-accidents">
+        <div class="faq-description-title">
+          <h2>CLAIMS & ACCIDENT</h2>
+          <img src="../images/line-horizontal-long.png">
+        </div>
+        <div class="faq-description-topic">
+          <img src="../images/arrow-right-2.png">
+          <h3>In case of damage or accident while driving an Avis vehicle</h3>
+        </div>
+        <div class="faq-description-content">
+          <h5>First, contact the police (911). Always complete an Car-Rent Accident/Incident Report when the car has been involved in an accident or damaged. Contact Car-Rent Roadside Assist at 800-000-1111. Then contact your personal auto insurance company and establish a claim for damage. If you are renting with a major credit card, you may want to contact their customer service department to determine if coverage is afforded through their collision program. You do not need to wait to receive our claim documents to report your claim to your personal insurance company and/or Credit Card Company.</h5>
+        </div>
+        <div class="faq-description-topic">
+          <img src="../images/arrow-right-2.png">
+          <h3>What is the typical timeline for processing a damage claim?</h3>
+        </div>
+        <div class="faq-description-content">
+          <h5>When a vehicle is involved in an accident you can typically expect to hear from Car-Rent in a 30-60 day time-frame from the date of the incident. The time-frame heavily depends on the type and amount of damage the vehicle endured as a result of the incident. In order for Car-Rent to provide you with the best service possible we must first have the damaged vehicle repaired, or complete the Salvage transaction prior to providing you with accurate costs associated to our vehicle damage.</h5>
+        </div>
+        <div class="faq-description-topic">
+          <img src="../images/arrow-right-2.png">
+          <h3>Why is Avis asking for my personal insurance carrier in my renter profile?</h3>
+        </div>
+        <div class="faq-description-content">
+          <h5>If damage occurs to your rental vehicle during your rental period, Car-Rent' claim administrators, Sedgwick Claims Management Services or Viking Client Services, will attempt to collect on the damage.  These claim administrators will work directly with your personal insurance and collect on the bill from the carrier.</h5>
+        </div>
+      </div>
+      
+      <div class="faq-hide-section faq-customer-service">
+        <div class="faq-description-title">
+          <h2>CUSTOMER SERVICE</h2>
+          <img src="../images/line-horizontal-long.png">
+        </div>
+        <div class="faq-description-topic">
+          <img src="../images/arrow-right-2.png">
+          <h3>How do I contact Car-Rent by email?</h3>
+        </div>
+        <div class="faq-description-content">
+          <h5>Email Car-Rent customer service at car-rent@gmail.com</h5>
+        </div>
+        <div class="faq-description-topic">
+          <img src="../images/arrow-right-2.png">
+          <h3>Is car-rent.com available in different languages?</h3>
+        </div>
+        <div class="faq-description-content">
+          <h5>The US/Global version of car-rent.com is available in three languages: English, Polish and Norwegian. To change your current language selection, just go to the Country/Language link at the top of the page, choose your language preference from the dropdown, and click Go.<br><br>
+            For phone reservations, please call:<br>
+            - Polish 1-800-321-3652<br>
+            - Norwegian 1-800-874-3556</h5>
+        </div>
+        <div class="faq-description-topic">
+          <img src="../images/arrow-right-2.png">
+          <h3>I forgot something in my car; does Avis have a lost and found?</h3>
+        </div>
+        <div class="faq-description-content">
+          <h5>If you left a personal item behind, visit our Lost and Found page to report your lost item.</h5>
+        </div>
+        <div class="faq-description-topic">
+          <img src="../images/arrow-right-2.png">
+          <h3>Am I responsible for parking tickets and traffic violations?</h3>
+        </div>
+        <div class="faq-description-content">
+          <h5>Please drive safely and observe all ordinances, rental customers are responsible for payment of any tolls, parking, and moving traffic violations along with a reasonable administrative fee. Payments for these violations may be processed by an Car-Rent designated agent.</h5>
+        </div>
+      </div>
+
+      <div class="faq-hide-section faq-requirements-for-rent">
+        <div class="faq-description-title">
+          <h2>REQUIREMENTS FOR RENTING</h2>
+          <img src="../images/line-horizontal-long.png">
+        </div>
+        <div class="faq-description-topic">
+          <img src="../images/arrow-right-2.png">
+          <h3>Car-Rent accepted Forms of Identification</h3>
+        </div>
+        <div class="faq-description-content">
+          <h5>Car-Rent requires that each customer and additional driver meet the Car-Rent minimum age requirement, present a valid driver's license and an acceptable driving record, and present cash rental qualification at the time of rental.<br>
+            The driver's license must be valid at the time of rental, and remain valid throughout the rental period. All drivers must meet Car-Rent' requirements. Driver's licenses accepted in EU are:<br><br>
+            - Any license issued by any EU, territory or possession.<br>
+            - A license issued by a country that has a reciprocal agreement with EU</h5>
+        </div>
+        <div class="faq-description-topic">
+          <img src="../images/arrow-right-2.png">
+          <h3>Forms of Payment</h3>
+        </div>
+        <div class="faq-description-content">
+          <h5>Car-Rent accepts most major credit cards and charge cards, as well as Visa and Mastercard debit cards, as a form of payment at most EU locations. Learn the details of our payment and credit identification policy within our statute.</h5>
+        </div>
+        <div class="faq-description-topic">
+          <img src="../images/arrow-right-2.png">
+          <h3>Age Requirements for Renters</h3>
+        </div>
+        <div class="faq-description-content">
+          <h5>Car-Rent rents vehicles to individuals who are 25 or older. A surcharge applies to qualified renters between 18 and 24. Read our full age requirement policy within our statute.</h5>
+        </div>
+      </div>
+
+      <div class="faq-hide-section faq-rental-policies">
+        <div class="faq-description-title">
+          <h2>RENTAL POLICIES</h2>
+          <img src="../images/line-horizontal-long.png">
+        </div>
+        <div class="faq-description-topic">
+          <img src="../images/arrow-right-2.png">
+          <h3>Smoking policy</h3>
+        </div>
+        <div class="faq-description-content">
+          <h5>Car-Rent does not allow smoking in the rental cars.</h5>
+        </div>
+        <div class="faq-description-topic">
+          <img src="../images/arrow-right-2.png">
+          <h3>Pet policy</h3>
+        </div>
+        <div class="faq-description-content">
+          <h5>Car-Rent allows customers to bring pets in rental cars.</h5>
+        </div>
+        <div class="faq-description-topic">
+          <img src="../images/arrow-right-2.png">
+          <h3>One way rental</h3>
+        </div>
+        <div class="faq-description-content">
+          <h5>Car-Rent offers convenient one-way rentals at attractive rates. Pick up a car at one location and return it to another. Car type and availability vary by participating locations, and a drop-off charge may apply on certain rates.</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="push"></div>
+</div>
+
+
+
+<div class="footer">
+  <div class="footer-columns">
+    <div class="footer-column-side">
+      <img src="../images/logo.svg">
+    </div>
+    <div class="footer-column">
+      <a href="#">Terms and conditions</a>
+      <a href="#">FAQ</a>
+      <a href="#">Rental points</a>
+      <a href="#">Promotions</a>
+      <a href="#">Cars</a>
+    </div>
+    <div class="footer-column">
+      <a href="#">About us</a>
+      <a href="#">Contact</a>
+      <a href="#">Privacy policy</a>
+    </div>
+    <div class="footer-column">
+      <a href="#">Book a car</a>
+      <a href="#">Long term rental</a>
+      <a href="#">Car-Rent inclusive</a>
+      <a href="#">QuickPass</a>
+      <a href="#">Offer for companies</a>
+    </div>
+    <div class="footer-column-side">
+      <p>+47 486 27 952</p>
+      <p>contact@car-rent.no</p>
+      <p>Car-Rent AS, <br>
+        Gaupåsvegen 257, 5265 Ytre Arna</p>
+      <div class="social-icons">
+        <img src="../images/icon-facebook.png">
+        <img src="../images/icon-linkedin.png">
+        <img src="../images/icon-instagram.png">
+      </div>
+    </div>
+  </div>
+  <h5>&copy; </h5><h5 id="currentYear"></h5> <h5>Car-Rent Company - All Rights Reserved.</h5>
+</div>
+
+<script src="../js/script.js"></script>
+</body>
+</html>

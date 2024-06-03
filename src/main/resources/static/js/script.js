@@ -1,41 +1,164 @@
 /**
  * BURGER MENU
  * **/
-document.getElementById('burger-menu').addEventListener('click', function () {
-  document.querySelector('.nav').classList.toggle('show');
-});
-document.addEventListener('DOMContentLoaded', function () {
-  if (window.innerWidth <= 767) {
-    var dropdowns = document.querySelectorAll('.nav .dropdown');
+document.addEventListener("DOMContentLoaded", function() {
+  const dropdownLinks = document.querySelectorAll('.dropdown-toggle');
+  const nav = document.querySelector('.nav');
+  const burgerMenu = document.getElementById('burger-menu');
 
-    dropdowns.forEach(function (dropdown) {
-      dropdown.addEventListener('click', function () {
-        var submenu = this.querySelector('.submenu');
-        if (submenu) {
-          // Schowaj wszystkie otwarte podmenu
-          var openSubmenus = document.querySelectorAll('.submenu.show');
-          openSubmenus.forEach(function (openSubmenu) {
-            openSubmenu.classList.remove('show');
-          });
+  function handleClick(event) {
+      if (window.innerWidth <= 1023) {
+          event.preventDefault();
 
-          // Pokaż/ukryj aktualne podmenu
-          submenu.classList.toggle('show');
-        }
-      });
+          const menu = this.nextElementSibling;
 
-      // Dodaj obsługę zamykania podmenu po kliknięciu poza nim
-      document.addEventListener('click', function (event) {
-        var isClickInside = dropdown.contains(event.target);
-        if (!isClickInside) {
-          var openSubmenu = document.querySelector('.submenu.show');
-          if (openSubmenu) {
-            openSubmenu.classList.remove('show');
+          if (menu.style.display === 'block') {
+              menu.style.display = 'none';
+              this.classList.remove('open');
+          } else {
+              document.querySelectorAll('.dropdown-content').forEach(content => {
+                  content.style.display = 'none';
+                  content.previousElementSibling.classList.remove('open');
+              });
+              menu.style.display = 'block';
+              this.classList.add('open');
           }
-        }
-      });
-    });
+      }
   }
+
+  function handleMouseEnter() {
+      if (window.innerWidth > 1023) {
+          this.nextElementSibling.style.display = 'block';
+          this.classList.add('open');
+      }
+  }
+
+  function handleMouseLeave() {
+      if (window.innerWidth > 1023) {
+          this.nextElementSibling.style.display = 'none';
+          this.classList.remove('open');
+      }
+  }
+
+  // Toggle nav menu for smaller screens
+  if (burgerMenu) {
+      burgerMenu.addEventListener('click', function() {
+          nav.classList.toggle('show');
+      });
+  }
+
+  // Close the dropdown menu if the user clicks outside of it
+  window.addEventListener('click', function(event) {
+      if (!event.target.closest('.dropdown')) {
+          document.querySelectorAll('.dropdown-content').forEach(content => {
+              content.style.display = 'none';
+              content.previousElementSibling.classList.remove('open');
+          });
+      }
+  });
+
+  // Event listeners for dropdown toggles
+  dropdownLinks.forEach(link => {
+      link.addEventListener('click', handleClick);
+      link.addEventListener('mouseenter', handleMouseEnter);
+      link.addEventListener('mouseleave', handleMouseLeave);
+      link.nextElementSibling.addEventListener('mouseenter', function() {
+          if (window.innerWidth > 1023) {
+              this.style.display = 'block';
+              link.classList.add('open');
+          }
+      });
+      link.nextElementSibling.addEventListener('mouseleave', function() {
+          if (window.innerWidth > 1023) {
+              this.style.display = 'none';
+              link.classList.remove('open');
+          }
+      });
+  });
+
+  // Function to update display based on window width
+  function updateDisplay() {
+      if (window.innerWidth > 1023) {
+          nav.classList.remove('show');
+          document.querySelectorAll('.dropdown-content').forEach(content => {
+              content.style.display = 'none';
+              content.previousElementSibling.classList.remove('open');
+          });
+      }
+  }
+
+  // Update display on window resize
+  window.addEventListener('resize', updateDisplay);
+
+  // Initial update display on load
+  updateDisplay();
 });
+
+
+
+
+/**
+ * FAQ SHOWING AND HIDING AV SECTIONS
+ * **/
+document.addEventListener("DOMContentLoaded", function() {
+  // Wyświetlenie sekcji "claims-and-accidents" przy załadowaniu strony
+  document.getElementById("claims-and-accidents").style.display = "block";
+
+  // Dodanie klasy "active" do odpowiedniego elementu nawigacji
+  var faqNavLines = document.querySelectorAll(".faq-nav-line");
+
+  faqNavLines.forEach(function(element) {
+    if (element.getAttribute("onclick").includes("faq-claims-and-accident")) {
+      element.classList.add("active");
+    }
+  });
+
+  // Dodanie obsługi kliknięcia dla każdego elementu FAQ nawigacji
+  faqNavLines.forEach(function(element) {
+    element.addEventListener("click", function() {
+      faqNavLines.forEach(function(el) {
+        el.classList.remove("active"); // Usuwamy klasę "active" ze wszystkich elementów .faq-nav-line
+      });
+      element.classList.add("active"); // Dodajemy klasę "active" do klikniętego elementu
+    });
+  });
+
+  // Ukrycie wszystkich elementów .faq-description-content
+  var faqContents = document.querySelectorAll(".faq-description-content");
+  faqContents.forEach(function(content) {
+    content.style.display = "none";
+  });
+
+  // Dodanie obsługi kliknięcia dla każdego elementu .faq-description-topic
+  var faqTopics = document.querySelectorAll(".faq-description-topic");
+  faqTopics.forEach(function(topic) {
+    topic.addEventListener("click", function() {
+      // Znalezienie następnego elementu .faq-description-content po klikniętym elemencie .faq-description-topic
+      var nextContent = topic.nextElementSibling;
+      if (nextContent && nextContent.classList.contains("faq-description-content")) {
+        // Przełączenie widoczności elementu .faq-description-content
+        if (nextContent.style.display === "block") {
+          nextContent.style.display = "none";
+          // Obrót strzałki w lewo
+          topic.querySelector("img").classList.remove("rotate");
+        } else {
+          nextContent.style.display = "block";
+          // Obrót strzałki w prawo
+          topic.querySelector("img").classList.add("rotate");
+        }
+      }
+    });
+  });
+});
+
+function toggleSection(sectionClass) {
+  var sections = document.getElementsByClassName("faq-hide-section");
+  for (var i = 0; i < sections.length; i++) {
+    sections[i].style.display = "none";
+  }
+  var section = document.getElementsByClassName(sectionClass)[0];
+  section.style.display = "block";
+}
 
 
 /**
@@ -58,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function() {
       if (selectedFilters.length === 0) {
           // Jeśli nie został wybrany żaden filtr, wyświetl wszystkie karty
           carCards.forEach(function(card) {
-              card.style.display = 'block';
+              card.style.display = 'flex';
           });
       } else {
           // W przeciwnym razie, filtruj karty na podstawie wybranych opcji
@@ -68,7 +191,7 @@ document.addEventListener("DOMContentLoaded", function() {
               const isAutomatic = selectedFilters.includes('automat');
               const isManual = selectedFilters.includes('manual');
               const shouldDisplay = isClassSelected ? (selectedFilters.includes(carClass) && ((!isAutomatic && !isManual) || (carFeature === 'automat' && isAutomatic) || (carFeature === 'manual' && isManual))) : (carFeature === 'automat' && isAutomatic) || (carFeature === 'manual' && isManual);
-              card.style.display = shouldDisplay ? 'block' : 'none';
+              card.style.display = shouldDisplay ? 'flex' : 'none';
           });
       }
   }
@@ -94,6 +217,15 @@ document.addEventListener("DOMContentLoaded", function() {
             message.classList.add('hidden');
         });
     }, 5000);
+  
+
+/**
+ * SET CURRENT YEAR IN FOOTER
+ * **/
+var currentDate = new Date();
+var currentYear = currentDate.getFullYear();
+document.getElementById("currentYear").innerHTML = currentYear;
+
 
 
 /** SHOW/HIDE FILTERS SMALL SCREAN **/

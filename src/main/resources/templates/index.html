@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="../CSS/styles.css">
     <title>Car Rental</title>
 </head>
@@ -16,30 +17,37 @@
                 </div>
 
                 <nav class="nav">
-                     <div class="dropdown toggle" onclick="toggleDropdown(this)">
-                        <a href="/cars">CARS</a>
-                            <ul>
-                                <li><a sec:authorize="hasRole('ROLE_EMPLOYEE')" href="/cars">Display car list</a></li>
-                                <li><a sec:authorize="hasRole('ROLE_EMPLOYEE')" href="/createCar">Add vehicle</a></li>
-                                <li><a sec:authorize="hasRole('ROLE_EMPLOYEE')" href="#">Find a car</a></li>
-                            </ul>
-                     </div>
-
-                     <div class="dropdown toggle" onclick="toggleDropdown(this)" sec:authorize="hasAnyRole('ROLE_CUSTOMER', 'ROLE_EMPLOYEE', 'ROLE_ADMIN')">
-                        <a href="/reservations">RESERVATIONS</a>
-                        <ul>
-                            <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="/reservations">Display reservations</a></li>
-                            <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="/">New reservation</a></li>
-                            <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Rent a Car</a></li>
-                            <li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a href="#">Return Car</a></li>
-                        </ul>
+                    <a href="/">
+                      <button class="button">
+                        NEW BOOKING
+                      </button>
+                    </a>
+                    <div class="dropdown">
+                      <a href="/cars">CARS</a>
                     </div>
-
-                    <div class="dropdown toggle" onclick="toggleDropdown(this)">
-                        <a th:if="${not #authorization.expression('isAuthenticated()')}" href="/login">LOGIN<img src="../images/login-person.png" alt="login-person"></a>
-                        <a th:if="${#authorization.expression('isAuthenticated()')}" href="/logout">LOGOUT<img src="../images/login-person.png" alt="login-person"></a>
+              
+                    <div class="dropdown">
+                      <div class="dropdown-toggle">
+                        <a href="#">SERVICES</a>
+                        <img src="../images/arrow-down-2.png">
+                      </div>
+                          <ul class="dropdown-content">
+                              <li><a href="/longTermCarRental">Long-Term Rental</a></li>
+                              <li><a href="/loyaltyProgramme">Loyalty Programme</a></li>
+                              <li><a href="/quickPass">QuickPass</a></li>
+                              <li><a href="/faq">FAQ</a></li>
+                          </ul>
                     </div>
-                </nav>  
+              
+                    <div class="dropdown">
+                      <a href="/reservations">RESERVATIONS</a>
+                    </div>
+              
+                    <div class="dropdown toggle">
+                      <a th:if="${not #authorization.expression('isAuthenticated()')}" href="/login">LOGIN<img src="../images/login-person.png" alt="login-person"></a>
+                      <a th:if="${#authorization.expression('isAuthenticated()')}" href="/logout">LOGOUT<img src="../images/login-person.png" alt="login-person"></a>
+                    </div>
+                  </nav> 
                 
                 <button class="burger" id="burger-menu">
                     <span></span>
@@ -55,7 +63,7 @@
                 <div class="search">
 
                     <div class="motto">
-                        <span class="motto">Car - Rent. Your moment starts here. Let’s Go!</span>
+                        <span class="motto">Car - Rent. Your moment starts here. Let's Go!</span>
                     </div>
 
                     <form class="search-form" th:action="@{/search}" method="GET" onsubmit="return validateDateTime()">
@@ -131,13 +139,13 @@
 
             <div class="shortcut-nav">
                 <div class="shortcut-nav-item">
-                    <a href="#">Manage your booking<img src="../images/arrow-right.png"></a>
+                    <a href="/reservations">Manage your booking<img src="../images/arrow-right.png"></a>
                 </div>
                 <div class="shortcut-nav-item">
-                    <a href="#">Retrieve an invoice<img src="../images/arrow-right.png"></a>
+                    <a href="/underConstruction">Retrieve an invoice<img src="../images/arrow-right.png"></a>
                 </div>
                 <div class="shortcut-nav-item">
-                    <a href="#">Find an answer<img src="../images/arrow-right.png"></a>
+                    <a href="/faq">Find an answer<img src="../images/arrow-right.png"></a>
                 </div>
             </div>
 
@@ -145,7 +153,7 @@
             <div class="special-offer">
                 <div class="special-offer-item">
                     <img src="../images/arrows-spin.png">
-                    <a href="#">Flexible cancelation policy</a>
+                    <h2>Flexible cancellation policy</h2>
                     <p class="special-offer-item-description">No cancellation fees, just full cash refunds</p>
                 </div>
                 <div class="special-offer-line">
@@ -153,7 +161,7 @@
                 </div>
                 <div class="special-offer-item">
                     <img src="../images/numbers-off.png">
-                    <a href="#">Unlimited mileage</a>
+                    <h2>Unlimited mileage</h2>
                     <p class="special-offer-item-description">An unlimited mileage gives you more freedom of mobility.</p>
                 </div>
                 <div class="special-offer-line">
@@ -161,7 +169,7 @@
                 </div>
                 <div class="special-offer-item">
                     <img src="../images/clock-clockwise.png">
-                    <a href="#">Speedy QuickPass</a>
+                    <h2>Speedy QuickPass</h2>
                     <p class="special-offer-item-description">Time-saving free pre-registration service</p>
                 </div>
                 <div class="special-offer-line">
@@ -169,7 +177,7 @@
                 </div>
                 <div class="special-offer-item">
                     <img src="../images/heart.png">
-                    <a href="#">Car-Rent loyalty</a>
+                    <h2>Car-Rent loyalty</h2>
                     <p class="special-offer-item-description">Priority service, free voucher & dedicated app</p>
                 </div>
             </div>
@@ -180,39 +188,37 @@
                 <div class="make-the-most-of-your-car-hire-items">
                     
                     <div class="make-the-most-of-your-car-hire-item">
-                        <a href="#">
+                        <a href="/longTermCarRental">
                             <img src="../images/rectangle-road.png">
                             <div class="make-the-most-of-your-car-hire-item-description">
                                 <h2>Flexible long term car rental</h2>
                                 <p>Enjoy a flexible mileage range 
                                 that suits your journey 
                                 and receive a free additional driver.</p>
-                                <button class="button">BOOK NOW</button> 
+                                <button class="button">READ MORE</button>
                             </div>   
                         </a>
                     </div>  
 
                     <div class="make-the-most-of-your-car-hire-item">
-                        <a href="#">
+                        <a href="/loyaltyProgramme">
                             <img src="../images/rectangle-yoga.png">
                             <div class="make-the-most-of-your-car-hire-item-description">
-                                <h2>Get Car-Rent Inclusive</h2>
-                                <p>Enjoy free Roadside Assistance Plus, 
-                                discounted zero-excess cover and complete
-                                peace of mind all for one upfront cost.</p>
-                                <button class="button">BOOK NOW</button> 
+                                <h2>Get 10% off</h2>
+                                <p>Join our FREE loyalty programme for priority service and exclusive travel offers.</p>
+                                <button class="button">READ MORE</button>
                             </div>   
                         </a>
                     </div>
 
                     <div class="make-the-most-of-your-car-hire-item">
-                        <a href="#">
+                        <a href="/quickPass">
                             <img src="../images/rectangle-quickpass.png">
                             <div class="make-the-most-of-your-car-hire-item-description">
                                 <h2>QuickPass</h2>
                                 <p>Our pre-travel registration service 
                                     saves you time at collection.</p>
-                                <button class="button">BOOK NOW</button> 
+                                <button class="button">READ MORE</button>
                             </div>   
                         </a>
                     </div>
@@ -261,7 +267,7 @@
                         </div>
                     </div>
                 </div>
-                <h5>&copy; 2023 Car-Rent Company - All Rights Reserved.</h5>
+                <h5>&copy; </h5><h5 id="currentYear"></h5> <h5>Car-Rent Company - All Rights Reserved.</h5>
             </div>
         <script src="../js/script.js"></script>
 </body>

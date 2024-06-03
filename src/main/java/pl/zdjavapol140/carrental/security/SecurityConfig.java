@@ -22,8 +22,8 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
-
-
+    @Autowired
+    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
     @Bean
     public UserDetailsManager userDetailsManager(DataSource dataSource) {
         JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
@@ -63,9 +63,14 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/custom-login").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/custom-login").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/reservations").hasAnyRole("CUSTOMER", "EMPLOYEE", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/underConstruction").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/faq").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/longTermCarRental").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/loyaltyProgramme").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/quickPass").permitAll()
 
                                 .requestMatchers(HttpMethod.GET, "/cars").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/cars-list").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/carsList").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/cars-founded").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/deleteCar").hasAnyRole("EMPLOYEE", "ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/updateCar").hasAnyRole("EMPLOYEE", "ADMIN")
@@ -98,6 +103,7 @@ public class SecurityConfig {
                         .usernameParameter("email")
                         .passwordParameter("password")
                     .loginProcessingUrl("/authenticateUser")
+                        .successHandler(customAuthenticationSuccessHandler)
                     .permitAll());
                 http.httpBasic(Customizer.withDefaults());
 

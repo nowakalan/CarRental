@@ -143,6 +143,10 @@ body {
     list-style-type: none;
 }
 
+.dropdown a{
+    transition: color 0.5s ease;
+}
+
 .dropdown a span{
     float: right;
     transform: rotate(180deg);
@@ -150,7 +154,6 @@ body {
 
 .dropdown a:hover {
     color: var(--yellow);
-    transition-delay: 1s;
 }
 
 .dropdown li {
