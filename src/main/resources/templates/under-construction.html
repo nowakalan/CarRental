@@ -57,59 +57,10 @@
 
   </div>
 
-
-  <div class="message message-warning" th:if="${reservationDeletedMessage}">
-    <h1 th:text="${reservationDeletedMessage}">Reservation deleted successfully</h1>
+  <div class="background-under-construction">
+    <img src="../images/under-construction.png">
+    
   </div>
-
-
-  <div class="message message-info" th:unless="${not #lists.isEmpty(reservations)}">
-    <h1>You don't have any reservations.</h1>
-  </div>
-
-
-    <div class="your-booking" th:each="reservation : ${reservations}">
-      <div class="your-booking-place-and-time-description">
-
-        <h2>YOUR BOOKING</h2>
-        <div class="your-booking-locations">
-          <div>
-            <h4>PICK-UP LOCATION</h4>
-            <h5 th:text="${reservation.pickUpBranch.address.city}" />
-            <h5 th:text="${reservation.pickUpBranch.address.details}" />
-          </div>
-          <div>
-            <h4>PICK-UP DATE</h4>
-            <h5 th:text="${reservation.pickUpDateTime.toLocalDate() + ' ' + reservation.pickUpDateTime.toLocalTime()}" />
-          </div>
-          <div>
-            <h4>DROP-OFF LOCATION</h4>
-            <h5 th:text="${reservation.getDropOffBranch.address.city}" />
-            <h5 th:text="${reservation.getDropOffBranch.address.details}" />
-          </div>
-          <div>
-            <h4>DROP-OFF DATE</h4>
-            <h5 th:text="${reservation.dropOffDateTime.toLocalDate() + ' ' + reservation.dropOffDateTime.toLocalTime()}" />
-          </div>
-        </div>
-      </div>
-      <div class="your-booking-car-description">
-        <h2>Vehicle</h2>
-        <img th:src="${'..' + reservation.car.imagePath}" th:alt="${reservation.car.brand + ' ' + reservation.car.model}">
-        <p th:text="${reservation.car.size.carClassShortDescription}" />
-        <p th:text="${reservation.car.size.maxNumberOfPersons} + ' seats, ' + ${reservation.car.size.numberOfDoors} + ' doors, ' + ${reservation.car.transmissionType}" />
-      </div>
-      <div class="your-booking-price-confirmation">
-        <h2 th:text="${'Total: $' + reservation.totalPrice}" />
-        <form th:action="@{/deleteReservation}" method="post"
-              onsubmit="return confirm('Are you sure you want to delete this reservation?')">
-          <input type="hidden" name="reservationId" th:value="${reservation.id}">
-          <button class="button button-delete-your-booking" type="submit">DELETE YOUR BOOKING</button>
-        </form>
-      </div>
-      <div></div>
-    </div>
-
 
   <div id="push"></div>
 </div>
@@ -154,6 +105,6 @@
   </div>
   <h5>&copy; </h5><h5 id="currentYear"></h5> <h5>Car-Rent Company - All Rights Reserved.</h5>
 </div>
-<script src="../js/script.js"></script>  
+<script src="../js/script.js"></script>
 </body>
 </html>

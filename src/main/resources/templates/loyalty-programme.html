@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
   <link rel="stylesheet" href="../CSS/styles.css">
 
   <title>Car Rental</title>
@@ -54,62 +55,39 @@
       <span></span>
       <span></span>
     </button>
-
   </div>
 
-
-  <div class="message message-warning" th:if="${reservationDeletedMessage}">
-    <h1 th:text="${reservationDeletedMessage}">Reservation deleted successfully</h1>
+  <div class="banner-low">
+    <img src="../images/banner-loyalty-programme.png">
   </div>
 
-
-  <div class="message message-info" th:unless="${not #lists.isEmpty(reservations)}">
-    <h1>You don't have any reservations.</h1>
-  </div>
-
-
-    <div class="your-booking" th:each="reservation : ${reservations}">
-      <div class="your-booking-place-and-time-description">
-
-        <h2>YOUR BOOKING</h2>
-        <div class="your-booking-locations">
-          <div>
-            <h4>PICK-UP LOCATION</h4>
-            <h5 th:text="${reservation.pickUpBranch.address.city}" />
-            <h5 th:text="${reservation.pickUpBranch.address.details}" />
-          </div>
-          <div>
-            <h4>PICK-UP DATE</h4>
-            <h5 th:text="${reservation.pickUpDateTime.toLocalDate() + ' ' + reservation.pickUpDateTime.toLocalTime()}" />
-          </div>
-          <div>
-            <h4>DROP-OFF LOCATION</h4>
-            <h5 th:text="${reservation.getDropOffBranch.address.city}" />
-            <h5 th:text="${reservation.getDropOffBranch.address.details}" />
-          </div>
-          <div>
-            <h4>DROP-OFF DATE</h4>
-            <h5 th:text="${reservation.dropOffDateTime.toLocalDate() + ' ' + reservation.dropOffDateTime.toLocalTime()}" />
-          </div>
-        </div>
-      </div>
-      <div class="your-booking-car-description">
-        <h2>Vehicle</h2>
-        <img th:src="${'..' + reservation.car.imagePath}" th:alt="${reservation.car.brand + ' ' + reservation.car.model}">
-        <p th:text="${reservation.car.size.carClassShortDescription}" />
-        <p th:text="${reservation.car.size.maxNumberOfPersons} + ' seats, ' + ${reservation.car.size.numberOfDoors} + ' doors, ' + ${reservation.car.transmissionType}" />
-      </div>
-      <div class="your-booking-price-confirmation">
-        <h2 th:text="${'Total: $' + reservation.totalPrice}" />
-        <form th:action="@{/deleteReservation}" method="post"
-              onsubmit="return confirm('Are you sure you want to delete this reservation?')">
-          <input type="hidden" name="reservationId" th:value="${reservation.id}">
-          <button class="button button-delete-your-booking" type="submit">DELETE YOUR BOOKING</button>
-        </form>
-      </div>
-      <div></div>
+  <div class="service-body">
+    <div class="service-block">
+      <h3>Welcome to Car-Rent loyalty programme</h3>
+      <p><br><br>As a member of Avis Preferred, the benefits don't start when you hire one of our vehicles. You can enjoy them long before you've set off. Joining the programme is completely free and you'll instantly receive the rewards and benefits set out below.<br><br> These include a 10% discount off future car hire, priority service and exclusive partner offers.<br><br> And that's just the start. We're working on a host of other exclusive discounts, all coming soon. We'll let you know as soon as they're ready.</p>
+      <a href="/underConstruction"><button class="button">JOIN NOW</button></a>
     </div>
-
+    <div class="service-block">
+        <div class="service-block-three-columns">
+            <div class="service-block-three-columns-content">
+                <img src="../images/icon-loyalty-heart.png">
+                <h3>10% off future Avis car rentals*</h3>
+                <p><br>Log in when you visit our site or app and this ongoing discount will be pre-applied.</p>
+            </div>
+            <div class="service-block-three-columns-content">
+                <img src="../images/icon-loyalty-clock.png">
+                <h3>Priority service every time</h3>
+                <p><br>Jump the queue with pre-prepared paperwork and your vehicle at the ready.</p>
+            </div>
+            <div class="service-block-three-columns-content">
+                <img src="../images/icon-loyalty-heart.png">
+                <h3>Access to exclusive partner discounts</h3>
+                <p><br>These vary from country to country; details will be emailed to you.</p>
+            </div>
+        </div>
+        <p><br><br>*10% discount is off basic Time & Mileage, and doesn't include any additional mandatory costs (such as tax or airport surcharges) or additional extras. Discount is applicable for rentals in participating countries listed in the Car-Rent Preferred terms and conditions.</p>
+    </div>
+  </div>
 
   <div id="push"></div>
 </div>
@@ -154,6 +132,7 @@
   </div>
   <h5>&copy; </h5><h5 id="currentYear"></h5> <h5>Car-Rent Company - All Rights Reserved.</h5>
 </div>
-<script src="../js/script.js"></script>  
+
+<script src="../js/script.js"></script>
 </body>
 </html>

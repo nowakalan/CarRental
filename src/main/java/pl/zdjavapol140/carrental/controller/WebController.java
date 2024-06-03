@@ -228,7 +228,7 @@ public class WebController {
         return "cars-founded";
     }
 
-    @GetMapping("/cars-list")
+    @GetMapping("/carsList")
     public String showAllCarsForEmployees(Model model) {
         model.addAttribute("cars", carService.getAll());
         return "cars-list";
@@ -427,5 +427,31 @@ public class WebController {
 
         return "redirect:/reservations";
     }
+
+    @GetMapping("/underConstruction")
+    public String showUnderConstructionSubpage() {
+        return "/under-construction";
+    }
+
+    @GetMapping("/faq")
+    public String showFaq() {
+        return "faq";
+    }
+
+    @GetMapping("/longTermCarRental")
+    public String showLongTermCarRentalSubpage() {
+        return "long-term-car-rental";
+    }
+
+    @GetMapping("/loyaltyProgramme")
+    public String showLoyaltyProgrammeSubpage() {
+            return "loyalty-programme";
+    }
+
+    @GetMapping("/quickPass")
+    public String showQuickPassSubpage() {
+        return "/quick-pass";
+    }
+
 }
 
